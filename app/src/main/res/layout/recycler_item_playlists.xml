@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundDefault">
 
     <TextView
         android:id="@+id/recycler_item_playlists_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Label"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="@dimen/text_size_medium"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginStart="10dp"/>

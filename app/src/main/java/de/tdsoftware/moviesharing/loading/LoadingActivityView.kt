@@ -18,6 +18,15 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     // region Properties
 
     var viewListener: Listener = context as Listener
+
+    var loadingText: String?
+        get() {
+            return startLoadingText.text.toString()
+        }
+        set(value){
+            startLoadingText.text = value
+        }
+
     private lateinit var startLoadingText: TextView
 
     // endregion

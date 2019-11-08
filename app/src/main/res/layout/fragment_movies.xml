@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundDefault"
     tools:context=".main.movies.MoviesFragment">
 
     <com.google.android.material.tabs.TabLayout
@@ -21,6 +22,6 @@
         android:id="@+id/fragment_movies_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/tab_bar_height"/>
+        android:layout_marginTop="@dimen/tab_bar_height" />
 
 </de.tdsoftware.moviesharing.main.movies.MoviesFragmentView>

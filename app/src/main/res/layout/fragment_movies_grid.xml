@@ -2,11 +2,13 @@
 <de.tdsoftware.moviesharing.main.movies.grid.MoviesGridFragmentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundDefault">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_movies_recycler_view_playlists_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"/>
 
 </de.tdsoftware.moviesharing.main.movies.grid.MoviesGridFragmentView>

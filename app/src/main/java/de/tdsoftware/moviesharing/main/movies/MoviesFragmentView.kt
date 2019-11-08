@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import de.tdsoftware.moviesharing.BaseActivity
 import de.tdsoftware.moviesharing.R
 
 class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
@@ -51,11 +53,13 @@ class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setupControls() {
-        val x = context as AppCompatActivity
-        val adapter = TabViewAdapter(x.supportFragmentManager)
+
+    }
+
+    fun setUpViewPager(childFragmentManager: FragmentManager){
+        val adapter = TabViewAdapter(childFragmentManager)
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
     }
-
     // endregion 
 }

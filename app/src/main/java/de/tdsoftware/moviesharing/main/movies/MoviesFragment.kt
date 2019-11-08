@@ -7,15 +7,18 @@ import android.view.ViewGroup
 import de.tdsoftware.moviesharing.BaseFragment
 import de.tdsoftware.moviesharing.R
 
-//TODO: This fragment has a viewPager, that is displaying grid and listview
 class MoviesFragment : BaseFragment() {
 
+    private lateinit var mainView: MoviesFragmentView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_movies,container,false)
+        mainView = inflater.inflate(R.layout.fragment_movies,container,false) as MoviesFragmentView
+        return mainView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mainView.setUpViewPager(childFragmentManager)
     }
 
     companion object {
@@ -25,4 +28,5 @@ class MoviesFragment : BaseFragment() {
             return MoviesFragment()
         }
     }
+
 }

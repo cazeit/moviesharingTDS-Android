@@ -10,7 +10,9 @@
         android:id="@+id/recycler_item_videos_grid_card"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:cardCornerRadius="8dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="6dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
         <ImageView
@@ -27,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/recycler_item_videos_grid_card"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_tiny"
+        android:textAlignment="center"
         android:text="This is a sample title!"
         android:maxLines="2"/>
 

@@ -4,18 +4,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class TabViewAdapter(val fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager){
+class TabViewAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
+
+    private val moviesGridFragment: MoviesGridFragment by lazy{
+        MoviesGridFragment.newInstance()
+    }
+
+    private val moviesListFragment: MoviesListFragment by lazy{
+        MoviesListFragment.newInstance()
+    }
+
 
     override fun getItem(position: Int): Fragment {
         when(position){
             0 -> {
-                return MoviesGridFragment.newInstance()
+                return moviesGridFragment
             }
             1 -> {
-                return MoviesListFragment.newInstance()
+                return moviesListFragment
             }
         }
-        return MoviesListFragment.newInstance()
+        return moviesGridFragment
     }
 
     override fun getCount(): Int {

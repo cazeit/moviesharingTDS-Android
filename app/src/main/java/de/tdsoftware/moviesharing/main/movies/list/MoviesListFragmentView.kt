@@ -7,13 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.main.movies.MoviesViewFragmentView
 import de.tdsoftware.moviesharing.main.movies.adapter.PlaylistListAdapter
-import de.tdsoftware.moviesharing.main.movies.adapter.VideoListAdapter
 
 class MoviesListFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesViewFragmentView(context, attrs) {
     // region Public Types
 
-    private lateinit var recyclerViewPlaylists: RecyclerView
+    private lateinit var playlistRecyclerView: RecyclerView
 
     // endregion
 
@@ -33,17 +32,20 @@ class MoviesListFragmentView(context: Context, attrs: AttributeSet?) :
     private fun postLayoutInitialize() {
         bindViews()
         setupControls()
+        buildPlaylistRecycler()
     }
 
     private fun bindViews() {
-        recyclerViewPlaylists = findViewById(R.id.fragment_movies_recycler_view_playlists_list)
-        recyclerViewPlaylists.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        recyclerViewPlaylists.adapter = PlaylistListAdapter(10)
+        playlistRecyclerView = findViewById(R.id.fragment_movies_recycler_view_playlists_list)
     }
 
     private fun setupControls() {
 
     }
 
+    private fun buildPlaylistRecycler(){
+        playlistRecyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
+        playlistRecyclerView.adapter = PlaylistListAdapter(2, context)
+    }
     // endregion 
 }

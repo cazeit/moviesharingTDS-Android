@@ -6,4 +6,6 @@
     <color name="colorAccent">@color/colorPrimary</color>
     <color name="backgroundDefault">#EFEFF4</color>
     <color name="textLight">#FFFFFF</color>
+    <color name="colorRed">#e50000</color>
+    <color name="colorGray">#bdbdbd</color>
 </resources>

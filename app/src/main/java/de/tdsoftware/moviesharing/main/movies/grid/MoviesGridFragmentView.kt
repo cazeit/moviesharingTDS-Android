@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.main.movies.MoviesViewFragmentView
-import de.tdsoftware.moviesharing.main.movies.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.main.movies.adapter.PlaylistGridAdapter
 
 class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
@@ -18,7 +17,7 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region Properties
 
-    private lateinit var recyclerViewPlaylists: RecyclerView
+    private lateinit var playlistRecyclerView: RecyclerView
 
     // endregion
 
@@ -38,16 +37,20 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     private fun postLayoutInitialize() {
         bindViews()
         setupControls()
+        buildPlaylistRecycler()
     }
 
     private fun bindViews() {
-        recyclerViewPlaylists = findViewById(R.id.fragment_movies_recycler_view_playlists_grid)
-        recyclerViewPlaylists.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        recyclerViewPlaylists.adapter = PlaylistGridAdapter(2)
+        playlistRecyclerView = findViewById(R.id.fragment_movies_recycler_view_playlists_grid)
     }
 
     private fun setupControls() {
 
+    }
+
+    private fun buildPlaylistRecycler(){
+        playlistRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        playlistRecyclerView.adapter = PlaylistGridAdapter(2, context)
     }
 
     // endregion 
