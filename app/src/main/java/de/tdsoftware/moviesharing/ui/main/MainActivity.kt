@@ -1,0 +1,55 @@
+package de.tdsoftware.moviesharing.ui.main
+
+import android.os.Bundle
+import de.tdsoftware.moviesharing.ui.BaseActivity
+import de.tdsoftware.moviesharing.ui.BaseFragment
+import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragment
+import de.tdsoftware.moviesharing.ui.main.movies.MoviesFragment
+
+class MainActivity : BaseActivity() {
+
+    private val moviesFragment by lazy{
+        MoviesFragment.newInstance()
+    }
+
+    private val favoritesFragment by lazy{
+        FavoritesFragment.newInstance()
+    }
+
+    private lateinit var mainView: MainActivityView
+
+    private var currentFragment: BaseFragment? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainView = layoutInflater.inflate(R.layout.activity_main, null, false) as MainActivityView
+        setContentView(mainView)
+        setUpMainView()
+
+        if(currentFragment == null){
+            currentFragment = moviesFragment
+        }
+
+        showFragment(currentFragment!!)
+    }
+
+    private fun setUpMainView(){
+        mainView.viewListener = object: MainActivityView.Listener{
+
+            override fun onMoviesSelected() {
+                showFragment(moviesFragment)
+            }
+
+            override fun onFavoritesSelected() {
+                showFragment(favoritesFragment)
+            }
+        }
+    }
+
+    private fun showFragment(fragment: BaseFragment){
+        supportFragmentManager.beginTransaction().replace(R.id.activity_main_container,fragment).commit()
+        currentFragment = fragment
+    }
+}

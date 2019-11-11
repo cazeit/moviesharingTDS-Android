@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/recycler_item_videos_grid_card"
-        android:textSize="@dimen/text_size_tiny"
+        android:textSize="@dimen/text_size_small"
         android:textAlignment="center"
         android:text="This is a sample title!"
         android:maxLines="2"/>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.main.movies.MoviesFragmentView
+<de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundDefault"
-    tools:context=".main.movies.MoviesFragment">
+    tools:context=".ui.main.movies.MoviesFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_movies_tab_layout"
@@ -24,4 +24,4 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/tab_bar_height" />
 
-</de.tdsoftware.moviesharing.main.movies.MoviesFragmentView>
+</de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView>

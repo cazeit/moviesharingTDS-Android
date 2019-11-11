@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_medium"
-    android:layout_marginBottom="@dimen/spacing_medium">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clickable="true">
     <androidx.cardview.widget.CardView
         android:id="@+id/recycler_item_videos_list_card"
         android:layout_width="match_parent"
@@ -14,8 +16,8 @@
         app:cardCornerRadius="6dp"
         android:elevation="4dp"
         app:cardUseCompatPadding="true"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
         <ImageView
@@ -32,10 +34,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/recycler_item_videos_list_card"
-        android:textSize="@dimen/text_size_tiny"
+        android:textSize="@dimen/text_size_small"
         android:text="This is a sample title!"
         android:layout_marginStart="@dimen/spacing_medium"
         android:layout_marginEnd="@dimen/spacing_medium"
         android:textAlignment="center"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

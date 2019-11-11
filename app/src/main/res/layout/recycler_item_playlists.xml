@@ -4,23 +4,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundDefault">
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:background="@color/backgroundDefault"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/recycler_item_playlists_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Label"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/spacing_medium"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="@dimen/spacing_medium"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_item_playlists_recylcer_view_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintTop_toBottomOf="@id/recycler_item_playlists_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

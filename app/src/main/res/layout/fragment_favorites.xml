@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.main.favorites.FavoritesFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
+<de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/backgroundDefault">
+    android:background="@color/backgroundDefault"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:clickable="true">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/fragment_favorites_search_view"
@@ -20,6 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/fragment_favorites_search_view"
-        android:paddingBottom="@dimen/bottom_nav_height"/>
+        android:paddingBottom="@dimen/bottom_nav_height"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:clickable="true"/>
 
-</de.tdsoftware.moviesharing.main.favorites.FavoritesFragmentView>
+</de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragmentView>

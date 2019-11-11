@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.main.movies.list.MoviesListFragmentView
+<de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragmentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -10,6 +10,6 @@
         android:id="@+id/fragment_movies_recycler_view_playlists_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"/>
+        android:descendantFocusability="blocksDescendants" />
 
-</de.tdsoftware.moviesharing.main.movies.list.MoviesListFragmentView>
+</de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragmentView>

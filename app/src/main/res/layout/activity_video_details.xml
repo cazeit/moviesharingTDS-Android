@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.video.VideoDetailsActivityView
+<de.tdsoftware.moviesharing.ui.video.VideoDetailsActivityView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".video.VideoDetailsActivity">
+    tools:context=".ui.video.VideoDetailsActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/activity_video_details_guideline_cover_top"
@@ -138,4 +138,4 @@
 
     The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham." />
     </ScrollView>
-</de.tdsoftware.moviesharing.video.VideoDetailsActivityView>
+</de.tdsoftware.moviesharing.ui.video.VideoDetailsActivityView>
