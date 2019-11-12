@@ -6,14 +6,27 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.data.models.PlaylistApp
+import de.tdsoftware.moviesharing.data.models.VideoApp
 
-abstract class PlaylistBaseAdapter(private val clickListener: VideoBaseAdapter.ItemClickListener,
-                                   private val playlistAmount: Int): RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>() {
+abstract class PlaylistBaseAdapter(var playlistList: ArrayList<PlaylistApp>):
+    RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
+
+    interface Listener {
+        fun onMovieSelected(video: VideoApp)
+    }
+
+    var clickListener: Listener? = null
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.playlistTitle = "This is a sample text"
-        holder.videoRecyclerAdapter?.listener = clickListener
+        holder.playlistTitle = playlistList[position].title
+        holder.videoRecyclerAdapter?.listener = object: VideoBaseAdapter.ItemClickListener{
+            override fun onRecyclerItemClick(video: VideoApp) {
+                clickListener?.onMovieSelected(video)
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,15 +36,16 @@ abstract class PlaylistBaseAdapter(private val clickListener: VideoBaseAdapter.I
     }
 
     override fun getItemCount(): Int {
-        return playlistAmount
+        return playlistList.size
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        private val playlistTitleTextView =
-            itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
+
+        val playlistTitleTextView =
+                itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
 
         val videoRecyclerView: RecyclerView =
-            itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_videos)
+                itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_videos)
 
         var playlistTitle: String?
             get(){

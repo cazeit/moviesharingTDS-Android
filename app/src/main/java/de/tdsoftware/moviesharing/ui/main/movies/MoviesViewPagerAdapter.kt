@@ -16,7 +16,6 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAda
         MoviesListFragment.newInstance()
     }
 
-
     override fun getItem(position: Int): Fragment {
         when(position){
             0 -> {

@@ -28,11 +28,7 @@ class MainActivity : BaseActivity() {
         setContentView(mainView)
         setUpMainView()
 
-        if(currentFragment == null){
-            currentFragment = moviesFragment
-        }
-
-        showFragment(currentFragment!!)
+        showFragment(moviesFragment)
     }
 
     private fun setUpMainView(){
@@ -49,7 +45,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showFragment(fragment: BaseFragment){
-        supportFragmentManager.beginTransaction().replace(R.id.activity_main_container,fragment).commit()
+        if(currentFragment == fragment){
+            return
+        }
+
         currentFragment = fragment
+        supportFragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment).commit()
+
     }
 }

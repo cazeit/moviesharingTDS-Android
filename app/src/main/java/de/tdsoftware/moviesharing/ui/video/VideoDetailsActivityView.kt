@@ -101,6 +101,8 @@ class VideoDetailsActivityView(context: Context, attrs: AttributeSet?) :
         bannerImageView = findViewById(R.id.activity_video_details_banner_image_view)
         coverImageView = findViewById(R.id.activity_video_details_cover_image_view)
         titleTextView = findViewById(R.id.activity_video_details_title_text_view)
+        descriptionTextView = findViewById(R.id.activity_video_details_description_text_view)
+        secondaryTextView = findViewById(R.id.activity_video_details_secondary_text_view)
     }
 
     @SuppressLint("ClickableViewAccessibility")

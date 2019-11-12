@@ -10,6 +10,7 @@ import de.tdsoftware.moviesharing.R
 class MoviesFragment : BaseFragment() {
 
     private lateinit var mainView: MoviesFragmentView
+
     private lateinit var moviesViewPagerAdapter: MoviesViewPagerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

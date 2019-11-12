@@ -9,15 +9,7 @@ import de.tdsoftware.moviesharing.R
 class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
 
-    // region Public Types
-    interface Listener {
-    }
-
-    // endregion
-
     // region Properties
-
-    var viewListener: Listener? = null
 
     var loadingText: String?
         get() {

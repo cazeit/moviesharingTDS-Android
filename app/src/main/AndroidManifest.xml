@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.video.VideoDetailsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity android:name="de.tdsoftware.moviesharing.ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />

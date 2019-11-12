@@ -7,7 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.VideoListAdapter
+import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
 
 class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -15,7 +15,6 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
 
     interface Listener {
         fun onQueryChange(newText: String)
-        fun onQuerySubmit(query: String)
     }
 
     // endregion
@@ -50,11 +49,8 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
 
     private fun setupControls() {
         favoriteSearchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if(query != null) {
-                    favoriteSearchView.clearFocus()
-                    viewListener?.onQuerySubmit(query)
-                }
                 return true
             }
 
@@ -72,7 +68,7 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
-    fun changeFavoriteRecyclerAdapter(adapter: VideoListAdapter){
+    fun changeFavoriteRecyclerAdapter(adapter: PlaylistBaseAdapter){
         favoriteRecyclerView.adapter = adapter
     }
 

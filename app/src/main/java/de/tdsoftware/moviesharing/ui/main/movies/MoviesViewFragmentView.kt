@@ -17,5 +17,4 @@ abstract class MoviesViewFragmentView(context: Context, attrs: AttributeSet?) :
     fun changePlaylistRecyclerAdapter(adapter: PlaylistBaseAdapter){
         playlistRecyclerView.adapter = adapter
     }
-
 }
