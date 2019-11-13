@@ -5,10 +5,10 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.ui.main.movies.MoviesViewFragmentView
+import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragmentView
 
 class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
-    MoviesViewFragmentView(context, attrs) {
+    MoviesBaseFragmentView(context, attrs) {
     // region Public Types
 
 

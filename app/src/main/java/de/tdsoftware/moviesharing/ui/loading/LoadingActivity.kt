@@ -22,6 +22,7 @@ class LoadingActivity : BaseActivity(){
 
         GlobalScope.launch {
             delay(3000)
+
             val intent = Intent(this@LoadingActivity, MainActivity::class.java)
             startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

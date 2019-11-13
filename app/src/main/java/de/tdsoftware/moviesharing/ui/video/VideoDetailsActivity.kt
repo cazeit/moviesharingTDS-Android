@@ -13,22 +13,28 @@ import de.tdsoftware.moviesharing.data.models.VideoApp
 
 class VideoDetailsActivity : BaseActivity(){
 
-    //TODO: content as fragment, not as activity
+    private val videoDetailsFragment by lazy{
+        VideoDetailsFragment.newInstance()
+    }
     private lateinit var mainView: VideoDetailsActivityView
     private lateinit var video: VideoApp
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainView = layoutInflater.inflate(R.layout.activity_video_details, null,false) as VideoDetailsActivityView
+        mainView =
+            layoutInflater.inflate(R.layout.activity_video_details, null,false) as VideoDetailsActivityView
         setContentView(mainView)
 
         video = intent.getSerializableExtra("video") as VideoApp
-        sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("sharedPref",Context.MODE_PRIVATE)
+
+        //show fragment
+        supportFragmentManager.beginTransaction().replace(R.id.activity_video_details_container, videoDetailsFragment).commit()
 
         setUpMainView()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setUpActionBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,18 +47,11 @@ class VideoDetailsActivity : BaseActivity(){
     }
 
     private fun setUpMainView(){
-        mainView.viewListener = object: VideoDetailsActivityView.Listener{
-            override fun onRatingChanged(rating: Float) {
-                video.rating = rating
-                sharedPreferences.edit().putFloat(video.id + "_rating", video.rating).apply()
-            }
-        }
+    }
 
-        mainView.videoTitle = video.title
-        mainView.videoSecondaryText = video.secondaryText
-        //TODO: missin imageView
-        mainView.videoDescription = video.description
-        mainView.videoRatingBarValue = video.rating
+    private fun setUpActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = video.title
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -3,18 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/backgroundDefault"
-    android:focusableInTouchMode="true"
-    android:focusable="true"
-    android:clickable="true">
+    android:background="@color/backgroundDefault">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/fragment_favorites_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
         app:iconifiedByDefault="false"
         android:background="@drawable/fragment_favorites_search_view_rectangle"
         app:layout_constraintTop_toTopOf="parent"/>

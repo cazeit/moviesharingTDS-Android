@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
 
 /**
- * this is the parent-view class for MoviesGridFrView and MoviesListFrView, to change the adapter (really necessary? or twice same function?)
+ * this is the parent-view class for MoviesGridFrView and MoviesListFrView,
  */
-abstract class MoviesViewFragmentView(context: Context, attrs: AttributeSet?) :
+abstract class MoviesBaseFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
 
     protected lateinit var playlistRecyclerView: RecyclerView

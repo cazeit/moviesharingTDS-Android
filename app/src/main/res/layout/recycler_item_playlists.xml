@@ -4,20 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_medium"
-    android:background="@color/backgroundDefault"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:clickable="true">
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:background="@color/backgroundDefault">
 
     <TextView
         android:id="@+id/recycler_item_playlists_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:layout_marginStart="@dimen/spacing_medium"/>
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginStart="@dimen/spacing_normal"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_item_playlists_recylcer_view_videos"

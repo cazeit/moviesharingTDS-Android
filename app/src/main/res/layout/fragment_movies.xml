@@ -11,7 +11,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_movies_tab_layout"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/tab_bar_height"
+        android:layout_height="@dimen/fragment_movies_tab_bar_height"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,6 +22,6 @@
         android:id="@+id/fragment_movies_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/tab_bar_height" />
+        android:layout_marginTop="@dimen/fragment_movies_tab_bar_height" />
 
 </de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView>

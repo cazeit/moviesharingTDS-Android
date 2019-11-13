@@ -10,6 +10,7 @@ import de.tdsoftware.moviesharing.ui.video.VideoDetailsActivity
 abstract class MoviesBaseFragment: BaseFragment() {
 
     protected lateinit var playlistAdapter: PlaylistBaseAdapter
+
     /** does this make sense or is a initFunction in here (then called from child after list was set) better?**/
 
     protected var playlistList :ArrayList<PlaylistApp>
