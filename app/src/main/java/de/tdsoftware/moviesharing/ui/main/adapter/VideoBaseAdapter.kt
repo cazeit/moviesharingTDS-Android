@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.ui.main.movies.adapter
+package de.tdsoftware.moviesharing.ui.main.adapter
 
 import android.net.Uri
 import android.view.View

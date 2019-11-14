@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.ui.main.movies.adapter
+package de.tdsoftware.moviesharing.ui.main.movies.grid
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.VideoApp
+import de.tdsoftware.moviesharing.ui.main.adapter.VideoBaseAdapter
 
 class VideoGridAdapter(videoList: ArrayList<VideoApp>): VideoBaseAdapter(videoList) {
 
@@ -14,6 +15,10 @@ class VideoGridAdapter(videoList: ArrayList<VideoApp>): VideoBaseAdapter(videoLi
                 LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_videos_grid,parent,false)
         val imageView = rootView.findViewById<ImageView>(R.id.recycler_item_videos_grid_card_image)
         val textView = rootView.findViewById<TextView>(R.id.recycler_item_videos_grid_title)
-        return ViewHolder(rootView, imageView, textView)
+        return ViewHolder(
+            rootView,
+            imageView,
+            textView
+        )
     }
 }

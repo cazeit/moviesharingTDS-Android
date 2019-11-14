@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import de.tdsoftware.moviesharing.ui.BaseFragment
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.ui.main.adapter.MoviesViewPagerAdapter
 
 class MoviesFragment : BaseFragment() {
 
@@ -24,7 +25,8 @@ class MoviesFragment : BaseFragment() {
     }
 
     private fun setUpMainView(){
-        moviesViewPagerAdapter = MoviesViewPagerAdapter(childFragmentManager)
+        moviesViewPagerAdapter =
+            MoviesViewPagerAdapter(childFragmentManager)
         mainView.changeViewPagerAdapter(moviesViewPagerAdapter)
     }
 

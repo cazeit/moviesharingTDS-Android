@@ -1,5 +1,6 @@
 package de.tdsoftware.moviesharing.ui.video
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -101,6 +102,8 @@ class VideoDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         secondaryTextView = findViewById(R.id.activity_video_details_secondary_text_view)
     }
 
+    //suppresses "performClick"-hint
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupControls() {
         videoRatingBar.setOnRatingBarChangeListener{ _, value: Float, fromUser: Boolean ->
             if(fromUser){

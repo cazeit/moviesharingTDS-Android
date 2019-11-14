@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.VideoApp
 import de.tdsoftware.moviesharing.ui.BaseFragment
+import de.tdsoftware.moviesharing.util.VideoUpdateEvent
+import org.greenrobot.eventbus.EventBus
 
 class VideoDetailsFragment: BaseFragment() {
 
@@ -43,6 +45,9 @@ class VideoDetailsFragment: BaseFragment() {
             override fun onRatingChanged(rating: Float) {
                 video.rating = rating
                 sharedPreferences.edit().putFloat(video.id + "_rating", video.rating).apply()
+                val event = VideoUpdateEvent()
+                event.video = video
+                EventBus.getDefault().post(event)
             }
         }
         mainView.videoTitle = video.title

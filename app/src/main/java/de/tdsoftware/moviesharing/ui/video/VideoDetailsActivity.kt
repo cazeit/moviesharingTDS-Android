@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.VideoApp
+import de.tdsoftware.moviesharing.util.VideoUpdateEvent
+import org.greenrobot.eventbus.EventBus
 
 class VideoDetailsActivity : BaseActivity(){
 
@@ -69,6 +71,9 @@ class VideoDetailsActivity : BaseActivity(){
                 }
                 video.isFavorite = !video.isFavorite
                 sharedPreferences.edit().putBoolean(video.id + "_favorite", video.isFavorite).apply()
+                val event = VideoUpdateEvent()
+                event.video = video
+                EventBus.getDefault().post(event)
             }
         }
         return super.onOptionsItemSelected(item)

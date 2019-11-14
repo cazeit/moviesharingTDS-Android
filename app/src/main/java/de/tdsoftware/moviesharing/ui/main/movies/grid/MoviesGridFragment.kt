@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.Sample
-import de.tdsoftware.moviesharing.data.models.PlaylistApp
 import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragment
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistGridAdapter
+import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
 class MoviesGridFragment : MoviesBaseFragment(){
 
@@ -20,8 +17,8 @@ class MoviesGridFragment : MoviesBaseFragment(){
             return playlistAdapter as PlaylistGridAdapter
         }
 
-    override fun createPlayListAdapter(playlistList: ArrayList<PlaylistApp>): PlaylistBaseAdapter {
-        return PlaylistGridAdapter(playlistList)
+    override fun createPlayListAdapter(): PlaylistBaseAdapter {
+        return PlaylistGridAdapter()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +28,7 @@ class MoviesGridFragment : MoviesBaseFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistList = Sample.playlistSampleList
+
         setUpMainView()
     }
 

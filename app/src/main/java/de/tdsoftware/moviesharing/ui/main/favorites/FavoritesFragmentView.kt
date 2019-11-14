@@ -1,16 +1,15 @@
 package de.tdsoftware.moviesharing.ui.main.favorites
 
 import android.content.Context
-import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
+import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragmentView
 
 class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
-    ConstraintLayout(context, attrs) {
+    MoviesBaseFragmentView(context, attrs) {
     // region Public Types
 
     interface Listener {
@@ -22,7 +21,6 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     // region Properties
 
     var viewListener: Listener? = null
-    private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var favoriteSearchView: SearchView
     // endregion
 
@@ -43,7 +41,7 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun bindViews() {
-        favoriteRecyclerView = findViewById(R.id.fragment_favorites_recycler_view_videos)
+        playlistRecyclerView = findViewById(R.id.fragment_favorites_recycler_view_favorite_playlist)
         favoriteSearchView = findViewById(R.id.fragment_favorites_search_view)
     }
 
@@ -64,12 +62,8 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun buildRecyclerView() {
-        favoriteRecyclerView.layoutManager =
+        playlistRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    }
-
-    fun changeFavoriteRecyclerAdapter(adapter: PlaylistBaseAdapter){
-        favoriteRecyclerView.adapter = adapter
     }
 
     // endregion 

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
+import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
 /**
  * this is the parent-view class for MoviesGridFrView and MoviesListFrView,

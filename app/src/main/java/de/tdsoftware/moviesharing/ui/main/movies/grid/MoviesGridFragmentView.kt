@@ -9,13 +9,17 @@ import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragmentView
 
 class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesBaseFragmentView(context, attrs) {
-    // region Public Types
 
+    // region Public Types
+    interface Listener {
+        // TODO: add interactions
+    }
 
     // endregion
 
     // region Properties
 
+    var viewListener: Listener? = null
     // endregion
 
     // region Constructors

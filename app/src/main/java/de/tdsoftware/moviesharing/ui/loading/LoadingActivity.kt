@@ -6,6 +6,8 @@ import android.os.Bundle
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.ui.main.MainActivity
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.Sample
+import de.tdsoftware.moviesharing.util.Repository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,6 +24,9 @@ class LoadingActivity : BaseActivity(){
 
         GlobalScope.launch {
             delay(3000)
+
+            Repository.playlistList = Sample.playlistSampleList
+            Repository.favoritePlaylistList = arrayListOf(Sample.playlistFavorite)
 
             val intent = Intent(this@LoadingActivity, MainActivity::class.java)
             startActivity(intent)

@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.ui.main.movies.adapter
+package de.tdsoftware.moviesharing.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,10 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.PlaylistApp
 import de.tdsoftware.moviesharing.data.models.VideoApp
 
-abstract class PlaylistBaseAdapter(var playlistList: ArrayList<PlaylistApp>):
+abstract class PlaylistBaseAdapter:
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
+
+    var playlistList: ArrayList<PlaylistApp> = ArrayList<PlaylistApp>()
 
     interface Listener {
         fun onMovieSelected(video: VideoApp)

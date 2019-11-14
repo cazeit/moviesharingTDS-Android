@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.ui.main.adapter.MoviesViewPagerAdapter
 
 class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {

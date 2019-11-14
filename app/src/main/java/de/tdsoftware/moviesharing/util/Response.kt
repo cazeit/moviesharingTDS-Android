@@ -3,7 +3,7 @@ package de.tdsoftware.moviesharing.util
 import java.lang.Exception
 
 /**
- * first thoughts about Response-Tyoe that is planned to be connected to UI to check states..
+ * first thoughts about Response-Type that is planned to be connected to UI to check states..
  */
 sealed class Response<out T: Any> {
     object Loading: Response<Nothing>()

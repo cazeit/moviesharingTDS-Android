@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.Sample
-import de.tdsoftware.moviesharing.data.models.PlaylistApp
 import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragment
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistBaseAdapter
-import de.tdsoftware.moviesharing.ui.main.movies.adapter.PlaylistListAdapter
+import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
 class MoviesListFragment : MoviesBaseFragment() {
 
@@ -21,8 +18,8 @@ class MoviesListFragment : MoviesBaseFragment() {
         }
 
 
-    override fun createPlayListAdapter(playlistList: ArrayList<PlaylistApp>): PlaylistBaseAdapter {
-        return PlaylistListAdapter(playlistList)
+    override fun createPlayListAdapter(): PlaylistBaseAdapter {
+        return PlaylistListAdapter()
     }
 
 
@@ -31,10 +28,9 @@ class MoviesListFragment : MoviesBaseFragment() {
         return mainView
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistList = Sample.playlistSampleList
+
         setUpMainView()
     }
 

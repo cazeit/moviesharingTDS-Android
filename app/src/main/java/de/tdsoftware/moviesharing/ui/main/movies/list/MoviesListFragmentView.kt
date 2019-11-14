@@ -6,11 +6,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragmentView
+import de.tdsoftware.moviesharing.ui.main.movies.grid.MoviesGridFragmentView
 
 class MoviesListFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesBaseFragmentView(context, attrs) {
     // region Public Types
+    interface Listener {
+        // TODO: add interactions
+    }
 
+    // endregion
+
+    // region Properties
+
+    var viewListener: MoviesGridFragmentView.Listener? = null
     // endregion
 
     // region Constructors
