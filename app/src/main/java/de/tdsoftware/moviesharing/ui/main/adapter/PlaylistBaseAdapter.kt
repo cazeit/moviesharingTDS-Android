@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.PlaylistApp
-import de.tdsoftware.moviesharing.data.models.VideoApp
+import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.models.Movie
 
 abstract class PlaylistBaseAdapter:
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
 
-    var playlistList: ArrayList<PlaylistApp> = ArrayList<PlaylistApp>()
+    var playlistList: ArrayList<Playlist> = ArrayList<Playlist>()
 
     interface Listener {
-        fun onMovieSelected(video: VideoApp)
+        fun onMovieSelected(movie: Movie)
     }
 
     var clickListener: Listener? = null
@@ -23,9 +23,9 @@ abstract class PlaylistBaseAdapter:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.videoRecyclerAdapter?.listener = object: VideoBaseAdapter.ItemClickListener{
-            override fun onRecyclerItemClick(video: VideoApp) {
-                clickListener?.onMovieSelected(video)
+        holder.movieRecyclerAdapter?.listener = object: VideoBaseAdapter.ItemClickListener{
+            override fun onRecyclerItemClick(movie: Movie) {
+                clickListener?.onMovieSelected(movie)
             }
 
         }
@@ -46,8 +46,8 @@ abstract class PlaylistBaseAdapter:
         val playlistTitleTextView =
                 itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
 
-        val videoRecyclerView: RecyclerView =
-                itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_videos)
+        val movieRecyclerView: RecyclerView =
+                itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_movies)
 
         var playlistTitle: String?
             get(){
@@ -57,12 +57,12 @@ abstract class PlaylistBaseAdapter:
                 playlistTitleTextView.text = value
             }
 
-        var videoRecyclerAdapter: VideoBaseAdapter?
+        var movieRecyclerAdapter: VideoBaseAdapter?
             get(){
-                return videoRecyclerView.adapter as VideoBaseAdapter?
+                return movieRecyclerView.adapter as VideoBaseAdapter?
             }
             set(value){
-                videoRecyclerView.adapter = value
+                movieRecyclerView.adapter = value
             }
     }
 }

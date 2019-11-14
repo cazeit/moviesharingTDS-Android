@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.PlaylistApp
+import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
@@ -19,24 +20,8 @@ class FavoritesFragment: MainActivityBaseFragment(){
             return playlistAdapter as PlaylistFavoriteAdapter
         }
 
-    private var favoriteVideoPlaylistListFiltered = ArrayList<PlaylistApp>(arrayListOf(PlaylistApp("filtered_favorites", "Filtered Favorites", arrayListOf())))
-
-    private var favoritePlaylistFull: PlaylistApp
-        get(){
-            return Repository.favoritePlaylistList[0]
-        }
-        set(value){
-            // here we do not want to access Repository
-        }
-
-    private var favoritePlaylistFiltered: PlaylistApp
-        get(){
-            return favoriteVideoPlaylistListFiltered[0]
-        }
-        set(value){
-            favoriteVideoPlaylistListFiltered[0] = value
-        }
-
+    private lateinit var filteredList: ArrayList<Movie>
+    private lateinit var fullList: ArrayList<Movie>
 
     private lateinit var mainView: FavoritesFragmentView
 
@@ -56,35 +41,65 @@ class FavoritesFragment: MainActivityBaseFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playlistListForAdapter = Repository.favoritePlaylistList
+        fullList = Repository.favoritePlaylist.movieList
+        playlistListAdapter = Repository.favoritePlaylistList
 
         setUpMainView()
     }
 
+    private fun createFilteredPlaylistList(movieList: ArrayList<Movie>): ArrayList<Playlist> {
+        val playlist = Playlist("favorites_filtered","Favorites",movieList)
+        return arrayListOf(playlist)
+    }
+
     private fun setUpMainView(){
         mainView.changePlaylistRecyclerAdapter(favoritePlaylistRecyclerAdapter)
+
         mainView.viewListener = object : FavoritesFragmentView.Listener{
             override fun onQueryChange(newText: String) {
-                favoritePlaylistFiltered.videoList = ArrayList()
-                if(newText.isEmpty()){
-                    playlistListForAdapter = Repository.favoritePlaylistList
-                }else{
-                    for(video in favoritePlaylistFull.videoList){
-                        if(video.title.contains(newText, true)){
-                            favoritePlaylistFiltered.videoList.add(video)
-                        }
-                    }
-                    playlistListForAdapter = favoriteVideoPlaylistListFiltered
-                }
+
+                filteredList = filter(newText)
+                playlistListAdapter = createFilteredPlaylistList(filteredList)
             }
+        }
+
+        if(fullList.isEmpty()){
+            mainView.changeNoFavoritesTextViewVisibility(true)
+        }else{
+            mainView.changeNoFavoritesTextViewVisibility(false)
         }
     }
 
     @Subscribe
     override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
-        playlistListForAdapter = Repository.favoritePlaylistList
+        //update fulllist
+        fullList = Repository.favoritePlaylist.movieList
+        //filter the list
+        filteredList = filter(mainView.searchViewQuery)
+        //set the playlist-list in the adapter by using the filteredList
+        playlistListAdapter = createFilteredPlaylistList(filteredList)
+
+        if (fullList.isEmpty()) {
+            mainView.changeNoFavoritesTextViewVisibility(true)
+        } else {
+            mainView.changeNoFavoritesTextViewVisibility(false)
+        }
     }
 
+
+    private fun filter(query: String): ArrayList<Movie>{
+        if(query.isEmpty()){
+            return fullList
+        }else{
+            val retList = ArrayList<Movie>()
+            for(movie in fullList){
+                if(movie.title.contains(query, true)){
+                    retList.add(movie)
+                }
+            }
+            return retList
+        }
+    }
 
     companion object{
 

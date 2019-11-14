@@ -1,9 +1,9 @@
-package de.tdsoftware.moviesharing.data.helper.video
+package de.tdsoftware.moviesharing.data.helper.movie
 
 
 import com.squareup.moshi.Json
 
-data class VideoResponse(
+data class MovieResponse(
     @Json(name = "etag")
     val etag: String,
     @Json(name = "items")

@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.ui.video
+package de.tdsoftware.moviesharing.ui.moviedetails
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -9,30 +9,29 @@ import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.VideoApp
-import de.tdsoftware.moviesharing.util.VideoUpdateEvent
+import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.util.FavoriteUpdateEvent
 import org.greenrobot.eventbus.EventBus
 
-class VideoDetailsActivity : BaseActivity(){
+class MovieDetailsActivity : BaseActivity(){
 
-    private val videoDetailsFragment by lazy{
-        VideoDetailsFragment.newInstance()
+    private val movieDetailsFragment by lazy{
+        MovieDetailsFragment.newInstance()
     }
-    private lateinit var mainView: VideoDetailsActivityView
-    private lateinit var video: VideoApp
+    private lateinit var mainView: MovieDetailsActivityView
+    private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainView =
-            layoutInflater.inflate(R.layout.activity_video_details, null,false) as VideoDetailsActivityView
+            layoutInflater.inflate(R.layout.activity_movie_details, null,false) as MovieDetailsActivityView
         setContentView(mainView)
 
-        video = intent.getSerializableExtra("video") as VideoApp
+        movie = intent.getSerializableExtra("movie") as Movie
         sharedPreferences = getSharedPreferences("sharedPref",Context.MODE_PRIVATE)
 
-        //show fragment
-        supportFragmentManager.beginTransaction().replace(R.id.activity_video_details_container, videoDetailsFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.activity_movie_details_container, movieDetailsFragment).commit()
 
         setUpMainView()
 
@@ -41,7 +40,7 @@ class VideoDetailsActivity : BaseActivity(){
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
-        if(video.isFavorite){
+        if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
             menu.findItem(R.id.favorite_item).icon.colorFilter =
                     PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
         }
@@ -53,7 +52,7 @@ class VideoDetailsActivity : BaseActivity(){
 
     private fun setUpActionBar(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = video.title
+        supportActionBar?.title = movie.title
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,17 +61,16 @@ class VideoDetailsActivity : BaseActivity(){
                 super.onBackPressed()
             }
             R.id.favorite_item -> {
-                //set colorfilter when no filter is there -> switching between blue and gray
-                if(video.isFavorite){
+                if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
                     item.icon.colorFilter = null
+                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
                 }else{
                     item.icon.colorFilter =
                             PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
+                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
-                video.isFavorite = !video.isFavorite
-                sharedPreferences.edit().putBoolean(video.id + "_favorite", video.isFavorite).apply()
-                val event = VideoUpdateEvent()
-                event.video = video
+                val event = FavoriteUpdateEvent()
+                event.movie = movie
                 EventBus.getDefault().post(event)
             }
         }

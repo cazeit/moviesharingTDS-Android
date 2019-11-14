@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.video.VideoDetailsActivity"
+        <activity android:name=".ui.moviedetails.MovieDetailsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="de.tdsoftware.moviesharing.ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan"

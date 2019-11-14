@@ -6,54 +6,42 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import de.tdsoftware.moviesharing.data.models.VideoApp
+import de.tdsoftware.moviesharing.data.models.Movie
 
-abstract class VideoBaseAdapter(private var videoList: ArrayList<VideoApp>): RecyclerView.Adapter<VideoBaseAdapter.ViewHolder>() {
+abstract class VideoBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<VideoBaseAdapter.ViewHolder>() {
 
     interface ItemClickListener{
-        fun onRecyclerItemClick(video: VideoApp)
+        fun onRecyclerItemClick(movie: Movie)
     }
 
     var listener: ItemClickListener? = null
 
     override fun getItemCount(): Int {
-        return videoList.size
+        return movieList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.videoTitle = videoList[position].title
-        //holder.videoThumbnail = videoList[position].imagePath.toUri()
+        holder.movieTitle = movieList[position].title
+        //holder.movieThumbnail = movieList[position].imagePath.toUri()
 
-        holder.videoThumbnailImageView.setOnClickListener{
-            listener?.onRecyclerItemClick(videoList[position])
+        holder.movieThumbnailImageView.setOnClickListener{
+            listener?.onRecyclerItemClick(movieList[position])
         }
     }
 
-    fun removeVideo(video: VideoApp){
-        videoList.remove(video)
-    }
-
-    fun addVideo(video: VideoApp){
-        videoList.add(video)
-    }
-
-    fun changeVideoList(newVideoList: ArrayList<VideoApp>){
-        videoList = newVideoList
-    }
-
     class ViewHolder(itemView: View,
-                     val videoThumbnailImageView: ImageView,
-                     private val videoTitleTextView: TextView): RecyclerView.ViewHolder(itemView){
-        var videoTitle: String?
+                     val movieThumbnailImageView: ImageView,
+                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView){
+        var movieTitle: String?
             get(){
-                return videoTitleTextView.text.toString()
+                return movieTitleTextView.text.toString()
             }
             set(value){
-                videoTitleTextView.text = value
+                movieTitleTextView.text = value
             }
-        var videoThumbnail: Uri?
+        var movieThumbnail: Uri?
             set(value){
-                videoThumbnailImageView.setImageURI(value)
+                movieThumbnailImageView.setImageURI(value)
             }
             get(){
                 /** i cannot get uri of an imageview, but will never need the getter, is it okay to implement a wrong getter then?**/

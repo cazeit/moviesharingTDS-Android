@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.data.helper.video
+package de.tdsoftware.moviesharing.data.helper.movie
 
 
 import com.squareup.moshi.Json

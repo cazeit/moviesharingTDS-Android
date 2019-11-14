@@ -7,10 +7,10 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 class PlaylistGridAdapter: PlaylistBaseAdapter() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.videoRecyclerView.layoutManager =
-                LinearLayoutManager(holder.videoRecyclerView.context, RecyclerView.HORIZONTAL, false)
-        holder.videoRecyclerAdapter =
-            VideoGridAdapter(playlistList[position].videoList)
+        holder.movieRecyclerView.layoutManager =
+                LinearLayoutManager(holder.movieRecyclerView.context, RecyclerView.HORIZONTAL, false)
+        holder.movieRecyclerAdapter =
+            VideoGridAdapter(playlistList[position].movieList)
         super.onBindViewHolder(holder, position)
     }
 

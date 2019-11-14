@@ -1,10 +1,10 @@
-package de.tdsoftware.moviesharing.ui.video
+package de.tdsoftware.moviesharing.ui.moviedetails
 
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 
-class VideoDetailsActivityView(context: Context, attrs: AttributeSet?) :
+class MovieDetailsActivityView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
     // region Public Types
 

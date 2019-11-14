@@ -6,17 +6,17 @@ import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
 import de.tdsoftware.moviesharing.util.Repository
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-//TODO: rename
 abstract class MoviesBaseFragment: MainActivityBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistListForAdapter = Repository.playlistList
+        playlistListAdapter = Repository.playlistList
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
-        playlistListForAdapter = Repository.playlistList
+        playlistListAdapter = Repository.playlistList
     }
 }

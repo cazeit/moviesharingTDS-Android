@@ -2,14 +2,15 @@ package de.tdsoftware.moviesharing.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import de.tdsoftware.moviesharing.data.models.PlaylistApp
-import de.tdsoftware.moviesharing.data.models.VideoApp
+import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.BaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
-import de.tdsoftware.moviesharing.ui.video.VideoDetailsActivity
+import de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivity
 import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class MainActivityBaseFragment: BaseFragment() {
 
@@ -17,7 +18,7 @@ abstract class MainActivityBaseFragment: BaseFragment() {
 
     /** does this make sense or is a initFunction in here (then called from child after list was set) better?**/
 
-    protected var playlistListForAdapter :ArrayList<PlaylistApp>
+    protected var playlistListAdapter :ArrayList<Playlist>
         set(value){
             playlistAdapter.playlistList = value
             playlistAdapter.notifyDataSetChanged()
@@ -41,15 +42,15 @@ abstract class MainActivityBaseFragment: BaseFragment() {
 
     private fun initializeRecyclerItemOnClickListener(){
         playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener{
-            override fun onMovieSelected(video: VideoApp) {
-                val intent = Intent(context, VideoDetailsActivity::class.java)
-                intent.putExtra("video", video)
+            override fun onMovieSelected(movie: Movie) {
+                val intent = Intent(context, MovieDetailsActivity::class.java)
+                intent.putExtra("movie", movie)
                 startActivity(intent)
             }
         }
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     abstract fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent)
 
 

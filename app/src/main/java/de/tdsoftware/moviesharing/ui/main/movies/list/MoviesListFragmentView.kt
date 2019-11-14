@@ -12,7 +12,6 @@ class MoviesListFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesBaseFragmentView(context, attrs) {
     // region Public Types
     interface Listener {
-        // TODO: add interactions
     }
 
     // endregion

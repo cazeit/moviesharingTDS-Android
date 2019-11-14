@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/spacing_normal"
     android:layout_marginStart="@dimen/spacing_normal">
     <androidx.cardview.widget.CardView
-        android:id="@+id/recycler_item_videos_grid_card"
+        android:id="@+id/recycler_item_movies_grid_card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_movies_grid_recycler_picture_height"
         android:elevation="@dimen/elevation_normal"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
         <ImageView
-            android:id="@+id/recycler_item_videos_grid_card_image"
+            android:id="@+id/recycler_item_movies_grid_card_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/sample_cover"
@@ -25,10 +25,10 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
     </androidx.cardview.widget.CardView>
     <TextView
-        android:id="@+id/recycler_item_videos_grid_title"
+        android:id="@+id/recycler_item_movies_grid_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/recycler_item_videos_grid_card"
+        app:layout_constraintTop_toBottomOf="@id/recycler_item_movies_grid_card"
         android:textSize="@dimen/text_size_small"
         android:textAlignment="center"
         android:text="This is a sample title!"

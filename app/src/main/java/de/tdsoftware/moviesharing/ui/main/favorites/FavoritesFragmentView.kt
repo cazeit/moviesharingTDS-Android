@@ -2,6 +2,8 @@ package de.tdsoftware.moviesharing.ui.main.favorites
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,18 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     // region Properties
 
     var viewListener: Listener? = null
-    private lateinit var favoriteSearchView: SearchView
+    private lateinit var searchView: SearchView
+    private lateinit var hintTextView: TextView
+
+    var searchViewQuery: String
+        get(){
+            return searchView.query.toString()
+        }
+        set(value){
+            // TODO: what if i cannot set a value, but also never need to do so?
+            searchView.queryHint = value
+        }
+
     // endregion
 
     // region View Lifecycle
@@ -42,11 +55,12 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
 
     private fun bindViews() {
         playlistRecyclerView = findViewById(R.id.fragment_favorites_recycler_view_favorite_playlist)
-        favoriteSearchView = findViewById(R.id.fragment_favorites_search_view)
+        hintTextView = findViewById(R.id.fragment_favorites_no_favorites_text_view)
+        searchView = findViewById(R.id.fragment_favorites_search_view)
     }
 
     private fun setupControls() {
-        favoriteSearchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -64,6 +78,14 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     private fun buildRecyclerView() {
         playlistRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    }
+
+    fun changeNoFavoritesTextViewVisibility(visible: Boolean){
+        if(visible){
+            hintTextView.visibility = View.VISIBLE
+        }else{
+            hintTextView.visibility = View.GONE
+        }
     }
 
     // endregion 
