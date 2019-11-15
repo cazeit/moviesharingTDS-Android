@@ -10,6 +10,20 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
 class MoviesListFragment : MoviesBaseFragment() {
 
+    // region public types
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance(): MoviesListFragment {
+            return MoviesListFragment()
+        }
+    }
+
+    // endregion
+
+    // region properties
+
     private lateinit var mainView: MoviesListFragmentView
 
     private val playlistRecyclerAdapter: PlaylistListAdapter
@@ -17,12 +31,17 @@ class MoviesListFragment : MoviesBaseFragment() {
             return playlistAdapter as PlaylistListAdapter
         }
 
+    // endregion
 
+    // region public API
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistListAdapter()
     }
 
+    // endregion
 
+
+    // region lifecycle callbacks
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mainView = inflater.inflate(R.layout.fragment_movies_list,container,false) as MoviesListFragmentView
         return mainView
@@ -33,18 +52,12 @@ class MoviesListFragment : MoviesBaseFragment() {
 
         setUpMainView()
     }
+    // endregion
 
-
+    // region private API
     private fun setUpMainView(){
         mainView.changePlaylistRecyclerAdapter(playlistRecyclerAdapter)
     }
+    // endregion
 
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(): MoviesListFragment {
-            return MoviesListFragment()
-        }
-    }
 }

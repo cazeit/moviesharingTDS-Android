@@ -11,19 +11,17 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesBaseFragmentView(context, attrs) {
 
     // region Public Types
-    interface Listener {
-    }
 
     // endregion
 
     // region Properties
 
-    var viewListener: Listener? = null
     // endregion
 
     // region Constructors
 
     // endregion
+
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()

@@ -8,15 +8,10 @@ class MovieDetailsActivityView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
     // region Public Types
 
-    interface Listener {
-    }
 
     // endregion
 
     // region Properties
-
-    var viewListener: Listener? = null
-
 
     // endregion
 

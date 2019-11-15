@@ -8,6 +8,7 @@ import de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragment
 
 class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
+    //properties
     private val moviesGridFragment: MoviesGridFragment by lazy{
         MoviesGridFragment.newInstance()
     }
@@ -15,6 +16,7 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAda
     private val moviesListFragment: MoviesListFragment by lazy{
         MoviesListFragment.newInstance()
     }
+    //endregion
 
     override fun getItem(position: Int): Fragment {
         when(position){

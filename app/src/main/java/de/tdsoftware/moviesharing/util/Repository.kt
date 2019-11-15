@@ -27,9 +27,9 @@ object Repository {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFavoriteUpdateEvent(favoriteUpdateEvent: FavoriteUpdateEvent){
         val movie = favoriteUpdateEvent.movie
-        for(currentVideo in favoritePlaylist.movieList){
-            if(currentVideo.id == movie.id){
-                favoritePlaylist.movieList.remove(currentVideo)
+        for(currentMovie in favoritePlaylist.movieList){
+            if(currentMovie.id == movie.id){
+                favoritePlaylist.movieList.remove(currentMovie)
                 EventBus.getDefault().post(RecyclerUpdateEvent())
                 return
             }

@@ -13,14 +13,10 @@ class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region Public Types
 
-    interface Listener {
-    }
-
     // endregion
 
     // region Properties
 
-    var viewListener: Listener? = null
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
 
@@ -29,6 +25,15 @@ class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
     // region Constructors
 
     // endregion
+
+    // region public API
+
+    fun changeViewPagerAdapter(adapter: MoviesViewPagerAdapter){
+        viewPager.adapter = adapter
+        tabLayout.setupWithViewPager(viewPager)
+    }
+
+    //endregion
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -53,9 +58,5 @@ class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
 
     }
 
-    fun changeViewPagerAdapter(adapter: MoviesViewPagerAdapter){
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
-    }
     // endregion 
 }

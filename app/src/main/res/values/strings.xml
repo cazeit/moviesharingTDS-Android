@@ -3,5 +3,6 @@
     <string name="loading_message">Loading Movies</string>
     <string name="title_movies">Movies</string>
     <string name="title_favorites">Favorites</string>
-    <string name="no_favorites_text_hint">You have no favorites yet!</string>
+    <string name="empty_list_text_hint">You have no favorites yet!</string>
+    <string name="empty_search_text_hint">No matching movies found!</string>
 </resources>

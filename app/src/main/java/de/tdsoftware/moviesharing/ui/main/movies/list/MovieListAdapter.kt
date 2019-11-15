@@ -6,9 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.ui.main.adapter.VideoBaseAdapter
+import de.tdsoftware.moviesharing.ui.main.adapter.MovieBaseAdapter
 
-class VideoListAdapter(movieList: ArrayList<Movie>): VideoBaseAdapter(movieList) {
+class MovieListAdapter(movieList: ArrayList<Movie>): MovieBaseAdapter(movieList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =

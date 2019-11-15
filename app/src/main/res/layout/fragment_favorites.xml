@@ -15,16 +15,23 @@
         app:iconifiedByDefault="false"
         android:background="@drawable/fragment_favorites_search_view_rectangle"
         app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/fragment_favorites_no_favorites_text_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_favorites_empty_state_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_favorites_text_hint"
+        android:animateLayoutChanges="true"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent">
+        <TextView
+            android:id="@+id/fragment_favorites_empty_state_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_favorites_recycler_view_favorite_playlist"
         android:layout_width="match_parent"

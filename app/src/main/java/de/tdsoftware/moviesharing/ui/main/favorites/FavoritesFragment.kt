@@ -15,6 +15,16 @@ import org.greenrobot.eventbus.Subscribe
 
 class FavoritesFragment: MainActivityBaseFragment(){
 
+    // region public types
+    companion object{
+
+        fun newInstance(): FavoritesFragment{
+            return FavoritesFragment()
+        }
+    }
+    // enregion
+
+    //region properties
     private val favoritePlaylistRecyclerAdapter: PlaylistFavoriteAdapter
         get(){
             return playlistAdapter as PlaylistFavoriteAdapter
@@ -24,7 +34,9 @@ class FavoritesFragment: MainActivityBaseFragment(){
     private lateinit var fullList: ArrayList<Movie>
 
     private lateinit var mainView: FavoritesFragmentView
+    // endregion
 
+    // region lifecycle callbacks
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistFavoriteAdapter()
     }
@@ -47,29 +59,6 @@ class FavoritesFragment: MainActivityBaseFragment(){
         setUpMainView()
     }
 
-    private fun createFilteredPlaylistList(movieList: ArrayList<Movie>): ArrayList<Playlist> {
-        val playlist = Playlist("favorites_filtered","Favorites",movieList)
-        return arrayListOf(playlist)
-    }
-
-    private fun setUpMainView(){
-        mainView.changePlaylistRecyclerAdapter(favoritePlaylistRecyclerAdapter)
-
-        mainView.viewListener = object : FavoritesFragmentView.Listener{
-            override fun onQueryChange(newText: String) {
-
-                filteredList = filter(newText)
-                playlistListAdapter = createFilteredPlaylistList(filteredList)
-            }
-        }
-
-        if(fullList.isEmpty()){
-            mainView.changeNoFavoritesTextViewVisibility(true)
-        }else{
-            mainView.changeNoFavoritesTextViewVisibility(false)
-        }
-    }
-
     @Subscribe
     override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
         //update fulllist
@@ -80,12 +69,44 @@ class FavoritesFragment: MainActivityBaseFragment(){
         playlistListAdapter = createFilteredPlaylistList(filteredList)
 
         if (fullList.isEmpty()) {
-            mainView.changeNoFavoritesTextViewVisibility(true)
+            mainView.changeEmptyStateTextVisibility(true)
         } else {
-            mainView.changeNoFavoritesTextViewVisibility(false)
+            mainView.changeEmptyStateTextVisibility(false)
         }
     }
+    // endregion
 
+    // private API
+
+    private fun createFilteredPlaylistList(movieList: ArrayList<Movie>): ArrayList<Playlist> {
+        val playlist = Playlist("favorites_filtered","Favorites", movieList)
+        return arrayListOf(playlist)
+    }
+
+    private fun setUpMainView(){
+        mainView.changePlaylistRecyclerAdapter(favoritePlaylistRecyclerAdapter)
+
+        mainView.viewListener = object : FavoritesFragmentView.Listener{
+            override fun onQueryChange(newText: String) {
+
+                filteredList = filter(newText)
+                if(filteredList.isEmpty()){
+                    mainView.hintText = resources.getString(R.string.empty_search_text_hint)
+                    mainView.changeEmptyStateTextVisibility(true)
+                }else{
+                    mainView.changeEmptyStateTextVisibility(false)
+                }
+                playlistListAdapter = createFilteredPlaylistList(filteredList)
+            }
+        }
+
+        if(fullList.isEmpty()){
+            mainView.hintText = resources.getString(R.string.empty_list_text_hint)
+            mainView.changeEmptyStateTextVisibility(true)
+        }else{
+            mainView.changeEmptyStateTextVisibility(false)
+        }
+    }
 
     private fun filter(query: String): ArrayList<Movie>{
         if(query.isEmpty()){
@@ -100,11 +121,5 @@ class FavoritesFragment: MainActivityBaseFragment(){
             return retList
         }
     }
-
-    companion object{
-
-        fun newInstance(): FavoritesFragment{
-            return FavoritesFragment()
-        }
-    }
+    // endregion
 }

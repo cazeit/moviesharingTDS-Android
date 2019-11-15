@@ -10,9 +10,24 @@ import de.tdsoftware.moviesharing.ui.main.adapter.MoviesViewPagerAdapter
 
 class MoviesFragment : BaseFragment() {
 
+    // region public types
+    companion object {
+        @JvmStatic
+        fun newInstance(): MoviesFragment {
+            return MoviesFragment()
+        }
+    }
+    // endregion
+
+    // region properties
+
     private lateinit var mainView: MoviesFragmentView
 
     private lateinit var moviesViewPagerAdapter: MoviesViewPagerAdapter
+
+    // endregion
+
+    // region lifecycle callbacks
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mainView = inflater.inflate(R.layout.fragment_movies,container,false) as MoviesFragmentView
@@ -24,17 +39,15 @@ class MoviesFragment : BaseFragment() {
         setUpMainView()
     }
 
+    // endregion
+
+    // region private API
+
     private fun setUpMainView(){
         moviesViewPagerAdapter =
             MoviesViewPagerAdapter(childFragmentManager)
         mainView.changeViewPagerAdapter(moviesViewPagerAdapter)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): MoviesFragment {
-            return MoviesFragment()
-        }
-    }
-
+    // endregion
 }

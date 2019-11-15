@@ -12,7 +12,32 @@ import de.tdsoftware.moviesharing.data.models.Movie
 abstract class PlaylistBaseAdapter:
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
 
-    var playlistList: ArrayList<Playlist> = ArrayList<Playlist>()
+    // properties
+
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+
+        val playlistTitleTextView =
+            itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
+
+        val movieRecyclerView: RecyclerView =
+            itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_movies)
+
+        var playlistTitle: String?
+            get(){
+                return playlistTitleTextView.text.toString()
+            }
+            set(value){
+                playlistTitleTextView.text = value
+            }
+
+        var movieRecyclerAdapter: MovieBaseAdapter?
+            get(){
+                return movieRecyclerView.adapter as MovieBaseAdapter?
+            }
+            set(value){
+                movieRecyclerView.adapter = value
+            }
+    }
 
     interface Listener {
         fun onMovieSelected(movie: Movie)
@@ -20,10 +45,15 @@ abstract class PlaylistBaseAdapter:
 
     var clickListener: Listener? = null
 
+    var playlistList: ArrayList<Playlist> = ArrayList<Playlist>()
+
+    // endregion
+
+    //region lifecycle callbacks
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.movieRecyclerAdapter?.listener = object: VideoBaseAdapter.ItemClickListener{
+        holder.movieRecyclerAdapter?.listener = object: MovieBaseAdapter.ItemClickListener{
             override fun onRecyclerItemClick(movie: Movie) {
                 clickListener?.onMovieSelected(movie)
             }
@@ -41,28 +71,5 @@ abstract class PlaylistBaseAdapter:
         return playlistList.size
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
-        val playlistTitleTextView =
-                itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
-
-        val movieRecyclerView: RecyclerView =
-                itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_movies)
-
-        var playlistTitle: String?
-            get(){
-                return playlistTitleTextView.text.toString()
-            }
-            set(value){
-                playlistTitleTextView.text = value
-            }
-
-        var movieRecyclerAdapter: VideoBaseAdapter?
-            get(){
-                return movieRecyclerView.adapter as VideoBaseAdapter?
-            }
-            set(value){
-                movieRecyclerView.adapter = value
-            }
-    }
+    // endregion
 }

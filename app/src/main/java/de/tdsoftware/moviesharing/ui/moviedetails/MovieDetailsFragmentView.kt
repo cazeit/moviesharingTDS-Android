@@ -24,17 +24,6 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     var viewListener: MovieDetailsFragmentView.Listener? = null
 
-
-    private lateinit var bannerImageView: ImageView
-    private lateinit var coverImageView: ImageView
-
-    private lateinit var titleTextView: TextView
-    private lateinit var secondaryTextView: TextView
-    private lateinit var descriptionTextView: TextView
-
-    private lateinit var ratingBar: RatingBar
-
-
     var title: String?
         get(){
             return titleTextView.text.toString()
@@ -67,6 +56,16 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
             ratingBar.rating = value
         }
 
+
+    private lateinit var bannerImageView: ImageView
+    private lateinit var coverImageView: ImageView
+
+    private lateinit var titleTextView: TextView
+    private lateinit var secondaryTextView: TextView
+    private lateinit var descriptionTextView: TextView
+
+    private lateinit var ratingBar: RatingBar
+
     // endregion
 
     // region View Lifecycle
@@ -93,8 +92,6 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         secondaryTextView = findViewById(R.id.fragment_movie_details_secondary_text_view)
     }
 
-    //suppresses "performClick"-hint
-    @SuppressLint("ClickableViewAccessibility")
     private fun setupControls() {
         ratingBar.setOnRatingBarChangeListener{ _, value: Float, fromUser: Boolean ->
             if(fromUser){

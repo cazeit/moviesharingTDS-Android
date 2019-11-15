@@ -10,7 +10,7 @@ class PlaylistGridAdapter: PlaylistBaseAdapter() {
         holder.movieRecyclerView.layoutManager =
                 LinearLayoutManager(holder.movieRecyclerView.context, RecyclerView.HORIZONTAL, false)
         holder.movieRecyclerAdapter =
-            VideoGridAdapter(playlistList[position].movieList)
+            MovieGridAdapter(playlistList[position].movieList)
         super.onBindViewHolder(holder, position)
     }
 

@@ -14,9 +14,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 abstract class MainActivityBaseFragment: BaseFragment() {
 
+    // region properties
     protected lateinit var playlistAdapter: PlaylistBaseAdapter
-
-    /** does this make sense or is a initFunction in here (then called from child after list was set) better?**/
 
     protected var playlistListAdapter :ArrayList<Playlist>
         set(value){
@@ -26,6 +25,19 @@ abstract class MainActivityBaseFragment: BaseFragment() {
         get(){
             return playlistAdapter.playlistList
         }
+
+    // endregion
+
+    // region public API
+
+    abstract fun createPlayListAdapter(): PlaylistBaseAdapter
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    abstract fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent)
+
+    // endregion
+
+    // region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +52,10 @@ abstract class MainActivityBaseFragment: BaseFragment() {
         EventBus.getDefault().unregister(this)
     }
 
+    // endregion
+
+    // region private API
+
     private fun initializeRecyclerItemOnClickListener(){
         playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener{
             override fun onMovieSelected(movie: Movie) {
@@ -50,10 +66,6 @@ abstract class MainActivityBaseFragment: BaseFragment() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    abstract fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent)
-
-
-    abstract fun createPlayListAdapter(): PlaylistBaseAdapter
+    // endregion
 
 }

@@ -15,12 +15,17 @@ import org.greenrobot.eventbus.EventBus
 
 class MovieDetailsActivity : BaseActivity(){
 
+    // region properties
     private val movieDetailsFragment by lazy{
         MovieDetailsFragment.newInstance()
     }
     private lateinit var mainView: MovieDetailsActivityView
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
+
+    // endregipon
+
+    // region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +52,6 @@ class MovieDetailsActivity : BaseActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun setUpMainView(){
-    }
-
-    private fun setUpActionBar(){
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = movie.title
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
@@ -66,7 +63,7 @@ class MovieDetailsActivity : BaseActivity(){
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
                 }else{
                     item.icon.colorFilter =
-                            PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
+                        PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
                 val event = FavoriteUpdateEvent()
@@ -76,4 +73,18 @@ class MovieDetailsActivity : BaseActivity(){
         }
         return super.onOptionsItemSelected(item)
     }
+
+
+    // endregion
+
+    // region private API
+
+    private fun setUpMainView(){
+    }
+
+    private fun setUpActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = movie.title
+    }
+    // endregion
 }

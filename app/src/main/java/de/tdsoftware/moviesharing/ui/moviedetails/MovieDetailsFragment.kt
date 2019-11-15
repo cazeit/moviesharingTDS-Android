@@ -14,9 +14,26 @@ import de.tdsoftware.moviesharing.ui.BaseFragment
 
 class MovieDetailsFragment: BaseFragment() {
 
+    // region public types
+
+    companion object{
+        @JvmStatic
+        fun newInstance(): MovieDetailsFragment{
+            return MovieDetailsFragment()
+        }
+    }
+
+    // endregion
+
+    // region properties
+
     private lateinit var mainView: MovieDetailsFragmentView
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
+
+    //endregion
+
+    // region lifecycle callbacks
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,6 +57,10 @@ class MovieDetailsFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    // endregion
+
+    // region private API
+
     private fun setUpMainView(){
         mainView.viewListener = object: MovieDetailsFragmentView.Listener{
             override fun onCoverImageClick() {
@@ -58,10 +79,6 @@ class MovieDetailsFragment: BaseFragment() {
         mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating",0f)
     }
 
-    companion object{
-        @JvmStatic
-        fun newInstance(): MovieDetailsFragment{
-            return MovieDetailsFragment()
-        }
-    }
+    // endregion
+
 }

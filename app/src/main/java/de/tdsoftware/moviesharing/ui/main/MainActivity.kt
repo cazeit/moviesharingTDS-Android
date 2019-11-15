@@ -9,6 +9,11 @@ import de.tdsoftware.moviesharing.ui.main.movies.MoviesFragment
 
 class MainActivity : BaseActivity() {
 
+    // region properties
+
+    private lateinit var mainView: MainActivityView
+    private var currentFragment: BaseFragment? = null
+
     private val moviesFragment by lazy{
         MoviesFragment.newInstance()
     }
@@ -17,11 +22,9 @@ class MainActivity : BaseActivity() {
         FavoritesFragment.newInstance()
     }
 
-    private lateinit var mainView: MainActivityView
+    // endregion
 
-    private var currentFragment: BaseFragment? = null
-
-
+    //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainView = layoutInflater.inflate(R.layout.activity_main, null, false) as MainActivityView
@@ -30,7 +33,9 @@ class MainActivity : BaseActivity() {
 
         showFragment(moviesFragment)
     }
+    //endregion
 
+    // region private API
     private fun setUpMainView(){
         mainView.viewListener = object: MainActivityView.Listener{
 
@@ -48,9 +53,9 @@ class MainActivity : BaseActivity() {
         if(currentFragment == fragment){
             return
         }
-
         currentFragment = fragment
         supportFragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment).commit()
-
     }
+
+    // endregion
 }

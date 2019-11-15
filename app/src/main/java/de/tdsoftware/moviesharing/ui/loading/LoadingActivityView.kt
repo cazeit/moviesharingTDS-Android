@@ -26,6 +26,11 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     // region Constructors
 
     // endregion
+
+    // region public API
+
+    // enregion
+
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()

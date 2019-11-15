@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/recycler_item_movies_list_card"
         android:textSize="@dimen/text_size_small"
-        android:text="This is a sample title!"
         android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_normal"
         android:textAlignment="center"

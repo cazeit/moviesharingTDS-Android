@@ -10,7 +10,7 @@ open class PlaylistListAdapter: PlaylistBaseAdapter() {
         holder.movieRecyclerView.layoutManager =
                 LinearLayoutManager(holder.movieRecyclerView.context, RecyclerView.VERTICAL, false)
         holder.movieRecyclerView.adapter =
-            VideoListAdapter(playlistList[position].movieList)
+            MovieListAdapter(playlistList[position].movieList)
         super.onBindViewHolder(holder, position)
     }
 

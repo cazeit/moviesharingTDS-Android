@@ -20,8 +20,9 @@ class LoadingActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO: remove after implementation of FavoritesInit
+        //TODO: remove after implementation of FavoritesInit (delete shared prefs atm, as favorite list is not initialized
         getSharedPreferences("sharedPref", Context.MODE_PRIVATE).edit().clear().apply()
+
         mainView = layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
         setContentView(mainView)
 

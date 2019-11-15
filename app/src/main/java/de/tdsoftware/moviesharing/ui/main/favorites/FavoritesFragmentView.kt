@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
@@ -12,6 +13,7 @@ import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragmentView
 
 class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     MoviesBaseFragmentView(context, attrs) {
+
     // region Public Types
 
     interface Listener {
@@ -23,17 +25,38 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     // region Properties
 
     var viewListener: Listener? = null
-    private lateinit var searchView: SearchView
-    private lateinit var hintTextView: TextView
 
     var searchViewQuery: String
         get(){
             return searchView.query.toString()
         }
         set(value){
-            // TODO: what if i cannot set a value, but also never need to do so?
-            searchView.queryHint = value
+            searchView.setQuery(value, true)
         }
+
+    var hintText: String
+        get(){
+            return hintTextView.text.toString()
+        }
+        set(value){
+            hintTextView.text = value
+        }
+
+    private lateinit var searchView: SearchView
+    private lateinit var hintTextView: TextView
+    private lateinit var hintLayout: ConstraintLayout
+
+    // endregion
+
+    // region public API
+
+    fun changeEmptyStateTextVisibility(isVisible: Boolean){
+        if(isVisible){
+            hintLayout.visibility = View.VISIBLE
+        }else{
+            hintLayout.visibility = View.INVISIBLE
+        }
+    }
 
     // endregion
 
@@ -55,7 +78,8 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
 
     private fun bindViews() {
         playlistRecyclerView = findViewById(R.id.fragment_favorites_recycler_view_favorite_playlist)
-        hintTextView = findViewById(R.id.fragment_favorites_no_favorites_text_view)
+        hintLayout = findViewById(R.id.fragment_favorites_empty_state_layout)
+        hintTextView = findViewById(R.id.fragment_favorites_empty_state_text_view)
         searchView = findViewById(R.id.fragment_favorites_search_view)
     }
 
@@ -78,14 +102,6 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     private fun buildRecyclerView() {
         playlistRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    }
-
-    fun changeNoFavoritesTextViewVisibility(visible: Boolean){
-        if(visible){
-            hintTextView.visibility = View.VISIBLE
-        }else{
-            hintTextView.visibility = View.GONE
-        }
     }
 
     // endregion 
