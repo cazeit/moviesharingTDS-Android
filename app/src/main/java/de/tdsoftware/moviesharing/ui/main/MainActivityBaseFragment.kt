@@ -12,12 +12,21 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+/**
+ * BaseFragment for all Fragments in MainActivity
+ */
 abstract class MainActivityBaseFragment: BaseFragment() {
 
-    // region properties
+    // region properties´
+    /**
+     * Adapter for RecyclerView that each Fragment has
+     */
     protected lateinit var playlistAdapter: PlaylistBaseAdapter
 
-    protected var playlistListAdapter :ArrayList<Playlist>
+    /**
+     * List inside RecyclerAdapter above, by setting, the RecyclerView updates
+     */
+    protected var playlistListInAdapter :ArrayList<Playlist>
         set(value){
             playlistAdapter.playlistList = value
             playlistAdapter.notifyDataSetChanged()
@@ -39,6 +48,9 @@ abstract class MainActivityBaseFragment: BaseFragment() {
 
     // region lifecycle callbacks
 
+    /**
+     * create a playlist-adapter (empty list) and initialize the clickListener (@see PlaylistBaseAdapter)
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         playlistAdapter = createPlayListAdapter()

@@ -8,6 +8,9 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.ui.main.movies.MoviesBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
+/**
+ * Fragment that is part of MoviesFragment's ViewPager, handling the recyclerView in it (list-view of movies)
+ */
 class MoviesListFragment : MoviesBaseFragment() {
 
     // region public types
@@ -55,6 +58,9 @@ class MoviesListFragment : MoviesBaseFragment() {
     // endregion
 
     // region private API
+    /**
+     * the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
+     */
     private fun setUpMainView(){
         mainView.changePlaylistRecyclerAdapter(playlistRecyclerAdapter)
     }

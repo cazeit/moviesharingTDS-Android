@@ -1,4 +1,3 @@
 package de.tdsoftware.moviesharing.util
 
-class RecyclerUpdateEvent {
-}
+class RecyclerUpdateEvent

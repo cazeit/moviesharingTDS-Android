@@ -12,6 +12,10 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.BaseFragment
 
+/**
+ * Fragment inside MovieDetailsActivity that displays all the important information regarding to a movie
+ * as well as handles ratingChange and coverOnClick
+ */
 class MovieDetailsFragment: BaseFragment() {
 
     // region public types
@@ -61,6 +65,9 @@ class MovieDetailsFragment: BaseFragment() {
 
     // region private API
 
+    /**
+     * fill the view with data from video and handle interactions with user
+     */
     private fun setUpMainView(){
         mainView.viewListener = object: MovieDetailsFragmentView.Listener{
             override fun onCoverImageClick() {

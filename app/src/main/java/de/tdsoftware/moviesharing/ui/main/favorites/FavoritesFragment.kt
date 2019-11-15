@@ -13,6 +13,12 @@ import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
 import de.tdsoftware.moviesharing.util.Repository
 import org.greenrobot.eventbus.Subscribe
 
+/**
+ * Favorite-Fragment, has a SearchView and a list of all favorites
+ *
+ * Important to note: The structure of a recyclerView containing other recyclerViews inside each item stays,
+ * as we pass a list containing only one runtime-generated playlist-object, that contains a list of all favorites
+ */
 class FavoritesFragment: MainActivityBaseFragment(){
 
     // region public types
@@ -50,11 +56,14 @@ class FavoritesFragment: MainActivityBaseFragment(){
         return mainView
     }
 
+    /**
+     * here we initialize the fullList(list of all favorites) and initialize the playlistList inside the adapter (list of 1 playlist with favorites)
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         fullList = Repository.favoritePlaylist.movieList
-        playlistListAdapter = Repository.favoritePlaylistList
+        playlistListInAdapter = Repository.favoritePlaylistList
 
         setUpMainView()
     }
@@ -66,12 +75,10 @@ class FavoritesFragment: MainActivityBaseFragment(){
         //filter the list
         filteredList = filter(mainView.searchViewQuery)
         //set the playlist-list in the adapter by using the filteredList
-        playlistListAdapter = createFilteredPlaylistList(filteredList)
-
-        if (fullList.isEmpty()) {
-            mainView.changeEmptyStateTextVisibility(true)
-        } else {
-            mainView.changeEmptyStateTextVisibility(false)
+        playlistListInAdapter = createFilteredPlaylistList(filteredList)
+        //check if text needs to be displayed
+        if(!checkEmptyState()){
+            checkFilteredEmptyState()
         }
     }
     // endregion
@@ -83,31 +90,28 @@ class FavoritesFragment: MainActivityBaseFragment(){
         return arrayListOf(playlist)
     }
 
+    /**
+     *  the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
+
+     */
     private fun setUpMainView(){
         mainView.changePlaylistRecyclerAdapter(favoritePlaylistRecyclerAdapter)
 
         mainView.viewListener = object : FavoritesFragmentView.Listener{
             override fun onQueryChange(newText: String) {
-
-                filteredList = filter(newText)
-                if(filteredList.isEmpty()){
-                    mainView.hintText = resources.getString(R.string.empty_search_text_hint)
-                    mainView.changeEmptyStateTextVisibility(true)
-                }else{
-                    mainView.changeEmptyStateTextVisibility(false)
+                if(!checkEmptyState()) {
+                    filteredList = filter(newText)
+                    playlistListInAdapter = createFilteredPlaylistList(filteredList)
+                    checkFilteredEmptyState()
                 }
-                playlistListAdapter = createFilteredPlaylistList(filteredList)
             }
         }
-
-        if(fullList.isEmpty()){
-            mainView.hintText = resources.getString(R.string.empty_list_text_hint)
-            mainView.changeEmptyStateTextVisibility(true)
-        }else{
-            mainView.changeEmptyStateTextVisibility(false)
-        }
+        checkEmptyState()
     }
 
+    /**
+     * filter method that iterates through full list and returns all movies, the title of which contains query
+     */
     private fun filter(query: String): ArrayList<Movie>{
         if(query.isEmpty()){
             return fullList
@@ -121,5 +125,32 @@ class FavoritesFragment: MainActivityBaseFragment(){
             return retList
         }
     }
+
+    /**
+     * check if filteredList is empty and if so display a hint
+     */
+    private fun checkFilteredEmptyState(){
+        if (filteredList.isEmpty()) {
+            mainView.hintText = resources.getString(R.string.empty_search_text_hint)
+            mainView.changeEmptyStateTextVisibility(true)
+        } else {
+            mainView.changeEmptyStateTextVisibility(false)
+        }
+    }
+
+    /**
+     * check if fullList is empty and if so display a hint
+     */
+    private fun checkEmptyState(): Boolean{
+        if(fullList.isEmpty()){
+            mainView.hintText = resources.getString(R.string.empty_list_text_hint)
+            mainView.changeEmptyStateTextVisibility(true)
+            return true
+        }else{
+            mainView.changeEmptyStateTextVisibility(false)
+            return false
+        }
+    }
+
     // endregion
 }

@@ -13,6 +13,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * LoadingActivity represents the starting activity of the application, basically making sure that data
+ * is being obtained and if so redirects to MainActivity
+ */
 class LoadingActivity : BaseActivity(){
 
     private lateinit var mainView: LoadingActivityView

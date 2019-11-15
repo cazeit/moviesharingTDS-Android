@@ -9,6 +9,9 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.data.models.Movie
 
+/**
+ * BaseAdapter for RecyclerView, where each one item represents one playlist
+ */
 abstract class PlaylistBaseAdapter:
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
 
@@ -16,7 +19,7 @@ abstract class PlaylistBaseAdapter:
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        val playlistTitleTextView =
+        val playlistTitleTextView: TextView =
             itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
 
         val movieRecyclerView: RecyclerView =
@@ -39,13 +42,16 @@ abstract class PlaylistBaseAdapter:
             }
     }
 
+    /**
+     * Listener defined to handle onClick inside (@see VideoBaseAdapter)
+     */
     interface Listener {
         fun onMovieSelected(movie: Movie)
     }
 
     var clickListener: Listener? = null
 
-    var playlistList: ArrayList<Playlist> = ArrayList<Playlist>()
+    var playlistList: ArrayList<Playlist> = ArrayList()
 
     // endregion
 

@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import de.tdsoftware.moviesharing.ui.main.movies.grid.MoviesGridFragment
 import de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragment
 
+/**
+ * ViewPagerAdapter, that adapts fragment MovieGridFragment and MovieListFragment to the ViewPager in MoviesFragment
+ */
 class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
     //properties

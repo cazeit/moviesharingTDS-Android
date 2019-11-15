@@ -8,7 +8,10 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.main.adapter.MovieBaseAdapter
 
-class MovieListAdapter(movieList: ArrayList<Movie>): MovieBaseAdapter(movieList) {
+/**
+ * adapter for recyclerView inside recyclerView's ViewHolder from MoviesListFragment
+ */
+class MoviesListAdapter(movieList: ArrayList<Movie>): MovieBaseAdapter(movieList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =

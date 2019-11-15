@@ -7,6 +7,11 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragment
 import de.tdsoftware.moviesharing.ui.main.movies.MoviesFragment
 
+/**
+ * Activity with various fragments.
+ * Activity on its own only handles switching between FavoriteFragment and MoviesFragment via Bottom-
+ * Navigation-View using supportFragmentManager
+ */
 class MainActivity : BaseActivity() {
 
     // region properties

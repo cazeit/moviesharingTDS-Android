@@ -8,15 +8,18 @@ import de.tdsoftware.moviesharing.util.Repository
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+/**
+ * BaseFragment for MoviesGridFragment and MoviesListFragment, inheriting itself from MainActivityBaseFragment
+ */
 abstract class MoviesBaseFragment: MainActivityBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistListAdapter = Repository.playlistList
+        playlistListInAdapter = Repository.playlistList
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
-        playlistListAdapter = Repository.playlistList
+        playlistListInAdapter = Repository.playlistList
     }
 }

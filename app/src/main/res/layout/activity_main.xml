@@ -16,6 +16,8 @@
         android:id="@+id/activity_main_bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_height"
+        android:elevation="@dimen/elevation_normal"
+        android:background="@color/backgroundDefault"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

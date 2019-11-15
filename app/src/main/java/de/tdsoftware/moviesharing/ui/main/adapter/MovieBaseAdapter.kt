@@ -8,6 +8,9 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.data.models.Movie
 
+/**
+ * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
+ */
 abstract class MovieBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MovieBaseAdapter.ViewHolder>() {
 
     // Region public types

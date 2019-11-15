@@ -5,6 +5,9 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
+/**
+ * BaseActivity for all Activities in this application
+ */
 abstract class BaseActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

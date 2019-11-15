@@ -13,6 +13,10 @@ import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.util.FavoriteUpdateEvent
 import org.greenrobot.eventbus.EventBus
 
+/**
+ * Activity that has one fragment in it (MovieDetailsFragment), basically just inflates it and handles
+ * optionsMenu and actionBar
+ */
 class MovieDetailsActivity : BaseActivity(){
 
     // region properties
@@ -43,6 +47,9 @@ class MovieDetailsActivity : BaseActivity(){
         setUpActionBar()
     }
 
+    /**
+     * check if movie is favorite or not and display the icon in the corresponding color
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
         if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
@@ -52,6 +59,9 @@ class MovieDetailsActivity : BaseActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
+    /**
+     * handle backpress in actionbar and favoriteIconOnClick -> write down to sharedPreferences
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
@@ -82,6 +92,9 @@ class MovieDetailsActivity : BaseActivity(){
     private fun setUpMainView(){
     }
 
+    /**
+     * enable back-button and set title of actionbar to movies title
+     */
     private fun setUpActionBar(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = movie.title

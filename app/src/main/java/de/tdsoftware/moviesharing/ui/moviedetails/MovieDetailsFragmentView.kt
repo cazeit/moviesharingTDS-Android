@@ -1,6 +1,5 @@
 package de.tdsoftware.moviesharing.ui.moviedetails
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
@@ -22,7 +21,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region Properties
 
-    var viewListener: MovieDetailsFragmentView.Listener? = null
+    var viewListener: Listener? = null
 
     var title: String?
         get(){
