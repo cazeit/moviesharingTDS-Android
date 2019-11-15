@@ -20,7 +20,7 @@ abstract class PlaylistBaseAdapter:
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         val playlistTitleTextView: TextView =
-            itemView.findViewById<TextView>(R.id.recycler_item_playlists_title)
+            itemView.findViewById(R.id.recycler_item_playlists_title)
 
         val movieRecyclerView: RecyclerView =
             itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_movies)

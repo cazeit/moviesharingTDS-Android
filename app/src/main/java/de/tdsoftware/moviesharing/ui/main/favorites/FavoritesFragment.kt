@@ -113,8 +113,8 @@ class FavoritesFragment: MainActivityBaseFragment(){
      * filter method that iterates through full list and returns all movies, the title of which contains query
      */
     private fun filter(query: String): ArrayList<Movie>{
-        if(query.isEmpty()){
-            return fullList
+        return if(query.isEmpty()){
+            fullList
         }else{
             val retList = ArrayList<Movie>()
             for(movie in fullList){
@@ -122,7 +122,7 @@ class FavoritesFragment: MainActivityBaseFragment(){
                     retList.add(movie)
                 }
             }
-            return retList
+            retList
         }
     }
 
@@ -142,13 +142,13 @@ class FavoritesFragment: MainActivityBaseFragment(){
      * check if fullList is empty and if so display a hint
      */
     private fun checkEmptyState(): Boolean{
-        if(fullList.isEmpty()){
+        return if(fullList.isEmpty()){
             mainView.hintText = resources.getString(R.string.empty_list_text_hint)
             mainView.changeEmptyStateTextVisibility(true)
-            return true
+            true
         }else{
             mainView.changeEmptyStateTextVisibility(false)
-            return false
+            false
         }
     }
 
