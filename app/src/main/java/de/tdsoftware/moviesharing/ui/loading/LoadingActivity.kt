@@ -3,7 +3,9 @@ package de.tdsoftware.moviesharing.ui.loading
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.ui.main.MainActivity
 import de.tdsoftware.moviesharing.R
@@ -14,10 +16,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * LoadingActivity represents the starting activity of the application, basically making sure that data
+ * LoadingActivity represents the starting-activity of the application, basically making sure that data
  * is being obtained and if so redirects to MainActivity
  */
-class LoadingActivity : BaseActivity(){
+
+// channel ID: UCPppOIczZfCCoqAwRLc4T0A
+// API-Key: AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU
+
+class LoadingActivity : BaseActivity() {
 
     private lateinit var mainView: LoadingActivityView
 
@@ -29,6 +35,8 @@ class LoadingActivity : BaseActivity(){
 
         mainView = layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
         setContentView(mainView)
+
+        actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.backgroundDefault)))
 
         GlobalScope.launch {
             delay(3000)

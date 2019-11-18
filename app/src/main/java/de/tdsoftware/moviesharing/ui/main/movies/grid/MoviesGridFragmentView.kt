@@ -31,7 +31,6 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     // endregion
 
     // region Private API
-
     private fun postLayoutInitialize() {
         bindViews()
         setupControls()
@@ -46,7 +45,7 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
 
     }
 
-    private fun buildPlaylistRecycler(){
+    private fun buildPlaylistRecycler() {
         playlistRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 

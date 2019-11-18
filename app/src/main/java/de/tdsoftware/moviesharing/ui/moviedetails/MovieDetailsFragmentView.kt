@@ -24,34 +24,34 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     var viewListener: Listener? = null
 
     var title: String?
-        get(){
+        get() {
             return titleTextView.text.toString()
         }
-        set(value){
+        set(value) {
             titleTextView.text = value
         }
 
     var description: String?
-        get(){
+        get() {
             return descriptionTextView.text.toString()
         }
-        set(value){
+        set(value) {
             descriptionTextView.text = value
         }
 
     var secondaryText: String?
-        get(){
+        get() {
             return secondaryTextView.text.toString()
         }
-        set(value){
+        set(value) {
             secondaryTextView.text = value
         }
 
     var ratingBarValue: Float
-        get(){
+        get() {
             return ratingBar.rating
         }
-        set(value){
+        set(value) {
             ratingBar.rating = value
         }
 
@@ -92,13 +92,13 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setupControls() {
-        ratingBar.setOnRatingBarChangeListener{ _, value: Float, fromUser: Boolean ->
-            if(fromUser){
+        ratingBar.setOnRatingBarChangeListener { _, value: Float, fromUser: Boolean ->
+            if(fromUser) {
                 viewListener?.onRatingChanged(value)
             }
         }
 
-        coverImageView.setOnClickListener{
+        coverImageView.setOnClickListener {
             viewListener?.onCoverImageClick()
         }
     }

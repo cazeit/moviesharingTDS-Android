@@ -11,31 +11,31 @@ import de.tdsoftware.moviesharing.data.models.Movie
 /**
  * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
  */
-abstract class MovieBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MovieBaseAdapter.ViewHolder>() {
+abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
 
     // Region public types
     class ViewHolder(itemView: View,
                      val movieThumbnailImageView: ImageView,
-                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView){
+                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView) {
         var movieTitle: String?
-            get(){
+            get() {
                 return movieTitleTextView.text.toString()
             }
-            set(value){
+            set(value) {
                 movieTitleTextView.text = value
             }
         var movieThumbnailUri: Uri?
-            set(value){
+            set(value) {
                 movieThumbnailImageView.setImageURI(value)
             }
-            get(){
+            get() {
                 /**i cannot get uri of an imageview, but will never need the getter, is it okay to implement a wrong getter then?
                  * or do I set imageView's uri the normal way?**/
                 return "".toUri()
             }
     }
 
-    interface ItemClickListener{
+    interface ItemClickListener {
         fun onRecyclerItemClick(movie: Movie)
     }
 

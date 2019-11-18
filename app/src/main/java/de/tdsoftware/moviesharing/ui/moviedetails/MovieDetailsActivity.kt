@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
@@ -17,17 +18,18 @@ import org.greenrobot.eventbus.EventBus
  * Activity that has one fragment in it (MovieDetailsFragment), basically just inflates it and handles
  * optionsMenu and actionBar
  */
-class MovieDetailsActivity : BaseActivity(){
+class MovieDetailsActivity : BaseActivity() {
 
     // region properties
-    private val movieDetailsFragment by lazy{
+    private val movieDetailsFragment by lazy {
         MovieDetailsFragment.newInstance()
     }
     private lateinit var mainView: MovieDetailsActivityView
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
 
-    // endregipon
+    private val TAG = MovieDetailsActivity::class.java.simpleName
+    // endregion
 
     // region lifecycle callbacks
 
@@ -52,7 +54,7 @@ class MovieDetailsActivity : BaseActivity(){
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
-        if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
+        if(sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
             menu.findItem(R.id.favorite_item).icon.colorFilter =
                     PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
         }
@@ -63,15 +65,19 @@ class MovieDetailsActivity : BaseActivity(){
      * handle backpress in actionbar and favoriteIconOnClick -> write down to sharedPreferences
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when(item.itemId) {
             android.R.id.home -> {
                 super.onBackPressed()
             }
             R.id.favorite_item -> {
-                if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
+                if(sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
+                    Log.v(TAG, "Movie is no longer a favorite")
+
                     item.icon.colorFilter = null
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
-                }else{
+                }else {
+                    Log.v(TAG, "Movie is now a favorite")
+
                     item.icon.colorFilter =
                         PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
@@ -89,13 +95,13 @@ class MovieDetailsActivity : BaseActivity(){
 
     // region private API
 
-    private fun setUpMainView(){
+    private fun setUpMainView() {
     }
 
     /**
      * enable back-button and set title of actionbar to movies title
      */
-    private fun setUpActionBar(){
+    private fun setUpActionBar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = movie.title
     }

@@ -2,6 +2,7 @@ package de.tdsoftware.moviesharing.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.BaseFragment
@@ -27,13 +28,15 @@ abstract class MainActivityBaseFragment: BaseFragment() {
      * List inside RecyclerAdapter above, by setting, the RecyclerView updates
      */
     protected var playlistListInAdapter :ArrayList<Playlist>
-        set(value){
+        set(value) {
             playlistAdapter.playlistList = value
             playlistAdapter.notifyDataSetChanged()
         }
-        get(){
+        get() {
             return playlistAdapter.playlistList
         }
+
+    private val TAG = this::class.java.simpleName
 
     // endregion
 
@@ -68,9 +71,11 @@ abstract class MainActivityBaseFragment: BaseFragment() {
 
     // region private API
 
-    private fun initializeRecyclerItemOnClickListener(){
-        playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener{
+    private fun initializeRecyclerItemOnClickListener() {
+
+        playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie) {
+                Log.v(TAG, "Movie selected with title: " + movie.title)
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra("movie", movie)
                 startActivity(intent)

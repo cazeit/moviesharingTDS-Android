@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_normal"
         app:iconifiedByDefault="false"
-        android:background="@drawable/fragment_favorites_search_view_rectangle"
+        android:background="@drawable/rectangle_fragment_favorites_search_view"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_favorites_empty_state_layout"

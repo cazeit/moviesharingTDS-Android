@@ -15,7 +15,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
         get() {
             return startLoadingText.text.toString()
         }
-        set(value){
+        set(value) {
             startLoadingText.text = value
         }
 
@@ -29,7 +29,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    // enregion
+    // endregion
 
     // region View Lifecycle
     override fun onFinishInflate() {

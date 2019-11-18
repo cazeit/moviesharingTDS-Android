@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +21,13 @@ class MovieDetailsFragment: BaseFragment() {
 
     // region public types
 
-    companion object{
+    companion object {
         @JvmStatic
-        fun newInstance(): MovieDetailsFragment{
+        fun newInstance(): MovieDetailsFragment {
             return MovieDetailsFragment()
         }
+
+        private val TAG = MovieDetailsActivity::class.java.simpleName
     }
 
     // endregion
@@ -35,7 +38,7 @@ class MovieDetailsFragment: BaseFragment() {
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
 
-    //endregion
+    // endregion
 
     // region lifecycle callbacks
 
@@ -68,14 +71,15 @@ class MovieDetailsFragment: BaseFragment() {
     /**
      * fill the view with data from video and handle interactions with user
      */
-    private fun setUpMainView(){
-        mainView.viewListener = object: MovieDetailsFragmentView.Listener{
+    private fun setUpMainView() {
+        mainView.viewListener = object: MovieDetailsFragmentView.Listener {
             override fun onCoverImageClick() {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + movie.id))
                 startActivity(intent)
             }
 
             override fun onRatingChanged(rating: Float) {
+                Log.v(TAG, "The rating has now a Rating of $rating/5 Stars")
                 sharedPreferences.edit().putFloat(movie.id + "_rating", rating).apply()
             }
         }

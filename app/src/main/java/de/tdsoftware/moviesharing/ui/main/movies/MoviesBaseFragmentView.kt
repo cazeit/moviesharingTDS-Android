@@ -14,7 +14,7 @@ abstract class MoviesBaseFragmentView(context: Context, attrs: AttributeSet?) :
 
     protected lateinit var playlistRecyclerView: RecyclerView
 
-    fun changePlaylistRecyclerAdapter(adapter: PlaylistBaseAdapter){
+    fun changePlaylistRecyclerAdapter(adapter: PlaylistBaseAdapter) {
         playlistRecyclerView.adapter = adapter
     }
 }

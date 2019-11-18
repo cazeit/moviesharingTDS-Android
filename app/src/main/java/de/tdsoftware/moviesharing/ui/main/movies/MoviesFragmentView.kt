@@ -28,12 +28,12 @@ class MoviesFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun changeViewPagerAdapter(adapter: MoviesViewPagerAdapter){
+    fun changeViewPagerAdapter(adapter: MoviesViewPagerAdapter) {
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
     }
 
-    //endregion
+    // endregion
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()

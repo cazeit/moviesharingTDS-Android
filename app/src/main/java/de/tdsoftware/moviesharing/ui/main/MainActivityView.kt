@@ -47,7 +47,7 @@ class MainActivityView(context: Context, attrs: AttributeSet?) : ConstraintLayou
 
     private fun setupControls() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it){
+            when(it) {
                  bottomNavigationView.menu.getItem(0) -> {
                      viewListener?.onMoviesSelected()
                  }

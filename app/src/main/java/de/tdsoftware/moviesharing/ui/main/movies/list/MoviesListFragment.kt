@@ -14,7 +14,6 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 class MoviesListFragment : MoviesBaseFragment() {
 
     // region public types
-
     companion object {
 
         @JvmStatic
@@ -26,11 +25,10 @@ class MoviesListFragment : MoviesBaseFragment() {
     // endregion
 
     // region properties
-
     private lateinit var mainView: MoviesListFragmentView
 
     private val playlistRecyclerAdapter: PlaylistListAdapter
-        get(){
+        get() {
             return playlistAdapter as PlaylistListAdapter
         }
 
@@ -61,7 +59,7 @@ class MoviesListFragment : MoviesBaseFragment() {
     /**
      * the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
      */
-    private fun setUpMainView(){
+    private fun setUpMainView() {
         mainView.changePlaylistRecyclerAdapter(playlistRecyclerAdapter)
     }
     // endregion
