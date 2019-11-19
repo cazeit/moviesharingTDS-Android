@@ -8,10 +8,6 @@ data class Snippet(
     val channelId: String,
     @Json(name = "channelTitle")
     val channelTitle: String,
-    @Json(name = "description")
-    val description: String,
-    @Json(name = "publishedAt")
-    val publishedAt: String,
     @Json(name = "title")
     val title: String
 )

@@ -11,7 +11,7 @@ import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
-import de.tdsoftware.moviesharing.util.Repository
+import de.tdsoftware.moviesharing.util.MoviesManager
 import org.greenrobot.eventbus.Subscribe
 
 /**
@@ -65,8 +65,8 @@ class FavoritesFragment: MainActivityBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fullList = Repository.favoritePlaylist.movieList
-        playlistListInAdapter = Repository.favoritePlaylistList
+        fullList = MoviesManager.favoritePlaylist.movieList
+        playlistListInAdapter = MoviesManager.favoritePlaylistList
 
         setUpMainView()
     }
@@ -74,7 +74,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
     @Subscribe
     override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
         // update full-list
-        fullList = Repository.favoritePlaylist.movieList
+        fullList = MoviesManager.favoritePlaylist.movieList
 
         Log.v(TAG, "There are " + fullList.size + " favorites in total!")
         // filter the list

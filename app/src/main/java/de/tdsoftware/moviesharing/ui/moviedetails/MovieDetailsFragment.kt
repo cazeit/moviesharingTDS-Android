@@ -74,7 +74,10 @@ class MovieDetailsFragment: BaseFragment() {
     private fun setUpMainView() {
         mainView.viewListener = object: MovieDetailsFragmentView.Listener {
             override fun onCoverImageClick() {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + movie.id))
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + movie.id)
+                )
                 startActivity(intent)
             }
 
@@ -85,7 +88,7 @@ class MovieDetailsFragment: BaseFragment() {
         }
         mainView.title = movie.title
         mainView.secondaryText = movie.secondaryText
-        //TODO: missing imageView
+        mainView.loadImages(movie.imagePath)
         mainView.description = movie.description
         mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating",0f)
     }

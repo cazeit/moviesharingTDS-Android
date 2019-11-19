@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -55,7 +57,6 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
             ratingBar.rating = value
         }
 
-
     private lateinit var bannerImageView: ImageView
     private lateinit var coverImageView: ImageView
 
@@ -64,6 +65,16 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     private lateinit var descriptionTextView: TextView
 
     private lateinit var ratingBar: RatingBar
+
+    // endregion
+
+    // region public API
+
+    fun loadImages(url: String){
+        val transformation = CropTransformation(160,240)
+        Picasso.get().load(url).transform(transformation).into(bannerImageView)
+        Picasso.get().load(url).transform(transformation).into(coverImageView)
+    }
 
     // endregion
 

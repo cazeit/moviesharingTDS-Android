@@ -24,7 +24,6 @@
             android:id="@+id/recycler_item_movies_list_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/sample_cover"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>

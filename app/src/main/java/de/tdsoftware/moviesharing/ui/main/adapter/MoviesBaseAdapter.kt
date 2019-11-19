@@ -1,12 +1,12 @@
 package de.tdsoftware.moviesharing.ui.main.adapter
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.data.models.Movie
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 /**
  * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
@@ -23,15 +23,6 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
             }
             set(value) {
                 movieTitleTextView.text = value
-            }
-        var movieThumbnailUri: Uri?
-            set(value) {
-                movieThumbnailImageView.setImageURI(value)
-            }
-            get() {
-                /**i cannot get uri of an imageview, but will never need the getter, is it okay to implement a wrong getter then?
-                 * or do I set imageView's uri the normal way?**/
-                return "".toUri()
             }
     }
 
@@ -53,7 +44,8 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle = movieList[position].title
-        //holder.movieThumbnailUri = movieList[position].imagePath.toUri()
+        val transformation = CropTransformation(160,240)
+        Picasso.get().load(movieList[position].imagePath).transform(transformation).into(holder.movieThumbnailImageView)
         holder.movieThumbnailImageView.setOnClickListener {
             listener?.onRecyclerItemClick(movieList[position])
         }
