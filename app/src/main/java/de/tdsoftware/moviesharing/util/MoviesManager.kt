@@ -8,19 +8,13 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.coroutines.CoroutineContext
 
-//TODO: size images correct
 
-object MoviesManager: CoroutineScope {
+object MoviesManager : CoroutineScope {
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get(){
-            return job + Dispatchers.Default
-        }
+    // properties
 
     lateinit var playlistList: ArrayList<Playlist>
     val favoritePlaylistList = ArrayList<Playlist>()
-    lateinit var sharedPreferences: SharedPreferences
 
     var favoritePlaylist: Playlist
         get() {
@@ -30,17 +24,59 @@ object MoviesManager: CoroutineScope {
             favoritePlaylistList[0] = value
         }
 
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() {
+            return job + Dispatchers.Default
+        }
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    // endregion
+
+    // constructors
     init {
         EventBus.getDefault().register(this)
-        val favoriteList = Playlist("fav001","Favorite", arrayListOf())
+        val favoriteList = Playlist("fav001", "Favorite", ArrayList())
         favoritePlaylistList.add(favoriteList)
     }
+    // endregion
 
+
+    // public API
+    fun setUpMoviesManager(sharedPref: SharedPreferences) {
+        sharedPreferences = sharedPref
+    }
+
+    fun fetchPlaylistList() {
+        launch(coroutineContext) {
+            val fetchResult =
+                withContext(Dispatchers.Default) {
+                    NetworkManager.fetchAll()
+                }
+            when (fetchResult) {
+                is Output.Success<ArrayList<Playlist>> -> {
+                    playlistList = fetchResult.data
+                    initializeFavorites()
+                    EventBus.getDefault().post(NetworkSuccessEvent())
+                }
+                is Output.Error -> {
+                    EventBus.getDefault().post(NetworkErrorEvent(fetchResult.exception))
+                }
+            }
+        }
+    }
+
+    // private API
+
+    // EventBus
+
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFavoriteUpdateEvent(favoriteUpdateEvent: FavoriteUpdateEvent) {
         val movie = favoriteUpdateEvent.movie
-        for(currentMovie in favoritePlaylist.movieList) {
-            if(currentMovie.id == movie.id) {
+        for (currentMovie in favoritePlaylist.movieList) {
+            if (currentMovie.id == movie.id) {
                 favoritePlaylist.movieList.remove(currentMovie)
                 EventBus.getDefault().post(RecyclerUpdateEvent())
                 return
@@ -50,37 +86,18 @@ object MoviesManager: CoroutineScope {
         EventBus.getDefault().post(RecyclerUpdateEvent())
     }
 
-    fun setUpMoviesManager(sharedPref: SharedPreferences){
-        sharedPreferences = sharedPref
-    }
+    // endregion
 
-    // Kotlin - way
-    fun fetchPlaylistList() {
-        launch(coroutineContext) {
-            val fetchResult =
-                withContext(Dispatchers.Default) {
-                    NetworkManager.fetchAll()
-                }
-            when (fetchResult) {
-                    is Output.Success<ArrayList<Playlist>> -> {
-                        playlistList = fetchResult.data
-                        initializeFavorites()
-                        EventBus.getDefault().post(NetworkSuccessEvent())
-                    }
-                    is Output.Error -> {
-                        EventBus.getDefault().post(NetworkErrorEvent(fetchResult.exception))
-                    }
-                }
-            }
-        }
+    // private API
 
-    private fun initializeFavorites(){
-        for(playlist in playlistList){
-            for(movie in playlist.movieList){
-                if(sharedPreferences.getBoolean(movie.id + "_favorite", false)){
+    private fun initializeFavorites() {
+        for (playlist in playlistList) {
+            for (movie in playlist.movieList) {
+                if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
                     favoritePlaylist.movieList.add(movie)
                 }
             }
         }
     }
+    // endregion
 }

@@ -22,14 +22,6 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region Properties
 
-    var loadingText: String?
-        get() {
-            return progressBarText.text.toString()
-        }
-        set(value) {
-            progressBarText.text = value
-        }
-
     private lateinit var progressBarText: TextView
     private lateinit var retryButton: Button
     private lateinit var progressBar: ProgressBar
@@ -43,12 +35,12 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun showRetryButton(isButtonVisible: Boolean){
-        if(isButtonVisible) {
+    fun showRetryButton(isButtonVisible: Boolean) {
+        if (isButtonVisible) {
             progressBar.visibility = View.GONE
             progressBarText.visibility = View.GONE
             retryButton.visibility = View.VISIBLE
-        }else{
+        } else {
             progressBar.visibility = View.VISIBLE
             progressBarText.visibility = View.VISIBLE
             retryButton.visibility = View.GONE

@@ -15,9 +15,9 @@ import de.tdsoftware.moviesharing.ui.loading.LoadingActivity
 abstract class BaseActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if(currentFocus != null) {
+        if (currentFocus != null) {
             val inputManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+            inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
     }
@@ -30,8 +30,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         val currentProcessId = android.os.Process.myPid().toString()
-        if(savedInstanceState != null) {
-            if(savedInstanceState.getString("PID","") != currentProcessId) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString("PID", "") != currentProcessId) {
                 val intent = Intent(this, LoadingActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)

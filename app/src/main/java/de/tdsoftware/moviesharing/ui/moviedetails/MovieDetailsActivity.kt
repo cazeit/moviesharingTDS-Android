@@ -54,9 +54,12 @@ class MovieDetailsActivity : BaseActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
-        if(sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
+        if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
             menu.findItem(R.id.favorite_item).icon.colorFilter =
-                    PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
+                PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -65,21 +68,23 @@ class MovieDetailsActivity : BaseActivity() {
      * handle backpress in actionbar and favoriteIconOnClick -> write down to sharedPreferences
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 super.onBackPressed()
             }
             R.id.favorite_item -> {
-                if(sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
+                if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
                     Log.v(TAG, "Movie is no longer a favorite")
 
                     item.icon.colorFilter = null
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
-                }else {
+                } else {
                     Log.v(TAG, "Movie is now a favorite")
 
                     item.icon.colorFilter =
-                        PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
+                        PorterDuffColorFilter(
+                            ContextCompat.getColor(this, R.color.colorPrimary),
+                            PorterDuff.Mode.SRC_IN)
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
                 val event = FavoriteUpdateEvent()

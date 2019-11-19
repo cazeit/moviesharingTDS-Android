@@ -12,40 +12,59 @@ import java.lang.Exception
 
 
 /**
- * No error handling so far, i had no clue how to approach.. this is very basic and very ugly...
+ * bit confusing isn't it
  */
 object NetworkManager {
 
+    // region properties
+
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
+    // endregion
+
+    // region public API
+
     fun fetchAll(): Output<ArrayList<Playlist>> {
-        val playlistResponse = fetchPlaylists()
-        when (playlistResponse) {
-            is Output.Success<PlaylistResponse> -> {
-                val playlistList = mapToPlaylists(playlistResponse.data)
-                for (playlist in playlistList) {
-                    val movieResponse = fetchMovies(playlist.id)
-                    when(movieResponse) {
-                        is Output.Success<MovieResponse> -> {
-                                var movieList = mapToMovies(movieResponse.data)
-                                playlist.movieList.addAll(movieList)
-                        }
-                        is Output.Error -> {
-                            return movieResponse
-                        }
+        val playlistList = ArrayList<Playlist>()
+        var playlistPageToken: String? = ""
+        var moviePageToken: String? = ""
+        do {
+            val playlistResponse = fetchPlaylists(playlistPageToken)
+            when (playlistResponse) {
+                is Output.Success<PlaylistResponse> -> {
+                    playlistList.addAll(mapToPlaylists(playlistResponse.data))
+                    for (playlist in playlistList) {
+                        do {
+                            val movieResponse = fetchMovies(playlist.id, moviePageToken)
+                            when (movieResponse) {
+                                is Output.Success<MovieResponse> -> {
+                                    val movieList = mapToMovies(movieResponse.data)
+                                    playlist.movieList.addAll(movieList)
+                                    moviePageToken = movieResponse.data.nextPageToken
+                                }
+                                is Output.Error -> {
+                                    return movieResponse
+                                }
+                            }
+                        } while (moviePageToken != null)
                     }
+                    playlistPageToken = playlistResponse.data.nextPageToken
                 }
-                return Output.Success(playlistList)
+                is Output.Error -> {
+                    return playlistResponse
+                }
             }
-            is Output.Error -> {
-                return playlistResponse
-            }
-        }
+        } while (playlistPageToken != null)
+        return Output.Success(playlistList)
     }
 
-    private fun fetchPlaylists(): Output<PlaylistResponse>{
-        val responseOutput = fetchFromApi(buildPlaylistRequestUrl())
-        when(responseOutput) {
+    // endregion
+
+    // region private API
+
+    private fun fetchPlaylists(pageToken: String?): Output<PlaylistResponse> {
+        val responseOutput = fetchFromApi(buildPlaylistRequestUrl(pageToken))
+        when (responseOutput) {
             is Output.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
@@ -68,9 +87,9 @@ object NetworkManager {
         return Output.Error("API-Call unsuccessful!")
     }
 
-    private fun fetchMovies(playlistId: String): Output<MovieResponse>{
-        val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId))
-        when(responseOutput) {
+    private fun fetchMovies(playlistId: String, pageToken: String?): Output<MovieResponse> {
+        val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId, pageToken))
+        when (responseOutput) {
             is Output.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
@@ -99,44 +118,56 @@ object NetworkManager {
             val request = Request.Builder().url(url).build()
             val result = client.newCall(request).execute()
             Output.Success(result)
-        } catch(exception: Exception){
-            Output.Error("Error: $exception")
+        } catch (exception: Exception) {
+            Output.Error("Error: " + exception.message)
         }
     }
 
-    private fun buildPlaylistRequestUrl(): HttpUrl {
-        val url = HttpUrl.Builder().scheme("https").host("www.googleapis.com").addPathSegments("youtube/v3/playlists")
-            .addQueryParameter("part","snippet").addQueryParameter("channelId", "UCPppOIczZfCCoqAwRLc4T0A")
-            .addQueryParameter("maxResults", "50").addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
-        return url
+    private fun buildPlaylistRequestUrl(pageToken: String?): HttpUrl {
+        return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
+            .addPathSegments("youtube/v3/playlists")
+            .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
+            .addQueryParameter("channelId", "UCPppOIczZfCCoqAwRLc4T0A")
+            .addQueryParameter("maxResults", "50")
+            .addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
     }
 
-    private fun buildPlaylistItemsRequestUrl(playlistId: String): HttpUrl {
-        val url = HttpUrl.Builder().scheme("https").host("www.googleapis.com").addPathSegments("youtube/v3/playlistItems")
-            .addQueryParameter("part","snippet").addQueryParameter("playlistId", playlistId)
-            .addQueryParameter("maxResults", "50").addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
-        return url
+    private fun buildPlaylistItemsRequestUrl(playlistId: String, pageToken: String?): HttpUrl {
+        return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
+            .addPathSegments("youtube/v3/playlistItems")
+            .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
+            .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
+            .addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
     }
 
     private fun mapToPlaylists(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
         val returnList = ArrayList<Playlist>()
-        for(responseItem in playlistResponse.items){
-            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList<Movie>()))
+        for (responseItem in playlistResponse.items) {
+            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))
         }
         return returnList
     }
 
     private fun mapToMovies(movieResponse: MovieResponse): ArrayList<Movie> {
         val returnList = ArrayList<Movie>()
-        for(responseItem in movieResponse.items){
-            val secondaryText = "hinzugefügt am: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
-                    responseItem.snippet.publishedAt.substring(5, 7) + "." +
-                    responseItem.snippet.publishedAt.substring(0, 4)
+        for (responseItem in movieResponse.items) {
+            val secondaryText =
+                "hinzugefügt am: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
+                        responseItem.snippet.publishedAt.substring(5, 7) + "." +
+                        responseItem.snippet.publishedAt.substring(0, 4)
             val imageString = responseItem.snippet.thumbnails.high.url
-            returnList.add(Movie(responseItem.snippet.resourceId.videoId,responseItem.snippet.title, responseItem.snippet.description, secondaryText, imageString))
+            returnList.add(
+                Movie(
+                    responseItem.snippet.resourceId.videoId,
+                    responseItem.snippet.title,
+                    responseItem.snippet.description,
+                    secondaryText,
+                    imageString
+                )
+            )
         }
         return returnList
     }
 
-    // check connection in activity??? (LoadingActivity)
+    // endregion
 }

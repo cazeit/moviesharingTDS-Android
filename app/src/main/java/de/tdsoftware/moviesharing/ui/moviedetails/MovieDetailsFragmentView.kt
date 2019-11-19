@@ -70,7 +70,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun loadImages(url: String){
+    fun loadImages(url: String) {
         val transformation = CropTransformation(160,240)
         Picasso.get().load(url).transform(transformation).into(bannerImageView)
         Picasso.get().load(url).transform(transformation).into(coverImageView)
@@ -104,7 +104,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     private fun setupControls() {
         ratingBar.setOnRatingBarChangeListener { _, value: Float, fromUser: Boolean ->
-            if(fromUser) {
+            if (fromUser) {
                 viewListener?.onRatingChanged(value)
             }
         }

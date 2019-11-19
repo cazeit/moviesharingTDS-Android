@@ -44,8 +44,11 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle = movieList[position].title
-        val transformation = CropTransformation(160,240)
-        Picasso.get().load(movieList[position].imagePath).transform(transformation).into(holder.movieThumbnailImageView)
+
+        val transformation = CropTransformation(160, 240)
+        Picasso.get().load(movieList[position].imagePath).transform(transformation)
+            .into(holder.movieThumbnailImageView)
+
         holder.movieThumbnailImageView.setOnClickListener {
             listener?.onRecyclerItemClick(movieList[position])
         }

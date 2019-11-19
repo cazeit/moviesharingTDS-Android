@@ -5,6 +5,7 @@
     <dimen name="spacing_normal">10dp</dimen>
     <dimen name="spacing_large">15dp</dimen>
     <dimen name="spacing_xlarge">20dp</dimen>
+
     <!-- Text-Size -->
     <dimen name="text_size_xsmall">11sp</dimen>
     <dimen name="text_size_small">13sp</dimen>

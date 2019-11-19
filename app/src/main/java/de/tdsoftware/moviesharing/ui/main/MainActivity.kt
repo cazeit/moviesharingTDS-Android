@@ -58,14 +58,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showFragment(fragment: BaseFragment) {
-        if(currentFragment == fragment) {
+        if (currentFragment == fragment) {
             return
         }
 
         Log.v(TAG, "Showing " + fragment::class.java.simpleName)
 
         currentFragment = fragment
-        supportFragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment)
+            .commit()
     }
 
     // endregion

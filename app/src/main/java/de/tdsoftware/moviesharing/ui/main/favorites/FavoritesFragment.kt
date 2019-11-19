@@ -55,7 +55,8 @@ class FavoritesFragment: MainActivityBaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainView = inflater.inflate(R.layout.fragment_favorites, container, false) as FavoritesFragmentView
+        mainView =
+            inflater.inflate(R.layout.fragment_favorites, container, false) as FavoritesFragmentView
         return mainView
     }
 
@@ -82,7 +83,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
         // set the playlist-list in the adapter by using the filteredList
         playlistListInAdapter = createFilteredPlaylistList(filteredList)
         // check if empty-state-text needs to be displayed
-        if(!checkFullListEmptyState()) {
+        if (!checkFullListEmptyState()) {
             checkFilteredListEmptyState()
         }
     }
@@ -104,7 +105,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
 
         mainView.viewListener = object : FavoritesFragmentView.Listener {
             override fun onQueryChange(newText: String) {
-                if(!checkFullListEmptyState()) {
+                if (!checkFullListEmptyState()) {
                     filteredList = filter(newText)
                     playlistListInAdapter = createFilteredPlaylistList(filteredList)
                     checkFilteredListEmptyState()
@@ -118,12 +119,12 @@ class FavoritesFragment: MainActivityBaseFragment() {
      * filter method that iterates through full list and returns all movies, the title of which contains query
      */
     private fun filter(query: String): ArrayList<Movie> {
-        return if(query.isEmpty()) {
+        return if (query.isEmpty()) {
             fullList
-        }else {
+        } else {
             val retList = ArrayList<Movie>()
-            for(movie in fullList) {
-                if(movie.title.contains(query, true)) {
+            for (movie in fullList) {
+                if (movie.title.contains(query, true)) {
                     retList.add(movie)
                 }
             }
@@ -149,11 +150,11 @@ class FavoritesFragment: MainActivityBaseFragment() {
      * check if fullList is empty and if so display a hint
      */
     private fun checkFullListEmptyState(): Boolean {
-        return if(fullList.isEmpty()) {
+        return if (fullList.isEmpty()) {
             mainView.hintText = resources.getString(R.string.empty_list_text_hint)
             mainView.changeEmptyStateTextVisibility(true)
             true
-        }else{
+        } else {
             mainView.changeEmptyStateTextVisibility(false)
             false
         }
