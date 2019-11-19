@@ -2,7 +2,8 @@ package de.tdsoftware.moviesharing.ui.moviedetails
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.*
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu

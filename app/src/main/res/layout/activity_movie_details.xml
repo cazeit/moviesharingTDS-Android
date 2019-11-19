@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivityView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivityView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.moviedetails.MovieDetailsActivity">
+
     <FrameLayout
         android:id="@+id/activity_movie_details_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivityView>

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragmentView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundDefault">
+    android:background="@color/backgroundDefault"
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_movies_recycler_view_playlists_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants" />
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragmentView>

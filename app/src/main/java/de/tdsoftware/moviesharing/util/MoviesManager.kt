@@ -8,8 +8,15 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.coroutines.CoroutineContext
 
+//TODO: completion (callback) hier rein, die dannt per eventbus verständigt. im Event ist die Liste enthalten
+// BaseClass für die Events (Notification) und die BaseActivity kriegt eine Notification und checkt dann mit when()
+// -> onNotificationEvent z.B. ->
+//TODO: Output in Result umbenennen, Error hat code und message, die ich am besten selber setze somehow
+//TODO: also alles was async / coroutine an sich angeht in den NetworkManager rein (suspend function) -> callback aus MovieManager
 
-object MoviesManager : CoroutineScope {
+
+
+object MoviesManager {
 
     // properties
 
@@ -22,12 +29,6 @@ object MoviesManager : CoroutineScope {
         }
         set(value) {
             favoritePlaylistList[0] = value
-        }
-
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() {
-            return job + Dispatchers.Default
         }
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -49,19 +50,15 @@ object MoviesManager : CoroutineScope {
     }
 
     fun fetchPlaylistList() {
-        launch(coroutineContext) {
-            val fetchResult =
-                withContext(Dispatchers.Default) {
-                    NetworkManager.fetchAll()
-                }
-            when (fetchResult) {
+            NetworkManager.fetchAll {
+            when (it) {
                 is Output.Success<ArrayList<Playlist>> -> {
-                    playlistList = fetchResult.data
+                    playlistList = it.data
                     initializeFavorites()
                     EventBus.getDefault().post(NetworkSuccessEvent())
                 }
                 is Output.Error -> {
-                    EventBus.getDefault().post(NetworkErrorEvent(fetchResult.exception))
+                    EventBus.getDefault().post(NetworkErrorEvent(it.exception))
                 }
             }
         }

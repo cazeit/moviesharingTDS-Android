@@ -6,62 +6,68 @@ import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
-import okhttp3.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.HttpUrl
 import okhttp3.Response
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.lang.Exception
 
 
 /**
  * bit confusing isn't it
  */
+
+// TODO: GlobalScope austauschen.. bzw. nachlesen warum und wofür wir was anderes brauchen
+
 object NetworkManager {
 
     // region properties
-
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     // endregion
 
     // region public API
-
-    fun fetchAll(): Output<ArrayList<Playlist>> {
-        val playlistList = ArrayList<Playlist>()
-        var playlistPageToken: String? = ""
-        var moviePageToken: String? = ""
-        do {
-            val playlistResponse = fetchPlaylists(playlistPageToken)
-            when (playlistResponse) {
-                is Output.Success<PlaylistResponse> -> {
-                    playlistList.addAll(mapToPlaylists(playlistResponse.data))
-                    for (playlist in playlistList) {
-                        do {
-                            val movieResponse = fetchMovies(playlist.id, moviePageToken)
-                            when (movieResponse) {
-                                is Output.Success<MovieResponse> -> {
-                                    val movieList = mapToMovies(movieResponse.data)
-                                    playlist.movieList.addAll(movieList)
-                                    moviePageToken = movieResponse.data.nextPageToken
+    fun fetchAll(callback: (Output<ArrayList<Playlist>>) -> Unit){
+        GlobalScope.launch {
+            val playlistList = ArrayList<Playlist>()
+            var playlistPageToken: String? = ""
+            var moviePageToken: String? = ""
+            do {
+                val playlistResponse = fetchPlaylists(playlistPageToken)
+                when (playlistResponse) {
+                    is Output.Success<PlaylistResponse> -> {
+                        playlistList.addAll(mapToPlaylists(playlistResponse.data))
+                        for (playlist in playlistList) {
+                            do {
+                                val movieResponse = fetchMovies(playlist.id, moviePageToken)
+                                when (movieResponse) {
+                                    is Output.Success<MovieResponse> -> {
+                                        val movieList = mapToMovies(movieResponse.data)
+                                        playlist.movieList.addAll(movieList)
+                                        moviePageToken = movieResponse.data.nextPageToken
+                                    }
+                                    is Output.Error -> {
+                                        callback(movieResponse)
+                                    }
                                 }
-                                is Output.Error -> {
-                                    return movieResponse
-                                }
-                            }
-                        } while (moviePageToken != null)
+                            } while (moviePageToken != null)
+                        }
+                        playlistPageToken = playlistResponse.data.nextPageToken
                     }
-                    playlistPageToken = playlistResponse.data.nextPageToken
+                    is Output.Error -> {
+                        callback(playlistResponse)
+                    }
                 }
-                is Output.Error -> {
-                    return playlistResponse
-                }
-            }
-        } while (playlistPageToken != null)
-        return Output.Success(playlistList)
+            } while (playlistPageToken != null)
+            callback(Output.Success(playlistList))
+        }
     }
 
     // endregion
 
     // region private API
-
     private fun fetchPlaylists(pageToken: String?): Output<PlaylistResponse> {
         val responseOutput = fetchFromApi(buildPlaylistRequestUrl(pageToken))
         when (responseOutput) {
@@ -114,9 +120,9 @@ object NetworkManager {
 
     private fun fetchFromApi(url: HttpUrl): Output<Response> {
         return try {
-            val client = OkHttpClient.Builder().build()
+            val httpClient = OkHttpClient.Builder().build()
             val request = Request.Builder().url(url).build()
-            val result = client.newCall(request).execute()
+            val result = httpClient.newCall(request).execute()
             Output.Success(result)
         } catch (exception: Exception) {
             Output.Error("Error: " + exception.message)

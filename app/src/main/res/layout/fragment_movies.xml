@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundDefault"
     tools:context=".ui.main.movies.MoviesFragment">
 
@@ -12,16 +11,18 @@
         android:id="@+id/fragment_movies_tab_layout"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/fragment_movies_tab_bar_height"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:tabMode="fixed"
-        app:tabGravity="center"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="center"
+        app:tabMode="fixed" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/fragment_movies_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/fragment_movies_tab_bar_height" />
+        android:layout_marginTop="@dimen/fragment_movies_tab_bar_height"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView>
