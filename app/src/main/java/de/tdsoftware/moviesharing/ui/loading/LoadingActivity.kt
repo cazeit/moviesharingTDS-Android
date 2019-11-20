@@ -5,17 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.ui.main.MainActivity
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.util.MoviesManager
-import de.tdsoftware.moviesharing.util.NetworkErrorEvent
-import de.tdsoftware.moviesharing.util.NetworkSuccessEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import de.tdsoftware.moviesharing.util.Notification
 
 /**
  * LoadingActivity represents the starting-activity of the application, basically making sure that data
@@ -24,18 +19,32 @@ import org.greenrobot.eventbus.ThreadMode
 
 class LoadingActivity : BaseActivity() {
 
+
     // properties
 
     private lateinit var mainView: LoadingActivityView
 
     // endregion
 
+    override fun onNotification(notification: Notification) {
+        super.onNotification(notification)
+        when(notification){
+            is Notification.NetworkErrorEvent -> {
+                mainView.showRetryButton(true)
+            }
+            is Notification.PlaylistChangedEvent -> {
+                val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
+            }
+        }
+    }
+
     // region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        EventBus.getDefault().register(this)
 
         mainView =
             layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
@@ -49,33 +58,8 @@ class LoadingActivity : BaseActivity() {
         setUpMainView()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        EventBus.getDefault().unregister(this)
-    }
-
     // endregion
 
-    // EventBus
-
-    @Suppress("unused")
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onNetworkSuccessEvent(networkSuccessEvent: NetworkSuccessEvent) {
-        val intent = Intent(this@LoadingActivity, MainActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()
-    }
-
-    @Suppress("unused")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNetworkErrorEvent(networkErrorEvent: NetworkErrorEvent) {
-        Toast.makeText(this, networkErrorEvent.message, Toast.LENGTH_LONG).show()
-        mainView.showRetryButton(true)
-    }
-
-    // endregion
 
     // private API
 

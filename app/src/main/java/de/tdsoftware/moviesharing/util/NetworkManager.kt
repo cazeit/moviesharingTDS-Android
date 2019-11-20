@@ -6,8 +6,7 @@ import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import okhttp3.Response
 import okhttp3.OkHttpClient
@@ -15,63 +14,62 @@ import okhttp3.Request
 import java.lang.Exception
 
 
-/**
- * bit confusing isn't it
- */
-
-// TODO: GlobalScope austauschen.. bzw. nachlesen warum und wofür wir was anderes brauchen
-
-object NetworkManager {
+object NetworkManager: CoroutineScope {
 
     // region properties
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    private val job = Job()
+    override val coroutineContext = Dispatchers.Default + job
+
 
     // endregion
 
     // region public API
-    fun fetchAll(callback: (Output<ArrayList<Playlist>>) -> Unit){
-        GlobalScope.launch {
+    fun fetchAll(callback: (Result<ArrayList<Playlist>>) -> Unit){
+        launch {
             val playlistList = ArrayList<Playlist>()
             var playlistPageToken: String? = ""
             var moviePageToken: String? = ""
             do {
                 val playlistResponse = fetchPlaylists(playlistPageToken)
                 when (playlistResponse) {
-                    is Output.Success<PlaylistResponse> -> {
+                    is Result.Success<PlaylistResponse> -> {
                         playlistList.addAll(mapToPlaylists(playlistResponse.data))
                         for (playlist in playlistList) {
                             do {
                                 val movieResponse = fetchMovies(playlist.id, moviePageToken)
                                 when (movieResponse) {
-                                    is Output.Success<MovieResponse> -> {
+                                    is Result.Success<MovieResponse> -> {
                                         val movieList = mapToMovies(movieResponse.data)
                                         playlist.movieList.addAll(movieList)
                                         moviePageToken = movieResponse.data.nextPageToken
                                     }
-                                    is Output.Error -> {
+                                    is Result.Error -> {
                                         callback(movieResponse)
+                                        return@launch
                                     }
                                 }
                             } while (moviePageToken != null)
                         }
                         playlistPageToken = playlistResponse.data.nextPageToken
                     }
-                    is Output.Error -> {
+                    is Result.Error -> {
                         callback(playlistResponse)
+                        return@launch
                     }
                 }
             } while (playlistPageToken != null)
-            callback(Output.Success(playlistList))
+            callback(Result.Success(playlistList))
         }
     }
 
     // endregion
 
     // region private API
-    private fun fetchPlaylists(pageToken: String?): Output<PlaylistResponse> {
+    private fun fetchPlaylists(pageToken: String?): Result<PlaylistResponse> {
         val responseOutput = fetchFromApi(buildPlaylistRequestUrl(pageToken))
         when (responseOutput) {
-            is Output.Success -> {
+            is Result.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
                     val playlistString = response.body()?.string()
@@ -79,24 +77,24 @@ object NetworkManager {
                         val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
                         val playlistResponse = jsonAdapter.fromJson(playlistString)
                         if (playlistResponse != null) {
-                            return Output.Success(playlistResponse)
+                            return Result.Success(playlistResponse)
                         }
                     }
                 } else {
-                    return Output.Error("Error-Code from API while fetching playlists: " + response.code().toString())
+                    return Result.Error(400,"Error-Code from API while fetching playlists: " + response.code().toString())
                 }
             }
-            is Output.Error -> {
+            is Result.Error -> {
                 return responseOutput
             }
         }
-        return Output.Error("API-Call unsuccessful!")
+        return Result.Error(200, "API-Call unsuccessful!")
     }
 
-    private fun fetchMovies(playlistId: String, pageToken: String?): Output<MovieResponse> {
+    private fun fetchMovies(playlistId: String, pageToken: String?): Result<MovieResponse> {
         val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId, pageToken))
         when (responseOutput) {
-            is Output.Success -> {
+            is Result.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
                     val movieString = response.body()?.string()
@@ -104,28 +102,28 @@ object NetworkManager {
                         val jsonAdapter = moshi.adapter(MovieResponse::class.java)
                         val movieResponse = jsonAdapter.fromJson(movieString)
                         if (movieResponse != null) {
-                            return Output.Success(movieResponse)
+                            return Result.Success(movieResponse)
                         }
                     }
                 } else {
-                    return Output.Error("Error-Code from API while fetching movies: " + response.code().toString())
+                    return Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString())
                 }
             }
-            is Output.Error -> {
+            is Result.Error -> {
                 return responseOutput
             }
         }
-        return Output.Error("API-Call unsuccessful")
+        return Result.Error(200, "API-Call unsuccessful")
     }
 
-    private fun fetchFromApi(url: HttpUrl): Output<Response> {
+    private fun fetchFromApi(url: HttpUrl): Result<Response> {
         return try {
             val httpClient = OkHttpClient.Builder().build()
             val request = Request.Builder().url(url).build()
             val result = httpClient.newCall(request).execute()
-            Output.Success(result)
+            Result.Success(result)
         } catch (exception: Exception) {
-            Output.Error("Error: " + exception.message)
+            Result.Error(100,"Error connecting/ Timeout. Check your connection!")
         }
     }
 

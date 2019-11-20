@@ -10,8 +10,8 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
-import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
 import de.tdsoftware.moviesharing.util.MoviesManager
+import de.tdsoftware.moviesharing.util.Notification
 import org.greenrobot.eventbus.Subscribe
 
 /**
@@ -45,10 +45,36 @@ class FavoritesFragment: MainActivityBaseFragment() {
     private lateinit var mainView: FavoritesFragmentView
     // endregion
 
-    // region lifecycle callbacks
+    // region public API
+
+    override fun onNotification(notification: Notification) {
+        super.onNotification(notification)
+        when(notification){
+            is Notification.FavoriteChangedEvent -> {
+                Log.v(TAG, "Event fired in FavoriteFragment")
+
+                // update full-list
+                fullList = notification.favoriteList
+
+                // filter the list
+                filteredList = filter(mainView.searchViewQuery)
+                // set the playlist-list in the adapter by using the filteredList
+                playlistListInAdapter = createFilteredPlaylistList(filteredList)
+                // check if empty-state-text needs to be displayed
+                if (!checkFullListEmptyState()) {
+                    checkFilteredListEmptyState()
+                }
+            }
+        }
+    }
+
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistFavoriteAdapter()
     }
+
+    // endregion
+
+    // region lifecycle callbacks
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,21 +98,6 @@ class FavoritesFragment: MainActivityBaseFragment() {
         setUpMainView()
     }
 
-    @Subscribe
-    override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
-        // update full-list
-        fullList = MoviesManager.favoritePlaylist.movieList
-
-        Log.v(TAG, "There are " + fullList.size + " favorites in total!")
-        // filter the list
-        filteredList = filter(mainView.searchViewQuery)
-        // set the playlist-list in the adapter by using the filteredList
-        playlistListInAdapter = createFilteredPlaylistList(filteredList)
-        // check if empty-state-text needs to be displayed
-        if (!checkFullListEmptyState()) {
-            checkFilteredListEmptyState()
-        }
-    }
     // endregion
 
     // private API

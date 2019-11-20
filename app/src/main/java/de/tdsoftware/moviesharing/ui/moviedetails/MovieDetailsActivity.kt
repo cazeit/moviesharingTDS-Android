@@ -12,8 +12,7 @@ import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.util.FavoriteUpdateEvent
-import org.greenrobot.eventbus.EventBus
+import de.tdsoftware.moviesharing.util.MoviesManager
 
 /**
  * Activity that has one fragment in it (MovieDetailsFragment), basically just inflates it and handles
@@ -88,9 +87,7 @@ class MovieDetailsActivity : BaseActivity() {
                             PorterDuff.Mode.SRC_IN)
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
-                val event = FavoriteUpdateEvent()
-                event.movie = movie
-                EventBus.getDefault().post(event)
+                MoviesManager.updateFavorites(movie)
             }
         }
         return super.onOptionsItemSelected(item)
