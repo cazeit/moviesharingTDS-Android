@@ -72,8 +72,8 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     fun loadImages(url: String) {
         val transformation = CropTransformation(160,240)
-        Picasso.get().load(url).transform(transformation).into(bannerImageView)
-        Picasso.get().load(url).transform(transformation).into(coverImageView)
+        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(bannerImageView)
+        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(coverImageView)
     }
 
     // endregion

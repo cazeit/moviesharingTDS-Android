@@ -13,10 +13,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.lang.Exception
 
-
+/**
+ * Singleton, that handles all networking (API-calls) and
+ */
 object NetworkManager: CoroutineScope {
 
     // region properties
+    private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
+    private const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     private val job = Job()
     override val coroutineContext = Dispatchers.Default + job
@@ -31,14 +35,12 @@ object NetworkManager: CoroutineScope {
             var playlistPageToken: String? = ""
             var moviePageToken: String? = ""
             do {
-                val playlistResponse = fetchPlaylists(playlistPageToken)
-                when (playlistResponse) {
+                when (val playlistResponse = fetchPlaylistListFromUser(playlistPageToken)) {
                     is Result.Success<PlaylistResponse> -> {
                         playlistList.addAll(mapToPlaylists(playlistResponse.data))
                         for (playlist in playlistList) {
                             do {
-                                val movieResponse = fetchMovies(playlist.id, moviePageToken)
-                                when (movieResponse) {
+                                when (val movieResponse = fetchMoviesFromPlaylist(playlist.id, moviePageToken)) {
                                     is Result.Success<MovieResponse> -> {
                                         val movieList = mapToMovies(movieResponse.data)
                                         playlist.movieList.addAll(movieList)
@@ -66,9 +68,9 @@ object NetworkManager: CoroutineScope {
     // endregion
 
     // region private API
-    private fun fetchPlaylists(pageToken: String?): Result<PlaylistResponse> {
-        val responseOutput = fetchFromApi(buildPlaylistRequestUrl(pageToken))
-        when (responseOutput) {
+
+    private fun fetchPlaylistListFromUser(pageToken: String?): Result<PlaylistResponse> {
+        when (val responseOutput = fetchFromApi(buildPlaylistRequestUrl(CHANNEL_ID, pageToken))) {
             is Result.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
@@ -91,9 +93,8 @@ object NetworkManager: CoroutineScope {
         return Result.Error(200, "API-Call unsuccessful!")
     }
 
-    private fun fetchMovies(playlistId: String, pageToken: String?): Result<MovieResponse> {
-        val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId, pageToken))
-        when (responseOutput) {
+    private fun fetchMoviesFromPlaylist(playlistId: String, pageToken: String?): Result<MovieResponse> {
+        when (val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId, pageToken))) {
             is Result.Success -> {
                 val response = responseOutput.data
                 if (response.isSuccessful) {
@@ -127,13 +128,13 @@ object NetworkManager: CoroutineScope {
         }
     }
 
-    private fun buildPlaylistRequestUrl(pageToken: String?): HttpUrl {
+    private fun buildPlaylistRequestUrl(channelId: String, pageToken: String?): HttpUrl {
         return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
             .addPathSegments("youtube/v3/playlists")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
-            .addQueryParameter("channelId", "UCPppOIczZfCCoqAwRLc4T0A")
+            .addQueryParameter("channelId", channelId)
             .addQueryParameter("maxResults", "50")
-            .addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
+            .addQueryParameter("key", API_KEY).build()
     }
 
     private fun buildPlaylistItemsRequestUrl(playlistId: String, pageToken: String?): HttpUrl {
@@ -141,7 +142,7 @@ object NetworkManager: CoroutineScope {
             .addPathSegments("youtube/v3/playlistItems")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
             .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
-            .addQueryParameter("key", "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU").build()
+            .addQueryParameter("key", API_KEY).build()
     }
 
     private fun mapToPlaylists(playlistResponse: PlaylistResponse): ArrayList<Playlist> {

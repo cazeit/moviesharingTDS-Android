@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
 import jp.wasabeef.picasso.transformations.CropTransformation
 
@@ -46,7 +47,7 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
         holder.movieTitle = movieList[position].title
 
         val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imagePath).transform(transformation)
+        Picasso.get().load(movieList[position].imagePath).placeholder(R.drawable.sample_movie_image).transform(transformation)
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {

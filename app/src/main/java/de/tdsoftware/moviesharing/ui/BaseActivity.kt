@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.ui.loading.LoadingActivity
 import de.tdsoftware.moviesharing.util.Notification
 import org.greenrobot.eventbus.EventBus

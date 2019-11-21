@@ -5,7 +5,9 @@ import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
 import org.greenrobot.eventbus.EventBus
 
-
+/**
+ * Singleton that handles everything around Movies -> API for Movies
+ */
 object MoviesManager {
 
     // properties
@@ -26,6 +28,9 @@ object MoviesManager {
     // endregion
 
     // constructors
+    /**
+     * creating a playlist for favorites at runtime
+     */
     init {
         val favoriteList = Playlist("fav001", "Favorite", ArrayList())
         favoritePlaylistList.add(favoriteList)
@@ -34,9 +39,13 @@ object MoviesManager {
 
 
     // public API
+    /**
+     * This needs to be called in advance of fetching playlists
+     */
     fun setUpMoviesManager(sharedPref: SharedPreferences) {
         sharedPreferences = sharedPref
     }
+
 
     fun fetchPlaylistList() {
             NetworkManager.fetchAll {

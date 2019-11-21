@@ -12,7 +12,7 @@ import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.util.MoviesManager
 import de.tdsoftware.moviesharing.util.Notification
-import org.greenrobot.eventbus.Subscribe
+
 
 /**
  * Favorite-Fragment, has a SearchView and a list of all favorites
