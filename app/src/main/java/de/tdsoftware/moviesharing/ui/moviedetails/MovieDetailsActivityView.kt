@@ -18,6 +18,7 @@ class MovieDetailsActivityView(context: Context, attrs: AttributeSet?) :
     // region Constructors
 
     // endregion
+
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()

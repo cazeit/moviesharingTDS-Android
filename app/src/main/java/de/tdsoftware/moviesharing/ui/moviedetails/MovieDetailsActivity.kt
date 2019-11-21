@@ -93,7 +93,6 @@ class MovieDetailsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
     // endregion
 
     // region private API

@@ -64,6 +64,12 @@ class MovieDetailsFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    // TODO: what about this? -> prevents double intent. (but is onResume always called?)
+    override fun onResume() {
+        super.onResume()
+        mainView.enableButtons()
+    }
+
     // endregion
 
     // region private API
