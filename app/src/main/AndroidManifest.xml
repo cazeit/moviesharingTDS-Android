@@ -15,10 +15,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.moviedetails.MovieDetailsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
         <activity android:name="de.tdsoftware.moviesharing.ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity android:name="de.tdsoftware.moviesharing.ui.loading.LoadingActivity"
             android:screenOrientation="portrait" >
             <intent-filter>

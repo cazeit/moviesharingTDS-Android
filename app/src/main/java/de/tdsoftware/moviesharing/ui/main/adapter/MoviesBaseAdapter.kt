@@ -51,7 +51,9 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {
+            holder.movieThumbnailImageView.isClickable = false
             listener?.onRecyclerItemClick(movieList[position])
+            holder.movieThumbnailImageView.isClickable = true
         }
     }
 

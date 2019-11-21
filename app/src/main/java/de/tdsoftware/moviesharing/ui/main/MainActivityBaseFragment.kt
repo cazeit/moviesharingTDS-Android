@@ -62,7 +62,7 @@ abstract class MainActivityBaseFragment: BaseFragment() {
         playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie) {
                 Log.v(TAG, "Movie selected with title: " + movie.title)
-
+                
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra("movie", movie)
                 startActivity(intent)

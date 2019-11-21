@@ -19,12 +19,12 @@ import java.lang.Exception
 object NetworkManager: CoroutineScope {
 
     // region properties
+
     private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
     private const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     private val job = Job()
     override val coroutineContext = Dispatchers.Default + job
-
 
     // endregion
 

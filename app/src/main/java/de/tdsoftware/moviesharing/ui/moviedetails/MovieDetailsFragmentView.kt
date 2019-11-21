@@ -110,7 +110,9 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         }
 
         coverImageView.setOnClickListener {
+            coverImageView.isClickable = false
             viewListener?.onCoverImageClick()
+            coverImageView.isClickable = true
         }
     }
 

@@ -72,9 +72,11 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     private fun setupControls() {
         retryButton.setOnClickListener{
+            retryButton.isClickable = false
             showRetryButton(false)
 
             viewListener?.onRetryButtonClicked()
+            retryButton.isClickable = true
         }
     }
 
