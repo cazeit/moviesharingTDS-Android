@@ -47,6 +47,7 @@ object MoviesManager {
     }
 
 
+    // TODO: here use new syntax.. ask tomorrow if approach is right?
     fun fetchPlaylistList() {
             NetworkManager.fetchAll {
             when (it) {
