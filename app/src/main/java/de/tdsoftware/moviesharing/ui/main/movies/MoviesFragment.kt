@@ -46,7 +46,7 @@ class MoviesFragment : BaseFragment() {
 
     // region private API
 
-    private fun setUpMainView(){
+    private fun setUpMainView() {
         moviesViewPagerAdapter =
             MoviesViewPagerAdapter(childFragmentManager)
         mainView.changeViewPagerAdapter(moviesViewPagerAdapter)

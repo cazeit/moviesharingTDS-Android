@@ -3,43 +3,74 @@ package de.tdsoftware.moviesharing.ui.loading
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.ui.main.MainActivity
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.Sample
-import de.tdsoftware.moviesharing.util.Repository
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import de.tdsoftware.moviesharing.util.MoviesManager
+import de.tdsoftware.moviesharing.util.Notification
 
 /**
- * LoadingActivity represents the starting activity of the application, basically making sure that data
+ * LoadingActivity represents the starting-activity of the application, basically making sure that data
  * is being obtained and if so redirects to MainActivity
  */
-class LoadingActivity : BaseActivity(){
+
+class LoadingActivity : BaseActivity() {
+
+
+    // properties
 
     private lateinit var mainView: LoadingActivityView
+
+    // endregion
+
+    override fun onNotification(notification: Notification) {
+        super.onNotification(notification)
+        when(notification){
+            is Notification.NetworkErrorEvent -> {
+                mainView.showRetryButton(true)
+            }
+            is Notification.PlaylistChangedEvent -> {
+                val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
+            }
+        }
+    }
+
+    // region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO: remove after implementation of FavoritesInit (delete shared prefs atm, as favorite list is not initialized
-        getSharedPreferences("sharedPref", Context.MODE_PRIVATE).edit().clear().apply()
-
-        mainView = layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
+        mainView =
+            layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
         setContentView(mainView)
 
-        GlobalScope.launch {
-            delay(3000)
+        MoviesManager.setUpMoviesManager(applicationContext.getSharedPreferences("sharedPref", Context.MODE_PRIVATE))
+        MoviesManager.fetchPlaylistList()
 
-            Repository.playlistList = Sample.playlistSampleList
-            Repository.favoritePlaylistList = arrayListOf(Sample.playlistFavorite)
+        actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.backgroundDefault)))
 
-            val intent = Intent(this@LoadingActivity, MainActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            finish()
+        setUpMainView()
+    }
+
+    // endregion
+
+
+    // private API
+
+    private fun setUpMainView() {
+        mainView.viewListener = object : LoadingActivityView.Listener {
+            override fun onRetryButtonClicked() {
+                MoviesManager.fetchPlaylistList()
+            }
+
         }
     }
+
+    // endregion
 }

@@ -13,11 +13,18 @@ import de.tdsoftware.moviesharing.data.models.Movie
  * BaseAdapter for RecyclerView, where each one item represents one playlist
  */
 abstract class PlaylistBaseAdapter:
-    RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>(){
+    RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>() {
 
-    // properties
+    // region public types
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    /**
+     * Listener defined to handle onClick inside (@see VideoBaseAdapter)
+     */
+    interface Listener {
+        fun onMovieSelected(movie: Movie)
+    }
+
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         val playlistTitleTextView: TextView =
             itemView.findViewById(R.id.recycler_item_playlists_title)
@@ -26,28 +33,25 @@ abstract class PlaylistBaseAdapter:
             itemView.findViewById(R.id.recycler_item_playlists_recylcer_view_movies)
 
         var playlistTitle: String?
-            get(){
+            get() {
                 return playlistTitleTextView.text.toString()
             }
-            set(value){
+            set(value) {
                 playlistTitleTextView.text = value
             }
 
-        var movieRecyclerAdapter: MovieBaseAdapter?
-            get(){
-                return movieRecyclerView.adapter as MovieBaseAdapter?
+        var moviesRecyclerAdapter: MoviesBaseAdapter?
+            get() {
+                return movieRecyclerView.adapter as MoviesBaseAdapter?
             }
-            set(value){
+            set(value) {
                 movieRecyclerView.adapter = value
             }
     }
 
-    /**
-     * Listener defined to handle onClick inside (@see VideoBaseAdapter)
-     */
-    interface Listener {
-        fun onMovieSelected(movie: Movie)
-    }
+    // endregion
+
+    // region properties
 
     var clickListener: Listener? = null
 
@@ -59,7 +63,7 @@ abstract class PlaylistBaseAdapter:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.movieRecyclerAdapter?.listener = object: MovieBaseAdapter.ItemClickListener{
+        holder.moviesRecyclerAdapter?.listener = object: MoviesBaseAdapter.ItemClickListener {
             override fun onRecyclerItemClick(movie: Movie) {
                 clickListener?.onMovieSelected(movie)
             }

@@ -1,41 +1,33 @@
 package de.tdsoftware.moviesharing.ui.main.adapter
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 /**
  * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
  */
-abstract class MovieBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MovieBaseAdapter.ViewHolder>() {
+abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
 
     // Region public types
     class ViewHolder(itemView: View,
                      val movieThumbnailImageView: ImageView,
-                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView){
+                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView) {
         var movieTitle: String?
-            get(){
+            get() {
                 return movieTitleTextView.text.toString()
             }
-            set(value){
+            set(value) {
                 movieTitleTextView.text = value
-            }
-        var movieThumbnailUri: Uri?
-            set(value){
-                movieThumbnailImageView.setImageURI(value)
-            }
-            get(){
-                /**i cannot get uri of an imageview, but will never need the getter, is it okay to implement a wrong getter then?
-                 * or do I set imageView's uri the normal way?**/
-                return "".toUri()
             }
     }
 
-    interface ItemClickListener{
+    interface ItemClickListener {
         fun onRecyclerItemClick(movie: Movie)
     }
 
@@ -53,9 +45,15 @@ abstract class MovieBaseAdapter(private var movieList: ArrayList<Movie>): Recycl
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle = movieList[position].title
-        //holder.movieThumbnailUri = movieList[position].imagePath.toUri()
+
+        val transformation = CropTransformation(160, 240)
+        Picasso.get().load(movieList[position].imagePath).placeholder(R.drawable.sample_movie_image).transform(transformation)
+            .into(holder.movieThumbnailImageView)
+
         holder.movieThumbnailImageView.setOnClickListener {
+            holder.movieThumbnailImageView.isClickable = false
             listener?.onRecyclerItemClick(movieList[position])
+            holder.movieThumbnailImageView.isClickable = true
         }
     }
 

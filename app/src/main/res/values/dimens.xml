@@ -5,6 +5,7 @@
     <dimen name="spacing_normal">10dp</dimen>
     <dimen name="spacing_large">15dp</dimen>
     <dimen name="spacing_xlarge">20dp</dimen>
+
     <!-- Text-Size -->
     <dimen name="text_size_xsmall">11sp</dimen>
     <dimen name="text_size_small">13sp</dimen>
@@ -29,7 +30,7 @@
 
     <dimen name="fragment_movies_list_recycler_picture_height">130dp</dimen>
 
-    <dimen name="fragment_video_details_banner_picture_height">160dp</dimen>
-    <dimen name="fragment_video_details_cover_picture_height">165dp</dimen>
-    <dimen name="fragment_video_details_cover_picture_width">110dp</dimen>
+    <dimen name="fragment_video_details_banner_picture_height">150dp</dimen>
+    <dimen name="fragment_video_details_cover_picture_height">155dp</dimen>
+    <dimen name="fragment_video_details_cover_picture_width">100dp</dimen>
 </resources>

@@ -3,23 +3,35 @@ package de.tdsoftware.moviesharing.ui.main.movies
 import android.os.Bundle
 import android.view.View
 import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
-import de.tdsoftware.moviesharing.util.RecyclerUpdateEvent
-import de.tdsoftware.moviesharing.util.Repository
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import de.tdsoftware.moviesharing.util.MoviesManager
+import de.tdsoftware.moviesharing.util.Notification
 
 /**
  * BaseFragment for MoviesGridFragment and MoviesListFragment, inheriting itself from MainActivityBaseFragment
  */
+
 abstract class MoviesBaseFragment: MainActivityBaseFragment() {
+
+    // region public API
+
+    override fun onNotification(notification: Notification) {
+        super.onNotification(notification)
+        when(notification) {
+            is Notification.PlaylistChangedEvent -> {
+                println("Event fired in MovieBaseFragment")
+                playlistListInAdapter = MoviesManager.playlistList
+            }
+        }
+    }
+
+    // endregion
+
+    // region lifecycle callback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistListInAdapter = Repository.playlistList
+        playlistListInAdapter = MoviesManager.playlistList
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    override fun onRecyclerUpdateEvent(recyclerUpdateEvent: RecyclerUpdateEvent) {
-        playlistListInAdapter = Repository.playlistList
-    }
+    // endregion
 }

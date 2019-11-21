@@ -27,18 +27,18 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     var viewListener: Listener? = null
 
     var searchViewQuery: String
-        get(){
+        get() {
             return searchView.query.toString()
         }
-        set(value){
+        set(value) {
             searchView.setQuery(value, true)
         }
 
     var hintText: String
-        get(){
+        get() {
             return hintTextView.text.toString()
         }
-        set(value){
+        set(value) {
             hintTextView.text = value
         }
 
@@ -50,10 +50,10 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun changeEmptyStateTextVisibility(isVisible: Boolean){
-        if(isVisible){
+    fun changeEmptyStateTextVisibility(isVisible: Boolean) {
+        if (isVisible) {
             hintLayout.visibility = View.VISIBLE
-        }else{
+        } else {
             hintLayout.visibility = View.INVISIBLE
         }
     }
@@ -84,14 +84,14 @@ class FavoritesFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setupControls() {
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText != null) {
+                if (newText != null) {
                     viewListener?.onQueryChange(newText)
                 }
                 return true

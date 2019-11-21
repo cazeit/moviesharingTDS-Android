@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -38,9 +41,16 @@ dependencies {
     //recycler-view
     implementation "androidx.recyclerview:recyclerview:1.1.0-rc01"
     //Moshi
-    implementation "com.squareup.moshi:moshi:1.9.1"
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //picasso transformations
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 }

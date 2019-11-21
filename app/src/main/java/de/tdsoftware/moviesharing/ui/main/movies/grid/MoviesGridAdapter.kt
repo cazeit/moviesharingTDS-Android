@@ -6,12 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.ui.main.adapter.MovieBaseAdapter
+import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
 
 /**
  * adapter for recyclerView inside Playlist-Adapters-ViewHolders from MovieGridFragment
  */
-class MoviesGridAdapter(movieList: ArrayList<Movie>): MovieBaseAdapter(movieList) {
+class MoviesGridAdapter(movieList: ArrayList<Movie>): MoviesBaseAdapter(movieList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =

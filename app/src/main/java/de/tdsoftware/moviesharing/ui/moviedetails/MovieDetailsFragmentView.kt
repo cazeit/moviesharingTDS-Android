@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -24,37 +26,36 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     var viewListener: Listener? = null
 
     var title: String?
-        get(){
+        get() {
             return titleTextView.text.toString()
         }
-        set(value){
+        set(value) {
             titleTextView.text = value
         }
 
     var description: String?
-        get(){
+        get() {
             return descriptionTextView.text.toString()
         }
-        set(value){
+        set(value) {
             descriptionTextView.text = value
         }
 
     var secondaryText: String?
-        get(){
+        get() {
             return secondaryTextView.text.toString()
         }
-        set(value){
+        set(value) {
             secondaryTextView.text = value
         }
 
     var ratingBarValue: Float
-        get(){
+        get() {
             return ratingBar.rating
         }
-        set(value){
+        set(value) {
             ratingBar.rating = value
         }
-
 
     private lateinit var bannerImageView: ImageView
     private lateinit var coverImageView: ImageView
@@ -64,6 +65,16 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     private lateinit var descriptionTextView: TextView
 
     private lateinit var ratingBar: RatingBar
+
+    // endregion
+
+    // region public API
+
+    fun loadImages(url: String) {
+        val transformation = CropTransformation(160,240)
+        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(bannerImageView)
+        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(coverImageView)
+    }
 
     // endregion
 
@@ -92,14 +103,16 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setupControls() {
-        ratingBar.setOnRatingBarChangeListener{ _, value: Float, fromUser: Boolean ->
-            if(fromUser){
+        ratingBar.setOnRatingBarChangeListener { _, value: Float, fromUser: Boolean ->
+            if (fromUser) {
                 viewListener?.onRatingChanged(value)
             }
         }
 
-        coverImageView.setOnClickListener{
+        coverImageView.setOnClickListener {
+            coverImageView.isClickable = false
             viewListener?.onCoverImageClick()
+            coverImageView.isClickable = true
         }
     }
 

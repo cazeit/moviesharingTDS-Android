@@ -9,5 +9,7 @@ data class Thumbnails(
     @Json(name = "high")
     val high: High,
     @Json(name = "medium")
-    val medium: Medium
+    val medium: Medium,
+    @Json(name = "maxres")
+    val maxRes: MaxRes?
 )

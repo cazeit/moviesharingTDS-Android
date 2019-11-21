@@ -11,10 +11,9 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 /**
  * Fragment that is part of MoviesFragment's ViewPager, handling the recyclerView in it (grid-view of movies)
  */
-class MoviesGridFragment : MoviesBaseFragment(){
+class MoviesGridFragment : MoviesBaseFragment() {
 
     // region public types
-
     companion object {
 
         @JvmStatic
@@ -26,7 +25,6 @@ class MoviesGridFragment : MoviesBaseFragment(){
     // endregion
 
     // region properties
-
     private lateinit var mainView: MoviesGridFragmentView
 
     private val playlistRecyclerAdapter: PlaylistGridAdapter
@@ -37,15 +35,13 @@ class MoviesGridFragment : MoviesBaseFragment(){
     // endregion
 
     // region public API
-
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistGridAdapter()
     }
 
     // endregion
 
-    //region lifecycle callbacks
-
+    // region lifecycle callbacks
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mainView = inflater.inflate(R.layout.fragment_movies_grid,container,false) as MoviesGridFragmentView
         return mainView
@@ -59,15 +55,14 @@ class MoviesGridFragment : MoviesBaseFragment(){
 
     // endregion
 
-    //region private API
-
+    // region private API
     /**
      * the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
      */
-    private fun setUpMainView(){
+    private fun setUpMainView() {
         mainView.changePlaylistRecyclerAdapter(playlistRecyclerAdapter)
     }
 
-    //endregion
+    // endregion
 
 }

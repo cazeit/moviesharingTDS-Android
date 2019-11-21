@@ -9,5 +9,7 @@ data class MovieResponse(
     @Json(name = "items")
     val items: List<Item>,
     @Json(name = "kind")
-    val kind: String
+    val kind: String,
+    @Json(name = "nextPageToken")
+    val nextPageToken: String?
 )

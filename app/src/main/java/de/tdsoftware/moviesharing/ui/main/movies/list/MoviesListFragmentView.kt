@@ -45,7 +45,7 @@ class MoviesListFragmentView(context: Context, attrs: AttributeSet?) :
 
     }
 
-    private fun buildPlaylistRecycler(){
+    private fun buildPlaylistRecycler() {
         playlistRecyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
     }
     // endregion 
