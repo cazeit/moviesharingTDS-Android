@@ -25,7 +25,6 @@ abstract class BaseActivity : AppCompatActivity() {
         when(notification){
             is Notification.NetworkErrorEvent -> {
                 val parentView = findViewById<View>(android.R.id.content)
-                println("AAA")
                 Snackbar.make(
                     parentView,
                     "Error Nr. " + notification.code + ": " + notification.message,

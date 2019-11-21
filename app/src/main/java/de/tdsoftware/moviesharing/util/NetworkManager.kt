@@ -22,7 +22,9 @@ object NetworkManager: CoroutineScope {
 
     private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
     private const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
+
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
     private val job = Job()
     override val coroutineContext = Dispatchers.Default + job
 
@@ -124,7 +126,7 @@ object NetworkManager: CoroutineScope {
             val result = httpClient.newCall(request).execute()
             Result.Success(result)
         } catch (exception: Exception) {
-            Result.Error(100,"Error connecting/ Timeout. Check your connection!")
+            Result.Error(100,"Error connecting. Check your connection!")
         }
     }
 
@@ -157,7 +159,7 @@ object NetworkManager: CoroutineScope {
         val returnList = ArrayList<Movie>()
         for (responseItem in movieResponse.items) {
             val secondaryText =
-                "hinzugefügt am: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
+                "added on: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
                         responseItem.snippet.publishedAt.substring(5, 7) + "." +
                         responseItem.snippet.publishedAt.substring(0, 4)
             val imageString = responseItem.snippet.thumbnails.high.url

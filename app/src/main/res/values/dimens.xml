@@ -7,14 +7,12 @@
     <dimen name="spacing_xlarge">20dp</dimen>
 
     <!-- Text-Size -->
-    <dimen name="text_size_xsmall">11sp</dimen>
     <dimen name="text_size_small">13sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
 
     <!-- elevation -->
     <dimen name="elevation_normal">8dp</dimen>
-    <dimen name="elevation_large">12dp</dimen>
 
     <!-- card-corner -->
     <dimen name="corner_radius_normal">6dp</dimen>

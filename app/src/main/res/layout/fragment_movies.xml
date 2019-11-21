@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <de.tdsoftware.moviesharing.ui.main.movies.MoviesFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundDefault"
-    tools:context=".ui.main.movies.MoviesFragment">
+    android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_movies_tab_layout"
