@@ -47,15 +47,13 @@ object MoviesManager {
     }
 
 
-    // TODO: here use new syntax.. ask tomorrow if approach is right?
-    fun fetchPlaylistList() {
-            NetworkManager.fetchAll {
-            when (it) {
-                is Result.Success<ArrayList<Playlist>> -> {
+    // TODO: now we have the fetch here, better way??
+    fun fetchPlaylistListWithMovies() {
+        PlaylistRequest {
+            when(it){
+                is Result.Success -> {
                     playlistList = it.data
-                    initializeFavorites()
-                    val playlistChangedEvent = Notification.PlaylistChangedEvent(playlistList)
-                    EventBus.getDefault().post(playlistChangedEvent)
+                    EventBus.getDefault().post(Notification.PlaylistChangedEvent(it.data))
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))

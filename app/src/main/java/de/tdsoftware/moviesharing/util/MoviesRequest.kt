@@ -4,20 +4,28 @@ import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import kotlinx.coroutines.launch
 
-class MoviesRequest(private val playlistId: String, private val pageToken: String = "", private val callback: (Result<ArrayList<Movie>>) -> Unit): Request() {
 
+// TODO: where do i put this request now...???
+class MoviesRequest(private val playlistId: String, private val callback: (Result<ArrayList<Movie>>) -> Unit): Request() {
+
+    private val movieList = ArrayList<Movie>()
 
    init{
-       fetch()
+       fetch("")
    }
 
-    private fun fetch(){
+    private fun fetch(pageToken: String){
         launch {
             NetworkManager.fetchMoviesFromPlaylist(playlistId, pageToken) {
                 when (it) {
                     is Result.Success -> {
                         val movieResponse = it.data
-                        callback(Result.Success(mapToMovies(movieResponse)))
+                        movieList.addAll(mapToMovies(movieResponse))
+                        if(movieResponse.nextPageToken != null){
+                            fetch(movieResponse.nextPageToken)
+                        }else {
+                            callback(Result.Success(movieList))
+                        }
                     }
                     is Result.Error -> {
                         callback(it)
