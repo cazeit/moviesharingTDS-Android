@@ -18,7 +18,6 @@ abstract class MoviesBaseFragment: MainActivityBaseFragment() {
         super.onNotification(notification)
         when(notification) {
             is Notification.PlaylistChangedEvent -> {
-                println("Event fired in MovieBaseFragment")
                 playlistListInAdapter = notification.playlistList
             }
         }

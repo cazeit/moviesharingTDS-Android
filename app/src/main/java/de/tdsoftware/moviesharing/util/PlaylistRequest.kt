@@ -1,44 +1,53 @@
 package de.tdsoftware.moviesharing.util
 
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
-import de.tdsoftware.moviesharing.data.models.Playlist
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.HttpUrl
+import okhttp3.Response
 
-class PlaylistRequest(private val callback: (Result<ArrayList<Playlist>>) -> Unit): Request() {
+class PlaylistRequest(private val pageToken: String, private val callback: (Result<PlaylistResponse>) -> Unit): Request() {
 
-    private val playlistList = ArrayList<Playlist>()
-    private var pageToken: String = ""
+    companion object {
+        private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
+    }
 
     override fun fetch(){
         launch {
-            NetworkManager.fetchPlaylistListFromUser(pageToken) {
-                when (it) {
-                    is Result.Success -> {
-                        val playlistResponse = it.data
-                        playlistList.addAll(mapToPlaylists(playlistResponse))
-                        if(playlistResponse.nextPageToken != null){
-                            pageToken = playlistResponse.nextPageToken
-                            fetch()
-                        }else {
-                            callback(Result.Success(playlistList))
-                            super.onFetched()
-                        }
-                    }
-                    is Result.Error -> {
-                        callback(it)
-                        super.onFetched()
-                    }
+            when (val playlistResponse = fetchFromApi(buildPlaylistRequestUrl(pageToken))) {
+                is Result.Success -> {
+                    val response = playlistResponse.data
+                    checkPlaylisteResponse(response)
+                    super.onFetched()
+                }
+                is Result.Error -> {
+                    callback(playlistResponse)
+                    super.onFetched()
                 }
             }
         }
     }
 
-    private fun mapToPlaylists(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
-        val returnList = ArrayList<Playlist>()
-        for (responseItem in playlistResponse.items) {
-            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))
+    private fun checkPlaylisteResponse(response: Response){
+        if (response.isSuccessful) {
+            val playlistString = response.body()?.string()
+            playlistString?.let {
+                val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
+                val playlistResponse = jsonAdapter.fromJson(playlistString)
+                if (playlistResponse != null) {
+                    callback(Result.Success(playlistResponse))
+                }
+            }
+        } else {
+            callback(Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString()))
         }
-        return returnList
+    }
+
+    private fun buildPlaylistRequestUrl(pageToken: String?): HttpUrl {
+        return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
+            .addPathSegments("youtube/v3/playlists")
+            .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
+            .addQueryParameter("channelId", CHANNEL_ID)
+            .addQueryParameter("maxResults", "50")
+            .addQueryParameter("key", API_KEY).build()
     }
 }
