@@ -113,7 +113,6 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        // TODO: what about here? this approach should work, but when clicking while transistioning, then 2x intent...
         coverImageView.setOnClickListener {
             coverImageView.isEnabled = false
             viewListener?.onCoverImageClick()

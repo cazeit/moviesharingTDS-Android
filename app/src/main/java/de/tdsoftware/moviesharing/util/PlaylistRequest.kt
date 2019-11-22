@@ -2,17 +2,15 @@ package de.tdsoftware.moviesharing.util
 
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
 import de.tdsoftware.moviesharing.data.models.Playlist
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlaylistRequest(private val callback: (Result<ArrayList<Playlist>>) -> Unit): Request() {
 
     private val playlistList = ArrayList<Playlist>()
+    private var pageToken: String = ""
 
-    init{
-        fetch("")
-    }
-
-    fun fetch(pageToken: String){
+    override fun fetch(){
         launch {
             NetworkManager.fetchPlaylistListFromUser(pageToken) {
                 when (it) {
@@ -20,13 +18,16 @@ class PlaylistRequest(private val callback: (Result<ArrayList<Playlist>>) -> Uni
                         val playlistResponse = it.data
                         playlistList.addAll(mapToPlaylists(playlistResponse))
                         if(playlistResponse.nextPageToken != null){
-                            fetch(playlistResponse.nextPageToken)
+                            pageToken = playlistResponse.nextPageToken
+                            fetch()
                         }else {
                             callback(Result.Success(playlistList))
+                            super.onFetched()
                         }
                     }
                     is Result.Error -> {
                         callback(it)
+                        super.onFetched()
                     }
                 }
             }

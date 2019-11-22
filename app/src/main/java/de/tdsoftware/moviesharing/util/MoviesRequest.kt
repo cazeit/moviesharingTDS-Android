@@ -5,16 +5,12 @@ import de.tdsoftware.moviesharing.data.models.Movie
 import kotlinx.coroutines.launch
 
 
-// TODO: where do i put this request now...???
 class MoviesRequest(private val playlistId: String, private val callback: (Result<ArrayList<Movie>>) -> Unit): Request() {
 
     private val movieList = ArrayList<Movie>()
+    private var pageToken: String = ""
 
-   init{
-       fetch("")
-   }
-
-    private fun fetch(pageToken: String){
+    override fun fetch(){
         launch {
             NetworkManager.fetchMoviesFromPlaylist(playlistId, pageToken) {
                 when (it) {
@@ -22,13 +18,16 @@ class MoviesRequest(private val playlistId: String, private val callback: (Resul
                         val movieResponse = it.data
                         movieList.addAll(mapToMovies(movieResponse))
                         if(movieResponse.nextPageToken != null){
-                            fetch(movieResponse.nextPageToken)
+                            pageToken = movieResponse.nextPageToken
+                            fetch()
                         }else {
                             callback(Result.Success(movieList))
+                            super.onFetched()
                         }
                     }
                     is Result.Error -> {
                         callback(it)
+                        super.onFetched()
                     }
                 }
             }

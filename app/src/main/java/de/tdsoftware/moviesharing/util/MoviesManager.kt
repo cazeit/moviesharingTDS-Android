@@ -47,14 +47,11 @@ object MoviesManager {
         sharedPreferences = sharedPref
     }
 
-
     fun fetchPlaylistListWithMovies() {
-        PlaylistWithMoviesRequest{
+        PlaylistRequest{
             when(it){
                 is Result.Success -> {
-                    playlistList = it.data
-                    initializeFavorites()
-                    EventBus.getDefault().post(Notification.PlaylistChangedEvent(it.data))
+                    fetchMoviesForPlaylistList(it.data)
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
@@ -78,6 +75,28 @@ object MoviesManager {
     }
 
     // private API
+
+    private fun fetchMoviesForPlaylistList(emptyPlaylistList: ArrayList<Playlist>){
+        for(playlist in emptyPlaylistList) {
+            MoviesRequest(playlist.id) {
+                when(it){
+                    is Result.Success -> {
+                        playlist.movieList = it.data
+                        if(playlist.id == emptyPlaylistList.last().id){
+                            playlistList = emptyPlaylistList
+                            initializeFavorites()
+                            EventBus.getDefault().post(Notification.PlaylistChangedEvent(emptyPlaylistList))
+                        }
+                    }
+                    is Result.Error -> {
+                        // remove all open movie-requests..
+                        Request.unregisterAll(MoviesRequest::class.java)
+                        EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                    }
+                }
+            }
+        }
+    }
 
     private fun initializeFavorites() {
         for (playlist in playlistList) {
