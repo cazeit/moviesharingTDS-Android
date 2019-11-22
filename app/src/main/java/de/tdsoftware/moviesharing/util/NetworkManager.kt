@@ -4,7 +4,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
-import de.tdsoftware.moviesharing.data.models.Playlist
 import okhttp3.HttpUrl
 import okhttp3.Response
 import okhttp3.OkHttpClient
@@ -37,11 +36,10 @@ object NetworkManager {
                 callback(responseOutput)
             }
         }
-        callback(Result.Error(200, "API-Call unsuccessful!"))
     }
 
     fun fetchMoviesFromPlaylist(playlistId: String, pageToken: String?, callback: (Result<MovieResponse>) -> Unit){
-        when (val responseOutput = fetchFromApi(buildPlaylistItemsRequestUrl(playlistId, pageToken))) {
+        when (val responseOutput = fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))) {
             is Result.Success -> {
                 val response = responseOutput.data
                 checkMovieResponse(response, callback)
@@ -50,7 +48,6 @@ object NetworkManager {
                 callback(responseOutput)
             }
         }
-        callback(Result.Error(200, "API-Call unsuccessful"))
     }
 
     private fun fetchFromApi(url: HttpUrl): Result<Response> {
@@ -73,11 +70,14 @@ object NetworkManager {
             .addQueryParameter("key", API_KEY).build()
     }
 
-    private fun buildPlaylistItemsRequestUrl(playlistId: String, pageToken: String?): HttpUrl {
+    /**
+     * playlistItems = movies
+     */
+    private fun buildMoviesFromPlaylistRequestUrl(playlistId: String, pageToken: String?): HttpUrl {
         return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
             .addPathSegments("youtube/v3/playlistItems")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
-            .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
+            .addQueryParameter("playlisId", playlistId).addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
     }
 
@@ -94,7 +94,6 @@ object NetworkManager {
         } else {
             callback(Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString()))
         }
-        callback(Result.Error(200, "Error calling API"))
     }
 
     private fun checkPlaylisteResponse(response: Response, callback: (Result<PlaylistResponse>) -> Unit){
@@ -110,7 +109,6 @@ object NetworkManager {
         } else {
             callback(Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString()))
         }
-        callback(Result.Error(200, "Error calling API"))
     }
 
     // endregion

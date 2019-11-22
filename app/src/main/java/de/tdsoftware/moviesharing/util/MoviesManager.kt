@@ -22,8 +22,9 @@ object MoviesManager {
         set(value) {
             favoritePlaylistList[0] = value
         }
-
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var successFetching = true
 
     // endregion
 
@@ -47,12 +48,12 @@ object MoviesManager {
     }
 
 
-    // TODO: now we have the fetch here, better way??
     fun fetchPlaylistListWithMovies() {
-        PlaylistRequest {
+        PlaylistWithMoviesRequest{
             when(it){
                 is Result.Success -> {
                     playlistList = it.data
+                    initializeFavorites()
                     EventBus.getDefault().post(Notification.PlaylistChangedEvent(it.data))
                 }
                 is Result.Error -> {
