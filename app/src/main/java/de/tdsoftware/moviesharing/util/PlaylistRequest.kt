@@ -38,7 +38,7 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
                 }
             }
         } else {
-            callback(Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString()))
+            callback(Result.Error(400, "Error-Code from API while fetching playlists: " + response.code().toString()))
         }
     }
 

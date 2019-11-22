@@ -26,7 +26,7 @@ abstract class Request: CoroutineScope {
             requestQueue.remove(request)
         }
 
-        // unregister all pending from a kind..
+        // unregister all pending requests from a kind..
         fun <T>unregisterAll(type: Class<out T>){
             val newRequestQueue = ArrayList<Request>()
             for(request in requestQueue){
@@ -67,7 +67,7 @@ abstract class Request: CoroutineScope {
     }
 
     /**
-     * this needs to be called from child-class when done fetching..
+     * this needs to be called in child-class when done fetching..
      */
     fun onFetched(){
         isRequesting = false
