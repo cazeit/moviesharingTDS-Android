@@ -12,12 +12,15 @@ import jp.wasabeef.picasso.transformations.CropTransformation
 /**
  * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
  */
-abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
+abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
+    RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
 
     // Region public types
-    class ViewHolder(itemView: View,
-                     val movieThumbnailImageView: ImageView,
-                     private val movieTitleTextView: TextView): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+        itemView: View,
+        val movieThumbnailImageView: ImageView,
+        private val movieTitleTextView: TextView
+    ) : RecyclerView.ViewHolder(itemView) {
         var movieTitle: String?
             get() {
                 return movieTitleTextView.text.toString()
@@ -47,7 +50,8 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>): Recyc
         holder.movieTitle = movieList[position].title
 
         val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imagePath).placeholder(R.drawable.sample_movie_image).transform(transformation)
+        Picasso.get().load(movieList[position].imagePath).placeholder(R.drawable.sample_movie_image)
+            .transform(transformation)
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {

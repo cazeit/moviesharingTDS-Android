@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
 
     // region private API
     private fun setUpMainView() {
-        mainView.viewListener = object: MainActivityView.Listener {
+        mainView.viewListener = object : MainActivityView.Listener {
 
             override fun onMoviesSelected() {
                 showFragment(moviesFragment)

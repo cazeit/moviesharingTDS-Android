@@ -47,7 +47,11 @@ object NetworkManager {
         }
     }
 
-    fun fetchMoviesFromPlaylist(playlist: Playlist, pageToken: String = "", callback: (Result<ArrayList<Movie>>) -> Unit) {
+    fun fetchMoviesFromPlaylist(
+        playlist: Playlist,
+        pageToken: String = "",
+        callback: (Result<ArrayList<Movie>>) -> Unit
+    ) {
         MoviesRequest(playlist.id, pageToken) {
             when (it) {
                 is Result.Success -> {

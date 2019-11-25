@@ -6,7 +6,7 @@ import de.tdsoftware.moviesharing.ui.main.movies.list.PlaylistListAdapter
 /**
  * adapter for the recyclerView in FavoriteFragment
  */
-class PlaylistFavoriteAdapter: PlaylistListAdapter() {
+class PlaylistFavoriteAdapter : PlaylistListAdapter() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)

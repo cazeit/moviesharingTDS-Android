@@ -6,7 +6,10 @@ import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.Response
 
-class PlaylistRequest(private val pageToken: String, private val callback: (Result<PlaylistResponse>) -> Unit): Request(pageToken != "") {
+class PlaylistRequest(
+    private val pageToken: String,
+    private val callback: (Result<PlaylistResponse>) -> Unit
+) : Request(pageToken != "") {
 
     companion object {
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
@@ -54,7 +57,8 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
         return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
             .addPathSegments("youtube/v3/playlists")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
-            .addQueryParameter("channelId",
+            .addQueryParameter(
+                "channelId",
                 CHANNEL_ID
             )
             .addQueryParameter("maxResults", "50")

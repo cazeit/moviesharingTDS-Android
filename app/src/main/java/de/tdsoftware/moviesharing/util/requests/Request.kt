@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import okhttp3.*
 import java.lang.Exception
 
-abstract class Request(private val registerAsFirst: Boolean = false): CoroutineScope {
+abstract class Request(private val registerAsFirst: Boolean = false) : CoroutineScope {
 
     companion object {
         var requestQueue = ArrayList<Request>()
@@ -18,9 +18,9 @@ abstract class Request(private val registerAsFirst: Boolean = false): CoroutineS
         var isRequesting = false
 
         fun register(request: Request) {
-            if(request.registerAsFirst) {
+            if (request.registerAsFirst) {
                 requestQueue.add(0, request)
-            }else {
+            } else {
                 requestQueue.add(request)
             }
         }
@@ -30,10 +30,10 @@ abstract class Request(private val registerAsFirst: Boolean = false): CoroutineS
         }
 
         // unregister all pending requests from a kind..
-        fun <T>unregisterAll(type: Class<out T>) {
+        fun <T> unregisterAll(type: Class<out T>) {
             val newRequestQueue = ArrayList<Request>()
-            for(request in requestQueue) {
-                if(request::class.java != type) {
+            for (request in requestQueue) {
+                if (request::class.java != type) {
                     newRequestQueue.add(request)
                 }
             }
@@ -52,7 +52,7 @@ abstract class Request(private val registerAsFirst: Boolean = false): CoroutineS
 
     private fun onRequestAdded() {
         register(this)
-        if(!isRequesting) {
+        if (!isRequesting) {
             isRequesting = true
             fetch()
         }
@@ -78,7 +78,7 @@ abstract class Request(private val registerAsFirst: Boolean = false): CoroutineS
     protected fun onFetched() {
         isRequesting = false
         unregister(this)
-        if(requestQueue.isNotEmpty()) {
+        if (requestQueue.isNotEmpty()) {
             isRequesting = true
             requestQueue.first().fetch()
         }

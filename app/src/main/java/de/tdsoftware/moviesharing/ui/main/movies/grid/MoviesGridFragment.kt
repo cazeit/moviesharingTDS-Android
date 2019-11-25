@@ -42,8 +42,16 @@ class MoviesGridFragment : MoviesBaseFragment() {
     // endregion
 
     // region lifecycle callbacks
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mainView = inflater.inflate(R.layout.fragment_movies_grid,container,false) as MoviesGridFragmentView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainView = inflater.inflate(
+            R.layout.fragment_movies_grid,
+            container,
+            false
+        ) as MoviesGridFragmentView
         return mainView
     }
 

@@ -8,7 +8,11 @@ import okhttp3.HttpUrl
 import okhttp3.Response
 
 
-class MoviesRequest(private val playlistId: String, private val pageToken: String, private val callback: (Result<MovieResponse>) -> Unit): Request(pageToken != "") {
+class MoviesRequest(
+    private val playlistId: String,
+    private val pageToken: String,
+    private val callback: (Result<MovieResponse>) -> Unit
+) : Request(pageToken != "") {
 
     companion object {
         private val TAG = MoviesRequest::class.java.simpleName
@@ -16,8 +20,9 @@ class MoviesRequest(private val playlistId: String, private val pageToken: Strin
 
     override fun fetch() {
         launch {
-            Log.v(TAG,"Fetching movies for playlist with ID: $playlistId")
-            when(val movieResponse = fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))) {
+            Log.v(TAG, "Fetching movies for playlist with ID: $playlistId")
+            when (val movieResponse =
+                fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))) {
                 is Result.Success -> {
                     val response = movieResponse.data
                     checkMovieResponse(response)

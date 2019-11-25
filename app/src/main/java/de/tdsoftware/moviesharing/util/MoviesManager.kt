@@ -56,7 +56,8 @@ object MoviesManager {
             if (currentMovie.id == movie.id) {
                 favoritePlaylist.movieList.remove(currentMovie)
                 EventBus.getDefault().post(Notification.PlaylistChangedEvent(playlistList))
-                EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+                EventBus.getDefault()
+                    .post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
                 return
             }
         }
@@ -67,7 +68,7 @@ object MoviesManager {
 
     fun fetchPlaylistListWithMovies() {
         NetworkManager.fetchPlaylistList {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     playlistList.addAll(it.data)
                     Log.v(TAG, "Empty playlist-list is now stored in MoviesManager.")
@@ -92,14 +93,20 @@ object MoviesManager {
 
     private fun fetchMoviesForPlaylist(playlist: Playlist) {
         NetworkManager.fetchMoviesFromPlaylist(playlist) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
-                    Log.v(TAG, "Result for playlist with name: " + playlist.title + ". There are " + it.data.size + " videos in this playlist.")
+                    Log.v(
+                        TAG,
+                        "Result for playlist with name: " + playlist.title + ". There are " + it.data.size + " videos in this playlist."
+                    )
                     playlist.movieList.addAll(it.data)
-                    if(playlist.id == playlistList.last().id) {
+                    if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
-                        EventBus.getDefault().post(Notification.PlaylistChangedEvent(
-                            playlistList))
+                        EventBus.getDefault().post(
+                            Notification.PlaylistChangedEvent(
+                                playlistList
+                            )
+                        )
                     }
                 }
                 is Result.Error -> {
@@ -110,6 +117,7 @@ object MoviesManager {
             }
         }
     }
+
     private fun initializeFavorites() {
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {

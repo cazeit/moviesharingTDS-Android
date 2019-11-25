@@ -47,12 +47,12 @@ class MainActivityView(context: Context, attrs: AttributeSet?) : ConstraintLayou
 
     private fun setupControls() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it) {
-                 bottomNavigationView.menu.getItem(0) -> {
-                     bottomNavigationView.menu.getItem(1).isEnabled = false
-                     viewListener?.onMoviesSelected()
-                     bottomNavigationView.menu.getItem(1).isEnabled = true
-                 }
+            when (it) {
+                bottomNavigationView.menu.getItem(0) -> {
+                    bottomNavigationView.menu.getItem(1).isEnabled = false
+                    viewListener?.onMoviesSelected()
+                    bottomNavigationView.menu.getItem(1).isEnabled = true
+                }
                 bottomNavigationView.menu.getItem(1) -> {
                     bottomNavigationView.menu.getItem(0).isEnabled = false
                     viewListener?.onFavoritesSelected()

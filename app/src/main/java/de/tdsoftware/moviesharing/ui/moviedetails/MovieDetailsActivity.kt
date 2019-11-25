@@ -36,13 +36,18 @@ class MovieDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainView =
-            layoutInflater.inflate(R.layout.activity_movie_details, null,false) as MovieDetailsActivityView
+            layoutInflater.inflate(
+                R.layout.activity_movie_details,
+                null,
+                false
+            ) as MovieDetailsActivityView
         setContentView(mainView)
 
         movie = intent.getSerializableExtra("movie") as Movie
-        sharedPreferences = getSharedPreferences("sharedPref",Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        supportFragmentManager.beginTransaction().replace(R.id.activity_movie_details_container, movieDetailsFragment).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.activity_movie_details_container, movieDetailsFragment).commit()
 
         setUpMainView()
 
@@ -84,7 +89,8 @@ class MovieDetailsActivity : BaseActivity() {
                     item.icon.colorFilter =
                         PorterDuffColorFilter(
                             ContextCompat.getColor(this, R.color.colorPrimary),
-                            PorterDuff.Mode.SRC_IN)
+                            PorterDuff.Mode.SRC_IN
+                        )
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
                 MoviesManager.updateFavorites(movie)
@@ -98,7 +104,7 @@ class MovieDetailsActivity : BaseActivity() {
     // region private API
 
     private fun setUpMainView() {
-        
+
     }
 
     /**

@@ -32,8 +32,13 @@ class MoviesFragment : BaseFragment() {
 
     // region lifecycle callbacks
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mainView = inflater.inflate(R.layout.fragment_movies,container,false) as MoviesFragmentView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainView =
+            inflater.inflate(R.layout.fragment_movies, container, false) as MoviesFragmentView
         return mainView
     }
 
