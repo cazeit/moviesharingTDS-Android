@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_movies_recycler_view_playlists_list"
+        android:id="@+id/fragment_movies_recycler_view_playlist_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"

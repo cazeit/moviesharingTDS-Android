@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/recycler_item_playlists_title"
+        android:id="@+id/recycler_item_playlist_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_normal"
@@ -18,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_item_playlists_recylcer_view_movies"
+        android:id="@+id/recycler_item_playlist_recycler_view_movies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_item_playlists_title" />
+        app:layout_constraintTop_toBottomOf="@id/recycler_item_playlist_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

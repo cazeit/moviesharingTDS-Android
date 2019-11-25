@@ -1,6 +1,7 @@
-package de.tdsoftware.moviesharing.util
+package de.tdsoftware.moviesharing.util.requests
 
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
+import de.tdsoftware.moviesharing.util.Result
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.Response
@@ -16,7 +17,7 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
             when (val playlistResponse = fetchFromApi(buildPlaylistRequestUrl(pageToken))) {
                 is Result.Success -> {
                     val response = playlistResponse.data
-                    checkPlaylisteResponse(response)
+                    checkPlaylistResponse(response)
                     super.onFetched()
                 }
                 is Result.Error -> {
@@ -27,7 +28,7 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
         }
     }
 
-    private fun checkPlaylisteResponse(response: Response) {
+    private fun checkPlaylistResponse(response: Response) {
         if (response.isSuccessful) {
             val playlistString = response.body()?.string()
             playlistString?.let {
@@ -37,8 +38,14 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
                     callback(Result.Success(playlistResponse))
                 }
             }
+                ?: callback(Result.Error(150, "Error reading Server-Response."))
         } else {
-            callback(Result.Error(400, "Error-Code from API while fetching playlists: " + response.code().toString()))
+            callback(
+                Result.Error(
+                    400,
+                    "Error-Code from API while fetching playlists: " + response.code().toString()
+                )
+            )
         }
     }
 
@@ -46,7 +53,9 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
         return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
             .addPathSegments("youtube/v3/playlists")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
-            .addQueryParameter("channelId", CHANNEL_ID)
+            .addQueryParameter("channelId",
+                CHANNEL_ID
+            )
             .addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
     }

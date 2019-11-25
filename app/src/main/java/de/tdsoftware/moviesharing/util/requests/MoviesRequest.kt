@@ -1,7 +1,8 @@
-package de.tdsoftware.moviesharing.util
+package de.tdsoftware.moviesharing.util.requests
 
 import android.util.Log
 import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
+import de.tdsoftware.moviesharing.util.Result
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.Response
@@ -40,8 +41,14 @@ class MoviesRequest(private val playlistId: String, private val pageToken: Strin
                     callback(Result.Success(movieResponse))
                 }
             }
+                ?: callback(Result.Error(150, "Error reading Server-Response."))
         } else {
-            callback(Result.Error(400, "Error-Code from API while fetching movies: " + response.code().toString()))
+            callback(
+                Result.Error(
+                    400,
+                    "Error-Code from API while fetching movies: " + response.code().toString()
+                )
+            )
         }
     }
 

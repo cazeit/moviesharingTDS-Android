@@ -4,6 +4,8 @@ import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.util.requests.MoviesRequest
+import de.tdsoftware.moviesharing.util.requests.PlaylistRequest
 
 /**
  * Singleton, that handles all networking (API-calls) and
@@ -26,13 +28,13 @@ object NetworkManager {
 
     fun fetchPlaylistList(pageToken: String = "", callback: (Result<ArrayList<Playlist>>) -> Unit) {
         PlaylistRequest(pageToken) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     val playlistResponse = it.data
-                    playlistList.addAll(mapToPlaylists(playlistResponse))
-                    if(playlistResponse.nextPageToken != null) {
+                    playlistList.addAll(mapToPlaylistList(playlistResponse))
+                    if (playlistResponse.nextPageToken != null) {
                         fetchPlaylistList(playlistResponse.nextPageToken, callback)
-                    }else {
+                    } else {
                         callback(Result.Success(playlistList))
                         // give free memory after..
                         playlistList.clear()
@@ -47,13 +49,13 @@ object NetworkManager {
 
     fun fetchMoviesFromPlaylist(playlist: Playlist, pageToken: String = "", callback: (Result<ArrayList<Movie>>) -> Unit) {
         MoviesRequest(playlist.id, pageToken) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     val movieResponse = it.data
                     movieList.addAll(mapToMovies(it.data))
-                    if(movieResponse.nextPageToken != null) {
+                    if (movieResponse.nextPageToken != null) {
                         fetchMoviesFromPlaylist(playlist, movieResponse.nextPageToken, callback)
-                    }else {
+                    } else {
                         callback(Result.Success(movieList))
                         // give free memory after..
                         movieList.clear()
@@ -87,7 +89,7 @@ object NetworkManager {
         return returnList
     }
 
-    private fun mapToPlaylists(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
+    private fun mapToPlaylistList(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
         val returnList = ArrayList<Playlist>()
         for (responseItem in playlistResponse.items) {
             returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))

@@ -1,13 +1,12 @@
-package de.tdsoftware.moviesharing.util
+package de.tdsoftware.moviesharing.util.requests
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import de.tdsoftware.moviesharing.util.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.*
 import java.lang.Exception
 
 abstract class Request: CoroutineScope {
@@ -62,12 +61,15 @@ abstract class Request: CoroutineScope {
             val result = httpClient.newCall(request).execute()
             Result.Success(result)
         } catch (exception: Exception) {
-            Result.Error(100,"Error connecting/Timeout. Check your connection!")
+            Result.Error(
+                100,
+                "Error connecting/Timeout. Check your connection!"
+            )
         }
     }
 
     /**
-     * this needs to be called in child-class when done fetching..
+     * This needs to be called in child-class when done fetching..
      */
     protected fun onFetched() {
         isRequesting = false

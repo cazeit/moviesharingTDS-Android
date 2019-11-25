@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.util.requests.MoviesRequest
+import de.tdsoftware.moviesharing.util.requests.Request
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -67,7 +69,7 @@ object MoviesManager {
             when(it) {
                 is Result.Success -> {
                     playlistList.addAll(it.data)
-                    Log.v(TAG, "Empty playlists are now stored in MoviesManager.")
+                    Log.v(TAG, "Empty playlist-list is now stored in MoviesManager.")
                     fetchMoviesForPlaylistList()
                 }
                 is Result.Error -> {

@@ -9,7 +9,7 @@ import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.ui.main.adapter.MoviesViewPagerAdapter
 
 /**
- * Fragment inside MainActivity, that sets up the viewpageradapter and connects it to the viewpager
+ * Fragment inside MainActivity, that sets up the viewpager-adapter and connects it to the viewpager
  */
 class MoviesFragment : BaseFragment() {
 
