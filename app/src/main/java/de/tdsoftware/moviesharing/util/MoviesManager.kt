@@ -1,8 +1,11 @@
 package de.tdsoftware.moviesharing.util
 
 import android.content.SharedPreferences
+import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.util.requests.MoviesRequest
+import de.tdsoftware.moviesharing.util.requests.Request
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -12,8 +15,13 @@ object MoviesManager {
 
     // properties
 
-    lateinit var playlistList: ArrayList<Playlist>
-    val favoritePlaylistList = ArrayList<Playlist>()
+    private val TAG = MoviesManager::class.java.simpleName
+    val playlistList by lazy {
+        ArrayList<Playlist>()
+    }
+    val favoritePlaylistList by lazy {
+        ArrayList<Playlist>()
+    }
 
     var favoritePlaylist: Playlist
         get() {
@@ -22,7 +30,6 @@ object MoviesManager {
         set(value) {
             favoritePlaylistList[0] = value
         }
-
     private lateinit var sharedPreferences: SharedPreferences
 
     // endregion
@@ -39,28 +46,8 @@ object MoviesManager {
 
 
     // public API
-    /**
-     * This needs to be called in advance of fetching playlists
-     */
     fun setUpMoviesManager(sharedPref: SharedPreferences) {
         sharedPreferences = sharedPref
-    }
-
-
-    fun fetchPlaylistList() {
-            NetworkManager.fetchAll {
-            when (it) {
-                is Result.Success<ArrayList<Playlist>> -> {
-                    playlistList = it.data
-                    initializeFavorites()
-                    val playlistChangedEvent = Notification.PlaylistChangedEvent(playlistList)
-                    EventBus.getDefault().post(playlistChangedEvent)
-                }
-                is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
-                }
-            }
-        }
     }
 
     fun updateFavorites(movie: Movie) {
@@ -77,8 +64,50 @@ object MoviesManager {
         EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
     }
 
+    fun fetchPlaylistListWithMovies() {
+        NetworkManager.fetchPlaylistList {
+            when(it) {
+                is Result.Success -> {
+                    playlistList.addAll(it.data)
+                    Log.v(TAG, "Empty playlist-list is now stored in MoviesManager.")
+                    fetchMoviesForPlaylistList()
+                }
+                is Result.Error -> {
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                }
+            }
+        }
+    }
+
+    // endregion
+
     // private API
 
+    private fun fetchMoviesForPlaylistList() {
+        for (playlist in playlistList) {
+            fetchMoviesForPlaylist(playlist)
+        }
+    }
+
+    private fun fetchMoviesForPlaylist(playlist: Playlist) {
+        NetworkManager.fetchMoviesFromPlaylist(playlist) {
+            when(it) {
+                is Result.Success -> {
+                    playlist.movieList.addAll(it.data)
+                    if(playlist.id == playlistList.last().id) {
+                        initializeFavorites()
+                        EventBus.getDefault().post(Notification.PlaylistChangedEvent(
+                            playlistList))
+                    }
+                }
+                is Result.Error -> {
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                    // unregister all pending requests when there was an error
+                    Request.unregisterAll(MoviesRequest::class.java)
+                }
+            }
+        }
+    }
     private fun initializeFavorites() {
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {

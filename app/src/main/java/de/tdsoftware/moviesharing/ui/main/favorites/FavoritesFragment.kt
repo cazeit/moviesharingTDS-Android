@@ -49,7 +49,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
-        when(notification){
+        when(notification) {
             is Notification.FavoriteChangedEvent -> {
                 Log.v(TAG, "Event fired in FavoriteFragment")
 

@@ -38,7 +38,7 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun bindViews() {
-        playlistRecyclerView = findViewById(R.id.fragment_movies_recycler_view_playlists_grid)
+        playlistRecyclerView = findViewById(R.id.fragment_movies_recycler_view_playlist_grid)
     }
 
     private fun setupControls() {

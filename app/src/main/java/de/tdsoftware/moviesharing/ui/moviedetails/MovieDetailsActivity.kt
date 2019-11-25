@@ -65,7 +65,7 @@ class MovieDetailsActivity : BaseActivity() {
     }
 
     /**
-     * handle backpress in actionbar and favoriteIconOnClick -> write down to sharedPreferences
+     * handle back-press in actionbar and favoriteIconOnClick -> write down to sharedPreferences
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -98,6 +98,7 @@ class MovieDetailsActivity : BaseActivity() {
     // region private API
 
     private fun setUpMainView() {
+        
     }
 
     /**

@@ -24,12 +24,12 @@
     <dimen name="bottom_nav_height">55dp</dimen>
     <dimen name="fragment_movies_tab_bar_height">50dp</dimen>
 
-    <dimen name="fragment_movies_grid_recycler_picture_height">100dp</dimen>
-    <dimen name="fragment_movies_grid_recycler_picture_width">140dp</dimen>
+    <dimen name="fragment_movies_grid_recycler_picture_height">110dp</dimen>
+    <dimen name="fragment_movies_grid_recycler_picture_width">155dp</dimen>
 
-    <dimen name="fragment_movies_list_recycler_picture_height">130dp</dimen>
+    <dimen name="fragment_movies_list_recycler_picture_height">150dp</dimen>
 
-    <dimen name="fragment_video_details_banner_picture_height">150dp</dimen>
+    <dimen name="fragment_video_details_banner_picture_height">160dp</dimen>
     <dimen name="fragment_video_details_cover_picture_height">155dp</dimen>
     <dimen name="fragment_video_details_cover_picture_width">100dp</dimen>
 </resources>

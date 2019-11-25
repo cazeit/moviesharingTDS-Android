@@ -21,8 +21,8 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onNotification(notification: Notification){
-        when(notification){
+    open fun onNotification(notification: Notification) {
+        when(notification) {
             is Notification.NetworkErrorEvent -> {
                 val parentView = findViewById<View>(android.R.id.content)
                 Snackbar.make(

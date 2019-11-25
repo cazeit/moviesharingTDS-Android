@@ -45,7 +45,6 @@ class MainActivityView(context: Context, attrs: AttributeSet?) : ConstraintLayou
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav)
     }
 
-    //TODO: or ignore??
     private fun setupControls() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it) {

@@ -14,7 +14,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region public types
 
-    interface Listener{
+    interface Listener {
         fun onRetryButtonClicked()
     }
 
@@ -71,7 +71,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setupControls() {
-        retryButton.setOnClickListener{
+        retryButton.setOnClickListener {
             retryButton.isEnabled = false
             showRetryButton(false)
 

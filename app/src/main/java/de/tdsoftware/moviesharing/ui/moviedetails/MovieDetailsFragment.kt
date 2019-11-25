@@ -64,7 +64,6 @@ class MovieDetailsFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    // TODO: what about this? -> prevents double intent. (but is onResume always called?)
     override fun onResume() {
         super.onResume()
         mainView.enableButtons()
@@ -88,7 +87,7 @@ class MovieDetailsFragment: BaseFragment() {
             }
 
             override fun onRatingChanged(rating: Float) {
-                Log.v(TAG, "The rating has now a Rating of $rating/5 Stars")
+                Log.v(TAG, "The movie now has a rating of $rating/5 Stars")
                 sharedPreferences.edit().putFloat(movie.id + "_rating", rating).apply()
             }
         }

@@ -76,7 +76,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(coverImageView)
     }
 
-    fun enableButtons(){
+    fun enableButtons() {
         coverImageView.isEnabled = true
     }
 
@@ -113,7 +113,6 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        // TODO: what about here? this approach should work, but when clicking while transistioning, then 2x intent...
         coverImageView.setOnClickListener {
             coverImageView.isEnabled = false
             viewListener?.onCoverImageClick()
