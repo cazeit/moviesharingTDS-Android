@@ -21,8 +21,17 @@ abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Uni
 
     abstract fun buildRequestUrl(): HttpUrl
 
-    abstract fun checkResponse(response: Response)
+    abstract fun deserialize(response: Response)
 
+    fun checkResponse(response: Response){
+        if(response.isSuccessful){
+            deserialize(response)
+        }else{
+            callback(Result.Error(
+                    400,
+                "Error-Code from API while fetching playlists: " + response.code().toString()))
+        }
+    }
 
     fun fetch(){
         launch {

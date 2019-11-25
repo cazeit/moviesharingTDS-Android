@@ -16,25 +16,16 @@ class PlaylistRequest(
         private const val CHANNEL_ID_SECOND = "UCvKt4C06Ap-YqbndvzRDLSA"
     }
 
-    override fun checkResponse(response: Response) {
-        if (response.isSuccessful) {
-            val playlistString = response.body()?.string()
-            playlistString?.let {
-                val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
-                val playlistResponse = jsonAdapter.fromJson(playlistString)
-                if (playlistResponse != null) {
-                    callback(Result.Success(playlistResponse))
-                }
+    override fun deserialize(response: Response) {
+        val playlistString = response.body()?.string()
+        playlistString?.let {
+            val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
+            val playlistResponse = jsonAdapter.fromJson(playlistString)
+            if (playlistResponse != null) {
+                callback(Result.Success(playlistResponse))
             }
-                ?: callback(Result.Error(150, "Error reading Server-Response."))
-        } else {
-            callback(
-                Result.Error(
-                    400,
-                    "Error-Code from API while fetching playlists: " + response.code().toString()
-                )
-            )
         }
+            ?: callback(Result.Error(150, "Error reading Server-Response."))
     }
 
     override fun buildRequestUrl(): HttpUrl {

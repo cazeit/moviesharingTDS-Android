@@ -13,25 +13,16 @@ class MoviesRequest(
     private val callback: (Result<YouTubeApiResponse>) -> Unit
 ) : Request(callback) {
 
-    override fun checkResponse(response: Response) {
-        if (response.isSuccessful) {
-            val movieString = response.body()?.string()
-            movieString?.let {
-                val jsonAdapter = moshi.adapter(MovieResponse::class.java)
-                val movieResponse = jsonAdapter.fromJson(movieString)
-                if (movieResponse != null) {
-                    callback(Result.Success(movieResponse))
-                }
+    override fun deserialize(response: Response) {
+        val movieString = response.body()?.string()
+        movieString?.let {
+            val jsonAdapter = moshi.adapter(MovieResponse::class.java)
+            val movieResponse = jsonAdapter.fromJson(movieString)
+            if (movieResponse != null) {
+                callback(Result.Success(movieResponse))
             }
-                ?: callback(Result.Error(150, "Error reading Server-Response."))
-        } else {
-            callback(
-                Result.Error(
-                    400,
-                    "Error-Code from API while fetching movies: " + response.code().toString()
-                )
-            )
         }
+            ?: callback(Result.Error(150, "Error reading Server-Response."))
     }
 
     override fun buildRequestUrl(): HttpUrl {
