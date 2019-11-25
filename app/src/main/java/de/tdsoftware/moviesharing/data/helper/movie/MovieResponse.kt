@@ -2,6 +2,7 @@ package de.tdsoftware.moviesharing.data.helper.movie
 
 
 import com.squareup.moshi.Json
+import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 
 data class MovieResponse(
     @Json(name = "etag")
@@ -12,4 +13,4 @@ data class MovieResponse(
     val kind: String,
     @Json(name = "nextPageToken")
     val nextPageToken: String?
-)
+): YouTubeApiResponse()

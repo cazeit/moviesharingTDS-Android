@@ -1,9 +1,8 @@
 package de.tdsoftware.moviesharing.util.requests
 
-import android.util.Log
+import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.util.Result
-import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.Response
 
@@ -11,32 +10,10 @@ import okhttp3.Response
 class MoviesRequest(
     private val playlistId: String,
     private val pageToken: String,
-    private val callback: (Result<MovieResponse>) -> Unit
-) : Request(pageToken != "") {
+    private val callback: (Result<YouTubeApiResponse>) -> Unit
+) : Request(callback) {
 
-    companion object {
-        private val TAG = MoviesRequest::class.java.simpleName
-    }
-
-    override fun fetch() {
-        launch {
-            Log.v(TAG, "Fetching movies for playlist with ID: $playlistId")
-            when (val movieResponse =
-                fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))) {
-                is Result.Success -> {
-                    val response = movieResponse.data
-                    checkMovieResponse(response)
-                    super.onFetched()
-                }
-                is Result.Error -> {
-                    callback(movieResponse)
-                    super.onFetched()
-                }
-            }
-        }
-    }
-
-    private fun checkMovieResponse(response: Response) {
+    override fun checkResponse(response: Response) {
         if (response.isSuccessful) {
             val movieString = response.body()?.string()
             movieString?.let {
@@ -57,7 +34,7 @@ class MoviesRequest(
         }
     }
 
-    private fun buildMoviesFromPlaylistRequestUrl(playlistId: String, pageToken: String?): HttpUrl {
+    override fun buildRequestUrl(): HttpUrl {
         return HttpUrl.Builder().scheme("https").host("www.googleapis.com")
             .addPathSegments("youtube/v3/playlistItems")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")

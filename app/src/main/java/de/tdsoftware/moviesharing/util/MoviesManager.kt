@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.util.requests.MoviesRequest
-import de.tdsoftware.moviesharing.util.requests.Request
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -111,8 +109,6 @@ object MoviesManager {
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
-                    // unregister all pending requests when there was an error
-                    Request.unregisterAll(MoviesRequest::class.java)
                 }
             }
         }
