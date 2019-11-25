@@ -28,7 +28,7 @@ class LoadingActivity : BaseActivity() {
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
-        when(notification){
+        when(notification) {
             is Notification.NetworkErrorEvent -> {
                 mainView.showRetryButton(true)
             }

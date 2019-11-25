@@ -4,6 +4,7 @@ import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
 import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
+
 /**
  * Singleton, that handles all networking (API-calls) and
  */
@@ -15,7 +16,7 @@ object NetworkManager {
         ArrayList<Playlist>()
     }
 
-    private val movieList by lazy{
+    private val movieList by lazy {
         ArrayList<Movie>()
     }
 
@@ -23,15 +24,15 @@ object NetworkManager {
 
     // region public API
 
-    fun fetchPlaylistList(pageToken: String = "", callback: (Result<ArrayList<Playlist>>) -> Unit){
-        PlaylistRequest(pageToken){
-            when(it){
+    fun fetchPlaylistList(pageToken: String = "", callback: (Result<ArrayList<Playlist>>) -> Unit) {
+        PlaylistRequest(pageToken) {
+            when(it) {
                 is Result.Success -> {
                     val playlistResponse = it.data
                     playlistList.addAll(mapToPlaylists(playlistResponse))
-                    if(playlistResponse.nextPageToken != null){
+                    if(playlistResponse.nextPageToken != null) {
                         fetchPlaylistList(playlistResponse.nextPageToken, callback)
-                    }else{
+                    }else {
                         callback(Result.Success(playlistList))
                         // give free memory after..
                         playlistList.clear()
@@ -44,15 +45,15 @@ object NetworkManager {
         }
     }
 
-    fun fetchMoviesFromPlaylist(playlist: Playlist, pageToken: String = "", callback: (Result<ArrayList<Movie>>) -> Unit){
-        MoviesRequest(playlist.id, pageToken){
-            when(it){
+    fun fetchMoviesFromPlaylist(playlist: Playlist, pageToken: String = "", callback: (Result<ArrayList<Movie>>) -> Unit) {
+        MoviesRequest(playlist.id, pageToken) {
+            when(it) {
                 is Result.Success -> {
                     val movieResponse = it.data
                     movieList.addAll(mapToMovies(it.data))
-                    if(movieResponse.nextPageToken != null){
+                    if(movieResponse.nextPageToken != null) {
                         fetchMoviesFromPlaylist(playlist, movieResponse.nextPageToken, callback)
-                    }else{
+                    }else {
                         callback(Result.Success(movieList))
                         // give free memory after..
                         movieList.clear()

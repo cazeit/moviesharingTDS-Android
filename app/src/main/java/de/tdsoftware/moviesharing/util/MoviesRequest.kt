@@ -14,9 +14,9 @@ class MoviesRequest(private val playlistId: String, private val pageToken: Strin
     }
 
     override fun fetch() {
-        launch{
+        launch {
             Log.v(TAG,"Starting to fetch movies for playlist with ID: $playlistId")
-            when(val movieResponse = fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))){
+            when(val movieResponse = fetchFromApi(buildMoviesFromPlaylistRequestUrl(playlistId, pageToken))) {
                 is Result.Success -> {
                     val response = movieResponse.data
                     checkMovieResponse(response)
@@ -30,7 +30,7 @@ class MoviesRequest(private val playlistId: String, private val pageToken: Strin
         }
     }
 
-    private fun checkMovieResponse(response: Response){
+    private fun checkMovieResponse(response: Response) {
         if (response.isSuccessful) {
             val movieString = response.body()?.string()
             movieString?.let {

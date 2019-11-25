@@ -11,7 +11,7 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
     }
 
-    override fun fetch(){
+    override fun fetch() {
         launch {
             when (val playlistResponse = fetchFromApi(buildPlaylistRequestUrl(pageToken))) {
                 is Result.Success -> {
@@ -27,7 +27,7 @@ class PlaylistRequest(private val pageToken: String, private val callback: (Resu
         }
     }
 
-    private fun checkPlaylisteResponse(response: Response){
+    private fun checkPlaylisteResponse(response: Response) {
         if (response.isSuccessful) {
             val playlistString = response.body()?.string()
             playlistString?.let {

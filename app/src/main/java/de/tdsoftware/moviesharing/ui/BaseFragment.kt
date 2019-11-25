@@ -11,10 +11,10 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * BaseFragment for all Fragments in this application
  */
-abstract class BaseFragment : Fragment(){
+abstract class BaseFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onNotification(notification: Notification){
+    open fun onNotification(notification: Notification) {
         when(notification) {
             is Notification.NetworkErrorEvent -> {
                 view?.let {

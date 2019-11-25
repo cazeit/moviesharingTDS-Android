@@ -14,7 +14,7 @@ object MoviesManager {
     // properties
 
     private val TAG = MoviesManager::class.java.simpleName
-    val playlistList by lazy{
+    val playlistList by lazy {
         ArrayList<Playlist>()
     }
     val favoritePlaylistList by lazy {
@@ -44,26 +44,8 @@ object MoviesManager {
 
 
     // public API
-    /**
-     * This needs to be called in advance of fetching playlists
-     */
     fun setUpMoviesManager(sharedPref: SharedPreferences) {
         sharedPreferences = sharedPref
-    }
-
-    fun fetchPlaylistListWithMovies() {
-        NetworkManager.fetchPlaylistList {
-            when(it){
-                is Result.Success -> {
-                    playlistList.addAll(it.data)
-                    Log.v(TAG, "Empty playlists are now stored in MoviesManager.")
-                    fetchMoviesForPlaylistList()
-                }
-                is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
-                }
-            }
-        }
     }
 
     fun updateFavorites(movie: Movie) {
@@ -80,20 +62,37 @@ object MoviesManager {
         EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
     }
 
+    fun fetchPlaylistListWithMovies() {
+        NetworkManager.fetchPlaylistList {
+            when(it) {
+                is Result.Success -> {
+                    playlistList.addAll(it.data)
+                    Log.v(TAG, "Empty playlists are now stored in MoviesManager.")
+                    fetchMoviesForPlaylistList()
+                }
+                is Result.Error -> {
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                }
+            }
+        }
+    }
+
+    // endregion
+
     // private API
 
-    private fun fetchMoviesForPlaylistList(){
+    private fun fetchMoviesForPlaylistList() {
         for (playlist in playlistList) {
             fetchMoviesForPlaylist(playlist)
         }
     }
 
-    private fun fetchMoviesForPlaylist(playlist: Playlist){
-        NetworkManager.fetchMoviesFromPlaylist(playlist){
-            when(it){
+    private fun fetchMoviesForPlaylist(playlist: Playlist) {
+        NetworkManager.fetchMoviesFromPlaylist(playlist) {
+            when(it) {
                 is Result.Success -> {
                     playlist.movieList.addAll(it.data)
-                    if(playlist.id == this.playlistList.last().id){
+                    if(playlist.id == playlistList.last().id) {
                         initializeFavorites()
                         EventBus.getDefault().post(Notification.PlaylistChangedEvent(
                             playlistList))
@@ -101,7 +100,7 @@ object MoviesManager {
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
-                    // alle erstellten requests löschen
+                    // unregister all pending requests when there was an error
                     Request.unregisterAll(MoviesRequest::class.java)
                 }
             }

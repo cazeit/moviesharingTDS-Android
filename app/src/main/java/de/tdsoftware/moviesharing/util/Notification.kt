@@ -6,7 +6,7 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 /**
  * Notification is being sent through EventBus, then checked for type
  */
-sealed class Notification{
+sealed class Notification {
     class NetworkErrorEvent(val code: Int, val message: String): Notification()
     class PlaylistChangedEvent(val playlistList: ArrayList<Playlist>): Notification()
     class FavoriteChangedEvent(val favoriteList: ArrayList<Movie>): Notification()

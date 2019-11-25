@@ -98,6 +98,7 @@ class MovieDetailsActivity : BaseActivity() {
     // region private API
 
     private fun setUpMainView() {
+        
     }
 
     /**

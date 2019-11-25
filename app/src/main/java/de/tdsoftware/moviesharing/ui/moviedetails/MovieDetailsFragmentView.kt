@@ -76,7 +76,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image).into(coverImageView)
     }
 
-    fun enableButtons(){
+    fun enableButtons() {
         coverImageView.isEnabled = true
     }
 
