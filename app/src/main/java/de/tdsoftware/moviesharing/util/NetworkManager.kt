@@ -75,7 +75,7 @@ object NetworkManager {
                 "added on: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
                         responseItem.snippet.publishedAt.substring(5, 7) + "." +
                         responseItem.snippet.publishedAt.substring(0, 4)
-            val imageString = responseItem.snippet.thumbnails.high.url
+            val imageString = responseItem.snippet.thumbnails?.high?.url
             returnList.add(
                 Movie(
                     responseItem.snippet.resourceId.videoId,

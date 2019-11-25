@@ -30,6 +30,7 @@ object MoviesManager {
         set(value) {
             favoritePlaylistList[0] = value
         }
+
     private lateinit var sharedPreferences: SharedPreferences
 
     // endregion
@@ -93,6 +94,7 @@ object MoviesManager {
         NetworkManager.fetchMoviesFromPlaylist(playlist) {
             when(it) {
                 is Result.Success -> {
+                    Log.v(TAG, "Result for playlist with name: " + playlist.title + ". There are " + it.data.size + " videos in this playlist.")
                     playlist.movieList.addAll(it.data)
                     if(playlist.id == playlistList.last().id) {
                         initializeFavorites()

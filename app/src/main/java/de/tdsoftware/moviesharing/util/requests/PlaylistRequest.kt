@@ -6,10 +6,11 @@ import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.Response
 
-class PlaylistRequest(private val pageToken: String, private val callback: (Result<PlaylistResponse>) -> Unit): Request() {
+class PlaylistRequest(private val pageToken: String, private val callback: (Result<PlaylistResponse>) -> Unit): Request(pageToken != "") {
 
     companion object {
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
+        private const val CHANNEL_ID_SECOND = "UCvKt4C06Ap-YqbndvzRDLSA"
     }
 
     override fun fetch() {

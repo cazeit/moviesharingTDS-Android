@@ -19,7 +19,7 @@ data class Snippet(
     @Json(name = "resourceId")
     val resourceId: ResourceId,
     @Json(name = "thumbnails")
-    val thumbnails: Thumbnails,
+    val thumbnails: Thumbnails?,
     @Json(name = "title")
     val title: String
 )

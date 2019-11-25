@@ -9,16 +9,20 @@ import kotlinx.coroutines.Job
 import okhttp3.*
 import java.lang.Exception
 
-abstract class Request: CoroutineScope {
+abstract class Request(private val registerAsFirst: Boolean = false): CoroutineScope {
 
     companion object {
         var requestQueue = ArrayList<Request>()
         val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
-        private var isRequesting = false
+        var isRequesting = false
 
         fun register(request: Request) {
-            requestQueue.add(request)
+            if(request.registerAsFirst) {
+                requestQueue.add(0, request)
+            }else {
+                requestQueue.add(request)
+            }
         }
 
         fun unregister(request: Request) {
