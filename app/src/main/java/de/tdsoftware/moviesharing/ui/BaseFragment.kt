@@ -13,13 +13,14 @@ import org.greenrobot.eventbus.ThreadMode
  */
 abstract class BaseFragment : Fragment() {
 
+    // region EventBus
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
         when (notification) {
             is Notification.NetworkErrorEvent -> {
-                view?.let {
+                view?.let {view ->
                     Snackbar.make(
-                        it,
+                        view,
                         "Error Nr. " + notification.code + ": " + notification.message,
                         Snackbar.LENGTH_LONG
                     ).show()
@@ -27,6 +28,10 @@ abstract class BaseFragment : Fragment() {
             }
         }
     }
+
+    // endregion
+
+    // region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,4 +42,6 @@ abstract class BaseFragment : Fragment() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
+
+    // endregion
 }

@@ -12,9 +12,15 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 abstract class MoviesBaseFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
 
+    // region properties
     protected lateinit var playlistRecyclerView: RecyclerView
 
+    // endregion
+
+    // region public API
     fun changePlaylistRecyclerAdapter(adapter: PlaylistBaseAdapter) {
         playlistRecyclerView.adapter = adapter
     }
+
+    // endregion
 }

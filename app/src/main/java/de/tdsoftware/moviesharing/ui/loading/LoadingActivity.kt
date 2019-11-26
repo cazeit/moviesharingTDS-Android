@@ -1,6 +1,5 @@
 package de.tdsoftware.moviesharing.ui.loading
 
-
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -14,17 +13,17 @@ import de.tdsoftware.moviesharing.util.Notification
 
 /**
  * LoadingActivity represents the starting-activity of the application, basically making sure that data
- * is being obtained and if so redirects to MainActivity
+ * is being obtained and if so redirects to MainActivity / displays error
  */
-
 class LoadingActivity : BaseActivity() {
 
-
-    // properties
+    // region properties
 
     private lateinit var mainView: LoadingActivityView
 
     // endregion
+
+    // region EventBus
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
@@ -40,6 +39,7 @@ class LoadingActivity : BaseActivity() {
             }
         }
     }
+    // endregion
 
     // region lifecycle callbacks
 

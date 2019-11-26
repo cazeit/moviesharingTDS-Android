@@ -59,7 +59,7 @@ abstract class PlaylistBaseAdapter :
 
     // endregion
 
-    //region lifecycle callbacks
+    //region RecyclerView.Adapter-implementations
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title

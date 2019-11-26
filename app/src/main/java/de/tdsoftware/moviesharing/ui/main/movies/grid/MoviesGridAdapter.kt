@@ -13,6 +13,8 @@ import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
  */
 class MoviesGridAdapter(movieList: ArrayList<Movie>) : MoviesBaseAdapter(movieList) {
 
+    // region RecyclerView.Adapter-implementations
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =
             LayoutInflater.from(parent.context)
@@ -25,4 +27,6 @@ class MoviesGridAdapter(movieList: ArrayList<Movie>) : MoviesBaseAdapter(movieLi
             textView
         )
     }
+
+    // endregion
 }

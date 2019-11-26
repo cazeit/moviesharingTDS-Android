@@ -32,7 +32,7 @@ abstract class MainActivityBaseFragment : BaseFragment() {
             return playlistAdapter.playlistList
         }
 
-    private val TAG = this::class.java.simpleName
+    private val logTag = this::class.java.simpleName
 
     // endregion
 
@@ -61,7 +61,7 @@ abstract class MainActivityBaseFragment : BaseFragment() {
 
         playlistAdapter.clickListener = object : PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie) {
-                Log.v(TAG, "Movie selected with title: " + movie.title)
+                Log.v(logTag, "Movie selected with title: " + movie.title)
 
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra("movie", movie)

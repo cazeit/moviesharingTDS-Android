@@ -2,7 +2,8 @@
 <de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragmentView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/fragment_favorites_search_view"
@@ -38,7 +39,7 @@
         android:id="@+id/fragment_favorites_recycler_view_favorite_playlist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/fragment_favorites_search_view"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_favorites_search_view" />
 
 </de.tdsoftware.moviesharing.ui.main.favorites.FavoritesFragmentView>

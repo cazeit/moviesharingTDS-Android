@@ -6,14 +6,15 @@ import de.tdsoftware.moviesharing.util.Result
 import okhttp3.HttpUrl
 import okhttp3.Response
 
-
 class MoviesRequest(
     private val playlistId: String,
     private val pageToken: String,
     private val callback: (Result<YouTubeApiResponse>) -> Unit
 ) : Request(callback) {
 
-    override fun deserialize(response: Response) {
+    // region Request-implementations
+
+    override fun deserializeResponse(response: Response) {
         val movieString = response.body()?.string()
         movieString?.let {
             val jsonAdapter = moshi.adapter(MovieResponse::class.java)
@@ -32,5 +33,7 @@ class MoviesRequest(
             .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
     }
+
+    // endregion
 
 }

@@ -11,12 +11,14 @@ class PlaylistRequest(
     private val callback: (Result<YouTubeApiResponse>) -> Unit
 ) : Request(callback) {
 
+    // region public types
     companion object {
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
-        private const val CHANNEL_ID_SECOND = "UCvKt4C06Ap-YqbndvzRDLSA"
     }
+    // endregion
 
-    override fun deserialize(response: Response) {
+    // region Request-implementations
+    override fun deserializeResponse(response: Response) {
         val playlistString = response.body()?.string()
         playlistString?.let {
             val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
@@ -39,4 +41,6 @@ class PlaylistRequest(
             .addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
     }
+
+    // endregion
 }

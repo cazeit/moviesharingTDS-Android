@@ -17,6 +17,7 @@ import de.tdsoftware.moviesharing.ui.main.movies.MoviesFragment
 class MainActivity : BaseActivity() {
 
     // region properties
+
     private lateinit var mainView: MainActivityView
     private var currentFragment: BaseFragment? = null
 
@@ -28,11 +29,12 @@ class MainActivity : BaseActivity() {
         FavoritesFragment.newInstance()
     }
 
-    private val TAG = MainActivity::class.java.simpleName
+    private val logTag = MainActivity::class.java.simpleName
 
     // endregion
 
     // region lifecycle callbacks
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,6 +47,7 @@ class MainActivity : BaseActivity() {
     // endregion
 
     // region private API
+
     private fun setUpMainView() {
         mainView.viewListener = object : MainActivityView.Listener {
 
@@ -63,7 +66,7 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        Log.v(TAG, "Showing " + fragment::class.java.simpleName)
+        Log.v(logTag, "Showing " + fragment::class.java.simpleName)
 
         currentFragment = fragment
         supportFragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment)

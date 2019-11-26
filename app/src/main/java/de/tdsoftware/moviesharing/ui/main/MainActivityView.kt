@@ -26,6 +26,7 @@ class MainActivityView(context: Context, attrs: AttributeSet?) : ConstraintLayou
     // region Constructors
 
     // endregion
+
     // region View Lifecycle
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -46,8 +47,8 @@ class MainActivityView(context: Context, attrs: AttributeSet?) : ConstraintLayou
     }
 
     private fun setupControls() {
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it) {
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem) {
                 bottomNavigationView.menu.getItem(0) -> {
                     bottomNavigationView.menu.getItem(1).isEnabled = false
                     viewListener?.onMoviesSelected()
