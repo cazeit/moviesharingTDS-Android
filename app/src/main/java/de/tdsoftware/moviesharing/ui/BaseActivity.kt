@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseActivity : AppCompatActivity() {
 
     // region EventBus
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
         when (notification) {
@@ -49,8 +50,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     /**
-     * workaround so LoadingActivity gets called each time the processid is not the same as
-     * it was saved before (process was killed meanwhile), as we don't use local storage we just refetch data.
+     * workaround so LoadingActivity gets called each time the process-id is not the same as
+     * it was saved before in onSaveInstanceState() (-> process was killed meanwhile).
+     * This is necessary as there is no local storage and the data needs to be fetched again.
      */
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)

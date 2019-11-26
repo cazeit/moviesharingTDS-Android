@@ -72,7 +72,6 @@ class LoadingActivity : BaseActivity() {
 
     // endregion
 
-
     // private API
 
     private fun setUpMainView() {

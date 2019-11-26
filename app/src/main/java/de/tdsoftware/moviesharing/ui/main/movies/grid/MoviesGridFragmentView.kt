@@ -23,7 +23,7 @@ class MoviesGridFragmentView(context: Context, attrs: AttributeSet?) :
     // endregion
 
     // region View Lifecycle
-    
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         postLayoutInitialize()

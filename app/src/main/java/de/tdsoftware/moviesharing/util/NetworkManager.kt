@@ -14,16 +14,9 @@ import de.tdsoftware.moviesharing.util.requests.Request
 object NetworkManager {
 
     // region properties
+
     private val requestQueue by lazy {
         ArrayList<Request>()
-    }
-
-    private val playlistList by lazy {
-        ArrayList<Playlist>()
-    }
-
-    private val movieList by lazy {
-        ArrayList<Movie>()
     }
 
     private var isRequesting: Boolean = false
@@ -32,67 +25,35 @@ object NetworkManager {
 
     // region public API
     /**
-     * fetch a list of all playlists from user that is defined in PlaylistRequest (channelId)
+     * fetch a list of all playlists from user that is defined in PlaylistRequest (via channelId)
      */
-    fun fetchPlaylistList(pageToken: String = "", callback: (Result<ArrayList<Playlist>>) -> Unit) {
-        registerRequest(PlaylistRequest(pageToken) { playlistResponseResult ->
-            when (playlistResponseResult) {
-                is Result.Success -> {
-                    val playlistResponse = playlistResponseResult.data as PlaylistResponse
-                    playlistList.addAll(mapToPlaylistList(playlistResponse))
-                    if (playlistResponse.nextPageToken != null) {
-                        fetchPlaylistList(playlistResponse.nextPageToken, callback)
-                    } else {
-                        callback(Result.Success(playlistList))
-                        // give free memory after..
-                        playlistList.clear()
-                    }
-                    unregisterRequest(requestQueue.first())
-                }
-                is Result.Error -> {
-                    callback(playlistResponseResult)
-                    unregisterAllRequests()
-                }
-            }
-        }, pageToken != "")
+    fun fetchPlaylistList(callback: (Result<ArrayList<Playlist>>) -> Unit) {
+        val playlistList = ArrayList<Playlist>()
+        fetchPlaylistsByToken(callback = callback, playlistList = playlistList)
     }
 
     /**
-     * fetch a list of all movies a specific playlist contains (identified by playlistId as param)
+     * Fetch all movies a specific playlist contains (identified by playlistId as param)
      */
     fun fetchMoviesFromPlaylist(
         playlist: Playlist,
-        pageToken: String = "",
         callback: (Result<ArrayList<Movie>>) -> Unit
     ) {
-        registerRequest(MoviesRequest(playlist.id, pageToken) { movieResponseResult ->
-            when (movieResponseResult) {
-                is Result.Success -> {
-                    val movieResponse = movieResponseResult.data as MovieResponse
-                    movieList.addAll(mapToMovies(movieResponseResult.data))
-                    if (movieResponse.nextPageToken != null) {
-                        fetchMoviesFromPlaylist(playlist, movieResponse.nextPageToken, callback)
-                    } else {
-                        callback(Result.Success(movieList))
-                        // give free memory after..
-                        movieList.clear()
-                    }
-                    unregisterRequest(requestQueue.first())
-                }
-                is Result.Error -> {
-                    callback(movieResponseResult)
-                    unregisterAllRequests()
-                }
-            }
-        }, pageToken != "")
+        val movieList = ArrayList<Movie>()
+        fetchMoviesForPlaylistByToken(
+            playlist = playlist,
+            movieList = movieList,
+            callback = callback
+        )
     }
+
     // endregion
 
     // region private API
     /**
-     * Register a request to the requestQueue, with the possibility to add a request as the next item
-     * When registering to request-queue, its inserted after the current one (pos. 1), so it gets started as soon
-     * as the current one finishes
+     * Register a request to the requestQueue, with the possibility to add a request as the next item.
+     * When registering to request-queue as next item, the request is being inserted after the current
+     * one (pos. 1), so it gets started as soon as the first unregisters.
      */
     private fun registerRequest(request: Request, registerAsFirst: Boolean) {
         if (registerAsFirst && requestQueue.isNotEmpty()) {
@@ -120,11 +81,79 @@ object NetworkManager {
     }
 
     /**
-     * Unregister all pending requests (called when an error occurrs)
+     * Unregister all pending requests (called when an error occurs)
      */
     private fun unregisterAllRequests() {
         requestQueue.clear()
         isRequesting = false
+    }
+
+    private fun fetchPlaylistsByToken(
+        pageToken: String = "",
+        playlistList: ArrayList<Playlist>,
+        callback: (Result<ArrayList<Playlist>>) -> Unit
+    ) {
+        registerRequest(PlaylistRequest(pageToken) { playlistResponseResult ->
+            when (playlistResponseResult) {
+                is Result.Success -> {
+                    val playlistResponse = playlistResponseResult.data as PlaylistResponse
+                    playlistList.addAll(mapToPlaylistList(playlistResponse))
+                    if (playlistResponse.nextPageToken != null) {
+                        fetchPlaylistsByToken(
+                            playlistResponse.nextPageToken,
+                            playlistList,
+                            callback
+                        )
+                    } else {
+                        callback(Result.Success(playlistList))
+                    }
+                    unregisterRequest(requestQueue.first())
+                }
+                is Result.Error -> {
+                    callback(playlistResponseResult)
+                    unregisterAllRequests()
+                }
+            }
+        }, pageToken != "")
+    }
+
+    private fun fetchMoviesForPlaylistByToken(
+        playlist: Playlist,
+        pageToken: String = "",
+        movieList: ArrayList<Movie>,
+        callback: (Result<ArrayList<Movie>>) -> Unit
+    ) {
+        registerRequest(MoviesRequest(playlist.id, pageToken) { movieResponseResult ->
+            when (movieResponseResult) {
+                is Result.Success -> {
+                    val movieResponse = movieResponseResult.data as MovieResponse
+                    movieList.addAll(mapToMovies(movieResponseResult.data))
+                    if (movieResponse.nextPageToken != null) {
+                        fetchMoviesForPlaylistByToken(
+                            playlist,
+                            movieResponse.nextPageToken,
+                            movieList,
+                            callback
+                        )
+                    } else {
+                        callback(Result.Success(movieList))
+                    }
+                    unregisterRequest(requestQueue.first())
+                }
+                is Result.Error -> {
+                    callback(movieResponseResult)
+                    unregisterAllRequests()
+                }
+            }
+        }, pageToken != "")
+    }
+
+    private fun mapToPlaylistList(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
+        val returnList = ArrayList<Playlist>()
+        for (responseItem in playlistResponse.items) {
+            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))
+        }
+        return returnList
     }
 
     private fun mapToMovies(movieResponse: MovieResponse): ArrayList<Movie> {
@@ -148,12 +177,5 @@ object NetworkManager {
         return returnList
     }
 
-    private fun mapToPlaylistList(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
-        val returnList = ArrayList<Playlist>()
-        for (responseItem in playlistResponse.items) {
-            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))
-        }
-        return returnList
-    }
     // endregion
 }

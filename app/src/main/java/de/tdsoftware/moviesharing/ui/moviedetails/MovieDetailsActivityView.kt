@@ -6,8 +6,8 @@ import android.util.AttributeSet
 
 class MovieDetailsActivityView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
-    // region Public Types
 
+    // region Public Types
 
     // endregion
 
