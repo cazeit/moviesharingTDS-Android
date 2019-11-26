@@ -14,7 +14,6 @@ class PlaylistRequest(
     // region public types
     companion object {
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
-        private const val CHANNEL_ID_SECOND = "UCvKt4C06Ap-YqbndvzRDLSA"
     }
     // endregion
 
@@ -37,7 +36,7 @@ class PlaylistRequest(
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
             .addQueryParameter(
                 "channelId",
-                CHANNEL_ID_SECOND
+                CHANNEL_ID
             )
             .addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
