@@ -22,7 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
-        when(notification) {
+        when (notification) {
             is Notification.NetworkErrorEvent -> {
                 val parentView = findViewById<View>(android.R.id.content)
                 Snackbar.make(
@@ -75,6 +75,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        outState.putString("PID",android.os.Process.myPid().toString())
+        outState.putString("PID", android.os.Process.myPid().toString())
     }
 }

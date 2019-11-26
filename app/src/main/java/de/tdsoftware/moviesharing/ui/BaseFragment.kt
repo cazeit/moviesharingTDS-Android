@@ -15,7 +15,7 @@ abstract class BaseFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
-        when(notification) {
+        when (notification) {
             is Notification.NetworkErrorEvent -> {
                 view?.let {
                     Snackbar.make(

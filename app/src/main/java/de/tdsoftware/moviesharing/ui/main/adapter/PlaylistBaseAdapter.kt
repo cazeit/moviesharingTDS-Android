@@ -12,7 +12,7 @@ import de.tdsoftware.moviesharing.data.models.Movie
 /**
  * BaseAdapter for RecyclerView, where each one item represents one playlist
  */
-abstract class PlaylistBaseAdapter:
+abstract class PlaylistBaseAdapter :
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>() {
 
     // region public types
@@ -24,7 +24,7 @@ abstract class PlaylistBaseAdapter:
         fun onMovieSelected(movie: Movie)
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val playlistTitleTextView: TextView =
             itemView.findViewById(R.id.recycler_item_playlist_title)
@@ -63,7 +63,7 @@ abstract class PlaylistBaseAdapter:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.moviesRecyclerAdapter?.listener = object: MoviesBaseAdapter.ItemClickListener {
+        holder.moviesRecyclerAdapter?.listener = object : MoviesBaseAdapter.ItemClickListener {
             override fun onRecyclerItemClick(movie: Movie) {
                 clickListener?.onMovieSelected(movie)
             }
@@ -73,7 +73,8 @@ abstract class PlaylistBaseAdapter:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_playlists, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.recycler_item_playlists, parent, false)
         return ViewHolder(view)
     }
 

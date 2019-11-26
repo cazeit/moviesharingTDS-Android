@@ -20,7 +20,7 @@ import de.tdsoftware.moviesharing.util.Notification
  * Important to note: The structure of a recyclerView containing other recyclerViews inside each item stays,
  * as we pass a list containing only one runtime-generated playlist-object, that contains a list of all favorites
  */
-class FavoritesFragment: MainActivityBaseFragment() {
+class FavoritesFragment : MainActivityBaseFragment() {
 
     // region public types
     companion object {
@@ -49,7 +49,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
-        when(notification) {
+        when (notification) {
             is Notification.FavoriteChangedEvent -> {
                 Log.v(TAG, "Event fired in FavoriteFragment")
 
@@ -103,7 +103,7 @@ class FavoritesFragment: MainActivityBaseFragment() {
     // private API
 
     private fun createFilteredPlaylistList(movieList: ArrayList<Movie>): ArrayList<Playlist> {
-        val playlist = Playlist("favorites_filtered","Favorites", movieList)
+        val playlist = Playlist("favorites_filtered", "Favorites", movieList)
         return arrayListOf(playlist)
     }
 

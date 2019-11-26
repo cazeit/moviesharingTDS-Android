@@ -2,59 +2,48 @@ package de.tdsoftware.moviesharing.util.requests
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 import de.tdsoftware.moviesharing.util.Result
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import okhttp3.*
 import java.lang.Exception
 
-abstract class Request: CoroutineScope {
+abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Unit) : CoroutineScope {
 
     companion object {
-        var requestQueue = ArrayList<Request>()
         val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
         const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
-        private var isRequesting = false
-
-        fun register(request: Request) {
-            requestQueue.add(request)
-        }
-
-        fun unregister(request: Request) {
-            requestQueue.remove(request)
-        }
-
-        // unregister all pending requests from a kind..
-        fun <T>unregisterAll(type: Class<out T>) {
-            val newRequestQueue = ArrayList<Request>()
-            for(request in requestQueue) {
-                if(request::class.java != type) {
-                    newRequestQueue.add(request)
-                }
-            }
-            requestQueue = newRequestQueue
-        }
     }
 
     private val job = Job()
     override val coroutineContext = Dispatchers.Default + job
 
-    init {
-        onRequestAdded()
-    }
+    abstract fun buildRequestUrl(): HttpUrl
 
-    abstract fun fetch()
+    abstract fun checkResponse(response: Response)
 
-    private fun onRequestAdded() {
-        register(this)
-        if(!isRequesting) {
-            isRequesting = true
-            fetch()
+
+    fun fetch(){
+        launch {
+            checkResult(fetchFromApi(buildRequestUrl()))
         }
     }
 
-    protected fun fetchFromApi(url: HttpUrl): Result<Response> {
+
+    fun checkResult(result: Result<Response>){
+        when (result) {
+            is Result.Success -> {
+                val response = result.data
+                checkResponse(response)
+            }
+            is Result.Error -> {
+                callback(result)
+            }
+        }
+    }
+
+    private fun fetchFromApi(url: HttpUrl): Result<Response> {
         return try {
             val httpClient = OkHttpClient.Builder().build()
             val request = okhttp3.Request.Builder().url(url).build()
@@ -65,18 +54,6 @@ abstract class Request: CoroutineScope {
                 100,
                 "Error connecting/Timeout. Check your connection!"
             )
-        }
-    }
-
-    /**
-     * This needs to be called in child-class when done fetching..
-     */
-    protected fun onFetched() {
-        isRequesting = false
-        unregister(this)
-        if(requestQueue.isNotEmpty()) {
-            isRequesting = true
-            requestQueue.first().fetch()
         }
     }
 }

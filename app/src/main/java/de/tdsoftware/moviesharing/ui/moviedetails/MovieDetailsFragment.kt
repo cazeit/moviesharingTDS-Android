@@ -17,7 +17,7 @@ import de.tdsoftware.moviesharing.ui.BaseFragment
  * Fragment inside MovieDetailsActivity that displays all the important information regarding to a movie
  * as well as handles ratingChange and coverOnClick
  */
-class MovieDetailsFragment: BaseFragment() {
+class MovieDetailsFragment : BaseFragment() {
 
     // region public types
 
@@ -52,7 +52,11 @@ class MovieDetailsFragment: BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainView = inflater.inflate(R.layout.fragment_movie_details, container, false) as MovieDetailsFragmentView
+        mainView = inflater.inflate(
+            R.layout.fragment_movie_details,
+            container,
+            false
+        ) as MovieDetailsFragmentView
         return mainView
     }
 
@@ -77,7 +81,7 @@ class MovieDetailsFragment: BaseFragment() {
      * fill the view with data from video and handle interactions with user
      */
     private fun setUpMainView() {
-        mainView.viewListener = object: MovieDetailsFragmentView.Listener {
+        mainView.viewListener = object : MovieDetailsFragmentView.Listener {
             override fun onCoverImageClick() {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -95,7 +99,7 @@ class MovieDetailsFragment: BaseFragment() {
         mainView.secondaryText = movie.secondaryText
         mainView.loadImages(movie.imagePath)
         mainView.description = movie.description
-        mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating",0f)
+        mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating", 0f)
     }
 
     // endregion

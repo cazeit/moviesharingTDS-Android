@@ -9,7 +9,8 @@ import de.tdsoftware.moviesharing.ui.main.movies.list.MoviesListFragment
 /**
  * ViewPagerAdapter, that adapts fragment MovieGridFragment and MovieListFragment to the ViewPager in MoviesFragment
  */
-class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class MoviesViewPagerAdapter(fragmentManager: FragmentManager) :
+    FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     // region properties
     private val moviesGridFragment: MoviesGridFragment by lazy {
@@ -22,7 +23,7 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAda
     // endregion
 
     override fun getItem(position: Int): Fragment {
-        when(position) {
+        when (position) {
             0 -> {
                 return moviesGridFragment
             }
@@ -38,7 +39,7 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAda
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        when(position) {
+        when (position) {
             0 -> {
                 return "Grid"
             }

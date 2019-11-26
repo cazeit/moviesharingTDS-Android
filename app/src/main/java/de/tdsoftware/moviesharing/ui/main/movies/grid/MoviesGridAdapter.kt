@@ -11,11 +11,12 @@ import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
 /**
  * adapter for recyclerView inside Playlist-Adapters-ViewHolders from MovieGridFragment
  */
-class MoviesGridAdapter(movieList: ArrayList<Movie>): MoviesBaseAdapter(movieList) {
+class MoviesGridAdapter(movieList: ArrayList<Movie>) : MoviesBaseAdapter(movieList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =
-                LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_movies_grid,parent,false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.recycler_item_movies_grid, parent, false)
         val imageView = rootView.findViewById<ImageView>(R.id.recycler_item_movies_grid_card_image)
         val textView = rootView.findViewById<TextView>(R.id.recycler_item_movies_grid_title)
         return ViewHolder(

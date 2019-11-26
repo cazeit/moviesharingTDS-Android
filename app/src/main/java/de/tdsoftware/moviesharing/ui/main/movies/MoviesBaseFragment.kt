@@ -10,13 +10,13 @@ import de.tdsoftware.moviesharing.util.Notification
  * BaseFragment for MoviesGridFragment and MoviesListFragment, inheriting itself from MainActivityBaseFragment
  */
 
-abstract class MoviesBaseFragment: MainActivityBaseFragment() {
+abstract class MoviesBaseFragment : MainActivityBaseFragment() {
 
     // region public API
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
-        when(notification) {
+        when (notification) {
             is Notification.PlaylistChangedEvent -> {
                 playlistListInAdapter = notification.playlistList
             }

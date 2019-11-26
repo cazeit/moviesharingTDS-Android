@@ -28,7 +28,7 @@ class LoadingActivity : BaseActivity() {
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
-        when(notification) {
+        when (notification) {
             is Notification.NetworkErrorEvent -> {
                 mainView.showRetryButton(true)
             }
@@ -50,10 +50,22 @@ class LoadingActivity : BaseActivity() {
             layoutInflater.inflate(R.layout.activity_loading, null, false) as LoadingActivityView
         setContentView(mainView)
 
-        MoviesManager.setUpMoviesManager(applicationContext.getSharedPreferences("sharedPref", Context.MODE_PRIVATE))
+        MoviesManager.setUpMoviesManager(
+            applicationContext.getSharedPreferences(
+                "sharedPref",
+                Context.MODE_PRIVATE
+            )
+        )
         MoviesManager.fetchPlaylistListWithMovies()
 
-        actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.backgroundDefault)))
+        actionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(
+                    this,
+                    R.color.backgroundDefault
+                )
+            )
+        )
 
         setUpMainView()
     }

@@ -12,7 +12,7 @@ import de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivity
 /**
  * BaseFragment for all Fragments in MainActivity
  */
-abstract class MainActivityBaseFragment: BaseFragment() {
+abstract class MainActivityBaseFragment : BaseFragment() {
 
     // region properties
     /**
@@ -23,7 +23,7 @@ abstract class MainActivityBaseFragment: BaseFragment() {
     /**
      * List inside RecyclerAdapter above, by setting, the RecyclerView updates
      */
-    protected var playlistListInAdapter :ArrayList<Playlist>
+    protected var playlistListInAdapter: ArrayList<Playlist>
         set(value) {
             playlistAdapter.playlistList = value
             playlistAdapter.notifyDataSetChanged()
@@ -59,10 +59,10 @@ abstract class MainActivityBaseFragment: BaseFragment() {
 
     private fun initializeRecyclerItemOnClickListener() {
 
-        playlistAdapter.clickListener = object: PlaylistBaseAdapter.Listener {
+        playlistAdapter.clickListener = object : PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie) {
                 Log.v(TAG, "Movie selected with title: " + movie.title)
-                
+
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra("movie", movie)
                 startActivity(intent)

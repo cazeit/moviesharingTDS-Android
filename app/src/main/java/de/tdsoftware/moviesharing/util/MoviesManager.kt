@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.util.requests.MoviesRequest
-import de.tdsoftware.moviesharing.util.requests.Request
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -30,6 +28,7 @@ object MoviesManager {
         set(value) {
             favoritePlaylistList[0] = value
         }
+
     private lateinit var sharedPreferences: SharedPreferences
 
     // endregion
@@ -55,7 +54,8 @@ object MoviesManager {
             if (currentMovie.id == movie.id) {
                 favoritePlaylist.movieList.remove(currentMovie)
                 EventBus.getDefault().post(Notification.PlaylistChangedEvent(playlistList))
-                EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+                EventBus.getDefault()
+                    .post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
                 return
             }
         }
@@ -66,7 +66,7 @@ object MoviesManager {
 
     fun fetchPlaylistListWithMovies() {
         NetworkManager.fetchPlaylistList {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     playlistList.addAll(it.data)
                     Log.v(TAG, "Empty playlist-list is now stored in MoviesManager.")
@@ -91,23 +91,29 @@ object MoviesManager {
 
     private fun fetchMoviesForPlaylist(playlist: Playlist) {
         NetworkManager.fetchMoviesFromPlaylist(playlist) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
+                    Log.v(
+                        TAG,
+                        "Result for playlist with name: " + playlist.title + ". There are " + it.data.size + " videos in this playlist."
+                    )
                     playlist.movieList.addAll(it.data)
-                    if(playlist.id == playlistList.last().id) {
+                    if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
-                        EventBus.getDefault().post(Notification.PlaylistChangedEvent(
-                            playlistList))
+                        EventBus.getDefault().post(
+                            Notification.PlaylistChangedEvent(
+                                playlistList
+                            )
+                        )
                     }
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
-                    // unregister all pending requests when there was an error
-                    Request.unregisterAll(MoviesRequest::class.java)
                 }
             }
         }
     }
+
     private fun initializeFavorites() {
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {
