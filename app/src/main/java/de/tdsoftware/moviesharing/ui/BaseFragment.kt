@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseFragment : Fragment() {
 
     // region EventBus
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
         when (notification) {

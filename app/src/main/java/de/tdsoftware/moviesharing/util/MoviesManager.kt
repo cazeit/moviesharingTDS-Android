@@ -7,7 +7,7 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 import org.greenrobot.eventbus.EventBus
 
 /**
- * Singleton that handles everything around Movies -> API for Movies
+ * Singleton that handles everything about Movies & Playlists -> API for Movies
  */
 object MoviesManager {
 
@@ -34,9 +34,7 @@ object MoviesManager {
     // endregion
 
     // constructors
-    /**
-     * creating a playlist for favorites at runtime
-     */
+
     init {
         val favoriteList = Playlist("fav001", "Favorite", ArrayList())
         favoritePlaylistList.add(favoriteList)
@@ -45,8 +43,23 @@ object MoviesManager {
 
 
     // public API
+
     fun setUpMoviesManager(sharedPref: SharedPreferences) {
         sharedPreferences = sharedPref
+    }
+
+    fun fetchPlaylistListWithMovies() {
+        NetworkManager.fetchPlaylistList { playlistListResult ->
+            when (playlistListResult) {
+                is Result.Success -> {
+                    playlistList.addAll(playlistListResult.data)
+                    fetchMoviesForPlaylistList()
+                }
+                is Result.Error -> {
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(playlistListResult.code, playlistListResult.message))
+                }
+            }
+        }
     }
 
     fun updateFavorites(movie: Movie) {
@@ -62,20 +75,6 @@ object MoviesManager {
         favoritePlaylist.movieList.add(movie)
         EventBus.getDefault().post(Notification.PlaylistChangedEvent(playlistList))
         EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
-    }
-
-    fun fetchPlaylistListWithMovies() {
-        NetworkManager.fetchPlaylistList { playlistListResult ->
-            when (playlistListResult) {
-                is Result.Success -> {
-                    playlistList.addAll(playlistListResult.data)
-                    fetchMoviesForPlaylistList()
-                }
-                is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(playlistListResult.code, playlistListResult.message))
-                }
-            }
-        }
     }
 
     // endregion
@@ -113,6 +112,9 @@ object MoviesManager {
         }
     }
 
+    /**
+     * Method that iterates all playlists and finds favorite videos based on shared-preferences and stores them in favoritePlaylist
+     */
     private fun initializeFavorites() {
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {

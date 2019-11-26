@@ -1,11 +1,10 @@
 package de.tdsoftware.moviesharing.data.helper.playlist
 
-
 import com.squareup.moshi.Json
 import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 
 /**
- * represents serialization-template for API-response for PlaylistRequest
+ * represents deserialization-template for API-response for PlaylistRequest
  */
 data class PlaylistResponse(
     @Json(name = "etag")

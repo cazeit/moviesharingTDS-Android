@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 
 /**
- * represents serialization-template for API-response for MoviesRequest
+ * represents deserialization-template for API-response for MoviesRequest
  */
 data class MovieResponse(
     @Json(name = "etag")
