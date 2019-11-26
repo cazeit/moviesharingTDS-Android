@@ -34,7 +34,7 @@ class MoviesListFragment : MoviesBaseFragment() {
 
     // endregion
 
-    // region public API
+    // region MainActivityBaseFragment-implementations
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistListAdapter()
     }

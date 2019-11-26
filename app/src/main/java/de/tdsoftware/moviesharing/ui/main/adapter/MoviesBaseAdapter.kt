@@ -16,6 +16,7 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
     RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
 
     // Region public types
+
     class ViewHolder(
         itemView: View,
         val movieThumbnailImageView: ImageView,
@@ -42,6 +43,8 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
 
     // endregion
 
+    // region RecyclerView.Adapter-implementations
+
     override fun getItemCount(): Int {
         return movieList.size
     }
@@ -60,6 +63,8 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
             holder.movieThumbnailImageView.isEnabled = true
         }
     }
+
+    // endregion
 
 
 }

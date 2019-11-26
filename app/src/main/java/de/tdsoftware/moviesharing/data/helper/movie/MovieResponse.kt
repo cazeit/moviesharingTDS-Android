@@ -4,6 +4,9 @@ package de.tdsoftware.moviesharing.data.helper.movie
 import com.squareup.moshi.Json
 import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
 
+/**
+ * represents serialization-template for API-response for MoviesRequest
+ */
 data class MovieResponse(
     @Json(name = "etag")
     val etag: String,

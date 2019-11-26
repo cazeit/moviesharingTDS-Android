@@ -12,7 +12,7 @@ import de.tdsoftware.moviesharing.util.Notification
 
 abstract class MoviesBaseFragment : MainActivityBaseFragment() {
 
-    // region public API
+    // region EventBus
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)

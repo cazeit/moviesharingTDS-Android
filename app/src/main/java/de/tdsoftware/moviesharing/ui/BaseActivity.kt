@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    // region EventBus
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
         when (notification) {
@@ -34,6 +35,9 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    // endregion
+
+    // region lifecycle callbacks
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
@@ -77,4 +81,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState, outPersistentState)
         outState.putString("PID", android.os.Process.myPid().toString())
     }
+
+    // endregion
 }

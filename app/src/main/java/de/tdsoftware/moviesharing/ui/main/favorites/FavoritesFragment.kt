@@ -13,7 +13,6 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.util.MoviesManager
 import de.tdsoftware.moviesharing.util.Notification
 
-
 /**
  * Favorite-Fragment, has a SearchView and a list of all favorites
  *
@@ -23,6 +22,7 @@ import de.tdsoftware.moviesharing.util.Notification
 class FavoritesFragment : MainActivityBaseFragment() {
 
     // region public types
+
     companion object {
 
         fun newInstance(): FavoritesFragment {
@@ -31,9 +31,11 @@ class FavoritesFragment : MainActivityBaseFragment() {
 
         private val TAG = FavoritesFragment::class.java.simpleName
     }
+
     // endregion
 
     // region properties
+
     private val favoritePlaylistRecyclerAdapter: PlaylistFavoriteAdapter
         get() {
             return playlistAdapter as PlaylistFavoriteAdapter
@@ -43,9 +45,10 @@ class FavoritesFragment : MainActivityBaseFragment() {
     private lateinit var fullList: ArrayList<Movie>
 
     private lateinit var mainView: FavoritesFragmentView
+
     // endregion
 
-    // region public API
+    // region EventBus
 
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
@@ -68,6 +71,10 @@ class FavoritesFragment : MainActivityBaseFragment() {
         }
     }
 
+    // endregion
+
+    // region MainActivityBaseFragment-implementations
+
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistFavoriteAdapter()
     }
@@ -84,6 +91,14 @@ class FavoritesFragment : MainActivityBaseFragment() {
         mainView =
             inflater.inflate(R.layout.fragment_favorites, container, false) as FavoritesFragmentView
         return mainView
+    }
+
+    /**
+     * This makes the SearchView unfocused when entering the fragment, so when coming back from intent, the SearchView won't have focus.
+     */
+    override fun onResume() {
+        super.onResume()
+        mainView.requestFocus()
     }
 
     /**

@@ -6,6 +6,7 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 
 open class PlaylistListAdapter : PlaylistBaseAdapter() {
 
+    // region RecyclerView.Adapter-implementations
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieRecyclerView.layoutManager =
             LinearLayoutManager(holder.movieRecyclerView.context, RecyclerView.VERTICAL, false)
@@ -14,4 +15,5 @@ open class PlaylistListAdapter : PlaylistBaseAdapter() {
         super.onBindViewHolder(holder, position)
     }
 
+    // endregion
 }

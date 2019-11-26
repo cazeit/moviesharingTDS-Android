@@ -1,6 +1,5 @@
 package de.tdsoftware.moviesharing.util
 
-
 /**
  * Class that represents a result, either being successful or not
  */

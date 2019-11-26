@@ -11,12 +11,12 @@ import de.tdsoftware.moviesharing.util.requests.Request
 /**
  * Singleton, that handles all networking
  */
-
-// TODO: more sense to add to queue inside of Request constructor or like i did it here?
-
 object NetworkManager {
 
     // region properties
+    private val requestQueue by lazy {
+        ArrayList<Request>()
+    }
 
     private val playlistList by lazy {
         ArrayList<Playlist>()
@@ -26,21 +26,19 @@ object NetworkManager {
         ArrayList<Movie>()
     }
 
-    val requestQueue by lazy {
-        ArrayList<Request>()
-    }
-
     private var isRequesting: Boolean = false
 
     // endregion
 
     // region public API
-
+    /**
+     * fetch a list of all playlists from user that is defined in PlaylistRequest (channelId)
+     */
     fun fetchPlaylistList(pageToken: String = "", callback: (Result<ArrayList<Playlist>>) -> Unit) {
-        register(PlaylistRequest(pageToken) {
-            when (it) {
+        registerRequest(PlaylistRequest(pageToken) { playlistResponseResult ->
+            when (playlistResponseResult) {
                 is Result.Success -> {
-                    val playlistResponse = it.data as PlaylistResponse
+                    val playlistResponse = playlistResponseResult.data as PlaylistResponse
                     playlistList.addAll(mapToPlaylistList(playlistResponse))
                     if (playlistResponse.nextPageToken != null) {
                         fetchPlaylistList(playlistResponse.nextPageToken, callback)
@@ -49,26 +47,29 @@ object NetworkManager {
                         // give free memory after..
                         playlistList.clear()
                     }
-                    unregister(requestQueue.first())
+                    unregisterRequest(requestQueue.first())
                 }
                 is Result.Error -> {
-                    callback(it)
-                    unregisterAll()
+                    callback(playlistResponseResult)
+                    unregisterAllRequests()
                 }
             }
         }, pageToken != "")
     }
 
+    /**
+     * fetch a list of all movies a specific playlist contains (identified by playlistId as param)
+     */
     fun fetchMoviesFromPlaylist(
         playlist: Playlist,
         pageToken: String = "",
         callback: (Result<ArrayList<Movie>>) -> Unit
     ) {
-        register(MoviesRequest(playlist.id, pageToken) {
-            when (it) {
+        registerRequest(MoviesRequest(playlist.id, pageToken) { movieResponseResult ->
+            when (movieResponseResult) {
                 is Result.Success -> {
-                    val movieResponse = it.data as MovieResponse
-                    movieList.addAll(mapToMovies(it.data))
+                    val movieResponse = movieResponseResult.data as MovieResponse
+                    movieList.addAll(mapToMovies(movieResponseResult.data))
                     if (movieResponse.nextPageToken != null) {
                         fetchMoviesFromPlaylist(playlist, movieResponse.nextPageToken, callback)
                     } else {
@@ -76,29 +77,31 @@ object NetworkManager {
                         // give free memory after..
                         movieList.clear()
                     }
-                    unregister(requestQueue.first())
+                    unregisterRequest(requestQueue.first())
                 }
                 is Result.Error -> {
-                    callback(it)
-                    unregisterAll()
+                    callback(movieResponseResult)
+                    unregisterAllRequests()
                 }
             }
         }, pageToken != "")
     }
+    // endregion
 
+    // region private API
     /**
      * Register a request to the requestQueue, with the possibility to add a request as the next item
      * When registering to request-queue, its inserted after the current one (pos. 1), so it gets started as soon
      * as the current one finishes
      */
-    fun register(request: Request, registerAsFirst: Boolean) {
-        if(registerAsFirst && requestQueue.isNotEmpty()) {
+    private fun registerRequest(request: Request, registerAsFirst: Boolean) {
+        if (registerAsFirst && requestQueue.isNotEmpty()) {
             requestQueue.add(1, request)
 
-        }else {
+        } else {
             requestQueue.add(request)
         }
-        if(!isRequesting){
+        if (!isRequesting) {
             isRequesting = true
             requestQueue.first().fetch()
         }
@@ -107,11 +110,11 @@ object NetworkManager {
     /**
      * Unregister the request and start fetching the next one in line
      */
-    fun unregister(request: Request) {
+    private fun unregisterRequest(request: Request) {
         requestQueue.remove(request)
-        if(requestQueue.isNotEmpty()) {
+        if (requestQueue.isNotEmpty()) {
             requestQueue.first().fetch()
-        }else{
+        } else {
             isRequesting = false
         }
     }
@@ -119,7 +122,7 @@ object NetworkManager {
     /**
      * Unregister all pending requests (called when an error occurrs)
      */
-    fun  unregisterAll() {
+    private fun unregisterAllRequests() {
         requestQueue.clear()
         isRequesting = false
     }

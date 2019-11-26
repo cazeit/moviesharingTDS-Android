@@ -13,8 +13,6 @@
         android:id="@+id/recycler_item_movies_list_card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_movies_list_recycler_picture_height"
-        android:layout_marginStart="@dimen/spacing_small"
-        android:layout_marginEnd="@dimen/spacing_small"
         android:elevation="@dimen/corner_radius_normal"
         app:cardCornerRadius="@dimen/elevation_normal"
         app:cardUseCompatPadding="true"

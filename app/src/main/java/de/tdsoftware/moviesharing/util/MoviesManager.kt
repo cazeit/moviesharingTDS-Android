@@ -11,9 +11,8 @@ import org.greenrobot.eventbus.EventBus
  */
 object MoviesManager {
 
-    // properties
+    // region properties
 
-    private val TAG = MoviesManager::class.java.simpleName
     val playlistList by lazy {
         ArrayList<Playlist>()
     }
@@ -30,6 +29,7 @@ object MoviesManager {
         }
 
     private lateinit var sharedPreferences: SharedPreferences
+    private val TAG = MoviesManager::class.java.simpleName
 
     // endregion
 
@@ -65,15 +65,14 @@ object MoviesManager {
     }
 
     fun fetchPlaylistListWithMovies() {
-        NetworkManager.fetchPlaylistList {
-            when (it) {
+        NetworkManager.fetchPlaylistList { playlistListResult ->
+            when (playlistListResult) {
                 is Result.Success -> {
-                    playlistList.addAll(it.data)
-                    Log.v(TAG, "Empty playlist-list is now stored in MoviesManager.")
+                    playlistList.addAll(playlistListResult.data)
                     fetchMoviesForPlaylistList()
                 }
                 is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(playlistListResult.code, playlistListResult.message))
                 }
             }
         }
@@ -90,14 +89,14 @@ object MoviesManager {
     }
 
     private fun fetchMoviesForPlaylist(playlist: Playlist) {
-        NetworkManager.fetchMoviesFromPlaylist(playlist) {
-            when (it) {
+        NetworkManager.fetchMoviesFromPlaylist(playlist) { movieListResult ->
+            when (movieListResult) {
                 is Result.Success -> {
                     Log.v(
                         TAG,
-                        "Result for playlist with name: " + playlist.title + ". There are " + it.data.size + " videos in this playlist."
+                        "Result for playlist with name: " + playlist.title + ". There are " + movieListResult.data.size + " videos in this playlist."
                     )
-                    playlist.movieList.addAll(it.data)
+                    playlist.movieList.addAll(movieListResult.data)
                     if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
                         EventBus.getDefault().post(
@@ -108,7 +107,7 @@ object MoviesManager {
                     }
                 }
                 is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(it.code, it.message))
+                    EventBus.getDefault().post(Notification.NetworkErrorEvent(movieListResult.code, movieListResult.message))
                 }
             }
         }

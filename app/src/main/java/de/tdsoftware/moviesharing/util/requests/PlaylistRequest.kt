@@ -11,30 +11,23 @@ class PlaylistRequest(
     private val callback: (Result<YouTubeApiResponse>) -> Unit
 ) : Request(callback) {
 
+    // region public types
     companion object {
         private const val CHANNEL_ID = "UCPppOIczZfCCoqAwRLc4T0A"
-        private const val CHANNEL_ID_SECOND = "UCvKt4C06Ap-YqbndvzRDLSA"
     }
+    // endregion
 
-    override fun checkResponse(response: Response) {
-        if (response.isSuccessful) {
-            val playlistString = response.body()?.string()
-            playlistString?.let {
-                val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
-                val playlistResponse = jsonAdapter.fromJson(playlistString)
-                if (playlistResponse != null) {
-                    callback(Result.Success(playlistResponse))
-                }
+    // region Request-implementations
+    override fun deserializeResponse(response: Response) {
+        val playlistString = response.body()?.string()
+        playlistString?.let {
+            val jsonAdapter = moshi.adapter(PlaylistResponse::class.java)
+            val playlistResponse = jsonAdapter.fromJson(playlistString)
+            if (playlistResponse != null) {
+                callback(Result.Success(playlistResponse))
             }
-                ?: callback(Result.Error(150, "Error reading Server-Response."))
-        } else {
-            callback(
-                Result.Error(
-                    400,
-                    "Error-Code from API while fetching playlists: " + response.code().toString()
-                )
-            )
         }
+            ?: callback(Result.Error(150, "Error reading Server-Response."))
     }
 
     override fun buildRequestUrl(): HttpUrl {
@@ -48,4 +41,6 @@ class PlaylistRequest(
             .addQueryParameter("maxResults", "50")
             .addQueryParameter("key", API_KEY).build()
     }
+
+    // endregion
 }

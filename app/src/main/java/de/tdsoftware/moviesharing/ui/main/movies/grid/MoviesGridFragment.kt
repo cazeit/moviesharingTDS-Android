@@ -14,6 +14,7 @@ import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 class MoviesGridFragment : MoviesBaseFragment() {
 
     // region public types
+
     companion object {
 
         @JvmStatic
@@ -25,6 +26,7 @@ class MoviesGridFragment : MoviesBaseFragment() {
     // endregion
 
     // region properties
+
     private lateinit var mainView: MoviesGridFragmentView
 
     private val playlistRecyclerAdapter: PlaylistGridAdapter
@@ -34,7 +36,8 @@ class MoviesGridFragment : MoviesBaseFragment() {
 
     // endregion
 
-    // region public API
+    // region MainActivityBaseFragment-implementations
+
     override fun createPlayListAdapter(): PlaylistBaseAdapter {
         return PlaylistGridAdapter()
     }
@@ -42,6 +45,7 @@ class MoviesGridFragment : MoviesBaseFragment() {
     // endregion
 
     // region lifecycle callbacks
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

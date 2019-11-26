@@ -21,6 +21,7 @@ import de.tdsoftware.moviesharing.util.MoviesManager
 class MovieDetailsActivity : BaseActivity() {
 
     // region properties
+
     private val movieDetailsFragment by lazy {
         MovieDetailsFragment.newInstance()
     }
@@ -28,7 +29,8 @@ class MovieDetailsActivity : BaseActivity() {
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
 
-    private val TAG = MovieDetailsActivity::class.java.simpleName
+    private val logTag = MovieDetailsActivity::class.java.simpleName
+
     // endregion
 
     // region lifecycle callbacks
@@ -79,12 +81,12 @@ class MovieDetailsActivity : BaseActivity() {
             }
             R.id.favorite_item -> {
                 if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
-                    Log.v(TAG, "Movie is no longer a favorite")
+                    Log.v(logTag, "Movie is no longer a favorite")
 
                     item.icon.colorFilter = null
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
                 } else {
-                    Log.v(TAG, "Movie is now a favorite")
+                    Log.v(logTag, "Movie is now a favorite")
 
                     item.icon.colorFilter =
                         PorterDuffColorFilter(

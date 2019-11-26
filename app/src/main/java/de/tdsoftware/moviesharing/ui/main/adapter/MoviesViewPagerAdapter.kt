@@ -13,6 +13,7 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager) :
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     // region properties
+
     private val moviesGridFragment: MoviesGridFragment by lazy {
         MoviesGridFragment.newInstance()
     }
@@ -21,6 +22,8 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager) :
         MoviesListFragment.newInstance()
     }
     // endregion
+
+    // region FragmentPagerAdapter-implementations
 
     override fun getItem(position: Int): Fragment {
         when (position) {
@@ -49,4 +52,6 @@ class MoviesViewPagerAdapter(fragmentManager: FragmentManager) :
         }
         return ""
     }
+
+    // endregion
 }
