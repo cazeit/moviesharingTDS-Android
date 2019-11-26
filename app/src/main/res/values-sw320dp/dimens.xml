@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Spacing -->
-    <dimen name="spacing_small">5dp</dimen>
-    <dimen name="spacing_normal">10dp</dimen>
-    <dimen name="spacing_large">15dp</dimen>
-    <dimen name="spacing_xlarge">20dp</dimen>
+    <dimen name="spacing_small">3dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_large">12dp</dimen>
+    <dimen name="spacing_xlarge">18dp</dimen>
 
     <!-- Text-Size -->
-    <dimen name="text_size_small">12sp</dimen>
-    <dimen name="text_size_normal">16sp</dimen>
-    <dimen name="text_size_xlarge">19sp</dimen>
+    <dimen name="text_size_small">13sp</dimen>
+    <dimen name="text_size_normal">17sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
 
     <!-- elevation -->
     <dimen name="elevation_normal">8dp</dimen>
