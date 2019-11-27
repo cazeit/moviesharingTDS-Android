@@ -3,6 +3,7 @@ package de.tdsoftware.moviesharing.ui.main.adapter
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
@@ -20,7 +21,8 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
     class ViewHolder(
         itemView: View,
         val movieThumbnailImageView: ImageView,
-        private val movieTitleTextView: TextView
+        private val movieTitleTextView: TextView,
+        val movieThumbnailCardView: CardView
     ) : RecyclerView.ViewHolder(itemView) {
         var movieTitle: String?
             get() {
@@ -32,7 +34,7 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
     }
 
     interface ItemClickListener {
-        fun onRecyclerItemClick(movie: Movie)
+        fun onRecyclerItemClick(movie: Movie, view: View)
     }
 
     // endregion
@@ -53,13 +55,12 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
         holder.movieTitle = movieList[position].title
 
         val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imagePath).placeholder(R.drawable.sample_movie_image)
-            .transform(transformation)
+        Picasso.get().load(movieList[position].imagePath).transform(transformation).placeholder(R.drawable.sample_movie_image)
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {
             holder.movieThumbnailImageView.isEnabled = false
-            listener?.onRecyclerItemClick(movieList[position])
+            listener?.onRecyclerItemClick(movieList[position], holder.movieThumbnailCardView)
             holder.movieThumbnailImageView.isEnabled = true
         }
     }

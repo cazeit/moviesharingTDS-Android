@@ -13,16 +13,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/fragment_movie_details_banner_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fragment_video_details_banner_picture_height"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.cardview.widget.CardView
-                android:id="@+id/fragment_movie_details_card_view"
+                android:id="@+id/fragment_movie_details_banner_image_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/corner_radius_normal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <ImageView
+                    android:id="@+id/fragment_movie_details_banner_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fragment_video_details_banner_picture_height"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fragment_movie_details_cover_card_view"
                 android:layout_width="@dimen/fragment_video_details_cover_picture_width"
                 android:layout_height="@dimen/fragment_video_details_cover_picture_height"
                 android:layout_marginStart="@dimen/spacing_xlarge"
@@ -35,7 +40,7 @@
                     android:id="@+id/fragment_movie_details_cover_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -53,8 +58,8 @@
                 android:textColor="@color/textLight"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/fragment_movie_details_banner_image_view"
-                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_card_view"
+                app:layout_constraintBottom_toBottomOf="@id/fragment_movie_details_banner_image_card_view"
+                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_cover_card_view"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
@@ -67,9 +72,9 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_card_view"
+                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_cover_card_view"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_movie_details_banner_image_view" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_movie_details_banner_image_card_view" />
 
             <RatingBar
                 android:id="@+id/fragment_movie_details_rating_bar"
@@ -86,7 +91,7 @@
                 android:stepSize="0.5"
                 android:transformPivotX="0dp"
                 android:transformPivotY="0dp"
-                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_card_view"
+                app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_cover_card_view"
                 app:layout_constraintTop_toBottomOf="@id/fragment_movie_details_secondary_text_view" />
 
             <TextView
@@ -96,7 +101,7 @@
                 android:padding="@dimen/spacing_normal"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_movie_details_card_view" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_movie_details_cover_card_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -77,7 +77,7 @@ class MovieDetailsActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                super.onBackPressed()
+                onBackPressed()
             }
             R.id.favorite_item -> {
                 if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {

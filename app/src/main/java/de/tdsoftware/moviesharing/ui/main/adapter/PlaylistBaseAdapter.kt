@@ -21,7 +21,7 @@ abstract class PlaylistBaseAdapter :
      * Listener defined to handle onClick inside (@see VideoBaseAdapter)
      */
     interface Listener {
-        fun onMovieSelected(movie: Movie)
+        fun onMovieSelected(movie: Movie, view: View)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -64,8 +64,8 @@ abstract class PlaylistBaseAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
         holder.moviesRecyclerAdapter?.listener = object : MoviesBaseAdapter.ItemClickListener {
-            override fun onRecyclerItemClick(movie: Movie) {
-                clickListener?.onMovieSelected(movie)
+            override fun onRecyclerItemClick(movie: Movie, view: View) {
+                clickListener?.onMovieSelected(movie, view)
             }
 
         }

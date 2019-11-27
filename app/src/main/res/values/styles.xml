@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="actionBarTheme">@style/ActionBarTheme</item>
+        <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/backgroundDefault</item>
     </style>
 

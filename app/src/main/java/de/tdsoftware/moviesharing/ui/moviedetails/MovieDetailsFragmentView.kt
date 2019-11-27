@@ -1,11 +1,14 @@
 package de.tdsoftware.moviesharing.ui.moviedetails
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.view.ViewCompat
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
 import jp.wasabeef.picasso.transformations.CropTransformation
@@ -13,6 +16,11 @@ import jp.wasabeef.picasso.transformations.CropTransformation
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
     // region Public Types
+
+    companion object{
+        const val CARD_BANNER = "imageBanner"
+        const val CARD_COVER = "imageCover"
+    }
 
     interface Listener {
         fun onRatingChanged(rating: Float)
@@ -60,6 +68,9 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     private lateinit var bannerImageView: ImageView
     private lateinit var coverImageView: ImageView
 
+    private lateinit var bannerImageCardView: CardView
+    private lateinit var coverImageCardView: CardView
+
     private lateinit var titleTextView: TextView
     private lateinit var secondaryTextView: TextView
     private lateinit var descriptionTextView: TextView
@@ -82,6 +93,16 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         coverImageView.isEnabled = true
     }
 
+    fun removeRoundedCornersWithAnimator(){
+        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", 0f)
+        animator.start()
+    }
+
+    fun addRoundedCornersWithAnimator(){
+        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", resources.getDimension(R.dimen.corner_radius_normal))
+        animator.start()
+    }
+
     // endregion
 
     // region View Lifecycle
@@ -101,11 +122,19 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     private fun bindViews() {
         ratingBar = findViewById(R.id.fragment_movie_details_rating_bar)
+
         bannerImageView = findViewById(R.id.fragment_movie_details_banner_image_view)
         coverImageView = findViewById(R.id.fragment_movie_details_cover_image_view)
+
+        bannerImageCardView = findViewById(R.id.fragment_movie_details_banner_image_card_view)
+        coverImageCardView = findViewById(R.id.fragment_movie_details_cover_card_view)
+
         titleTextView = findViewById(R.id.fragment_movie_details_title_text_view)
         descriptionTextView = findViewById(R.id.fragment_movie_details_description_text_view)
         secondaryTextView = findViewById(R.id.fragment_movie_details_secondary_text_view)
+
+        ViewCompat.setTransitionName(bannerImageCardView, CARD_BANNER)
+        ViewCompat.setTransitionName(coverImageCardView, CARD_COVER)
     }
 
     private fun setupControls() {

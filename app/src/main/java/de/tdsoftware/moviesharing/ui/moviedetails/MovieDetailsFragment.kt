@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.transition.Transition
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ class MovieDetailsFragment : BaseFragment() {
         fun newInstance(): MovieDetailsFragment {
             return MovieDetailsFragment()
         }
-
         private val TAG = MovieDetailsActivity::class.java.simpleName
     }
 
@@ -65,6 +65,9 @@ class MovieDetailsFragment : BaseFragment() {
         movie = activity?.intent?.getSerializableExtra("movie") as Movie
 
         setUpMainView()
+
+        setUpTransitionListener()
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -101,7 +104,26 @@ class MovieDetailsFragment : BaseFragment() {
         mainView.description = movie.description
         mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating", 0f)
     }
+    
+    private fun setUpTransitionListener(){
+        activity?.window?.sharedElementEnterTransition?.addListener(object : Transition.TransitionListener{
+            override fun onTransitionResume(p0: Transition?) {
+            }
+
+            override fun onTransitionPause(p0: Transition?) {
+            }
+
+            override fun onTransitionCancel(p0: Transition?) {
+            }
+
+            override fun onTransitionEnd(p0: Transition?) {
+                mainView.removeRoundedCornersWithAnimator()
+            }
+            override fun onTransitionStart(p0: Transition?) {
+                mainView.addRoundedCornersWithAnimator()
+            }
+        })
+    }
 
     // endregion
-
 }
