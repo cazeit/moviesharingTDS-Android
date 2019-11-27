@@ -15,16 +15,12 @@ import de.tdsoftware.moviesharing.util.Notification
 
 /**
  * Favorite-Fragment, has a SearchView and a list of all favorites
- *
- * Important to note: The structure of a recyclerView containing other recyclerViews inside each item stays,
- * as we pass a list containing only one runtime-generated playlist-object, that contains a list of all favorites
  */
 class FavoritesFragment : MainActivityBaseFragment() {
 
     // region public types
 
     companion object {
-
         fun newInstance(): FavoritesFragment {
             return FavoritesFragment()
         }
@@ -94,14 +90,6 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * This makes the SearchView unfocused when entering the fragment, so when coming back from intent, the SearchView won't have focus.
-     */
-    override fun onResume() {
-        super.onResume()
-        mainView.requestFocus()
-    }
-
-    /**
      * here we initialize the fullList(list of all favorites) and initialize the playlistList inside the adapter (list of 1 playlist with favorites)
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,6 +99,14 @@ class FavoritesFragment : MainActivityBaseFragment() {
         playlistListInAdapter = MoviesManager.favoritePlaylistList
 
         setUpMainView()
+    }
+
+    /**
+     * This makes the SearchView unfocused when entering the fragment, when coming back from MovieDetailsActivity
+     */
+    override fun onResume() {
+        super.onResume()
+        mainView.requestFocus()
     }
 
     // endregion
@@ -123,8 +119,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     *  the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
-
+     * Note: playlistRecyclerAdapter is being created in parent-class beforehand
      */
     private fun setUpMainView() {
         mainView.changePlaylistRecyclerAdapter(favoritePlaylistRecyclerAdapter)
@@ -142,7 +137,8 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * filter method that iterates through full list and returns all movies, the title of which contains query
+     * filter method that iterates through full list and returns all movies
+     * (filtering by query and title of movie)
      */
     private fun filter(query: String): ArrayList<Movie> {
         return if (query.isEmpty()) {
@@ -159,11 +155,10 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * check if filteredList is empty and if so display a hint
+     * check if there are filtered results
      */
     private fun checkFilteredListEmptyState() {
         Log.v(TAG, "There are " + filteredList.size + " favorites that match the query!")
-
         if (filteredList.isEmpty()) {
             mainView.hintText = resources.getString(R.string.empty_search_text_hint)
             mainView.changeEmptyStateTextVisibility(true)
@@ -173,7 +168,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * check if fullList is empty and if so display a hint
+     * check if there are favorites at all
      */
     private fun checkFullListEmptyState(): Boolean {
         return if (fullList.isEmpty()) {

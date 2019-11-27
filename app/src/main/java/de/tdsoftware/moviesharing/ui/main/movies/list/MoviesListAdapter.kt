@@ -14,6 +14,7 @@ import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
 class MoviesListAdapter(movieList: ArrayList<Movie>) : MoviesBaseAdapter(movieList) {
 
     // region RecyclerView.Adapter-implementations
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rootView =
             LayoutInflater.from(parent.context)
