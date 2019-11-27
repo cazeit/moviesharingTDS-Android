@@ -65,7 +65,7 @@ class MoviesListFragment : MoviesBaseFragment() {
 
     // region private API
     /**
-     * the playlistAdapter gets created in parent (MainActivityBaseFragment) and then is here set to the recyclerView
+     * Note: playlistRecyclerAdapter is being created in parent-class beforehand
      */
     private fun setUpMainView() {
         mainView.changePlaylistRecyclerAdapter(playlistRecyclerAdapter)
