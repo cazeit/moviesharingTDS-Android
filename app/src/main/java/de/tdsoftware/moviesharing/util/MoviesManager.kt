@@ -56,7 +56,12 @@ object MoviesManager {
                     fetchMoviesForPlaylistList()
                 }
                 is Result.Error -> {
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(playlistListResult.code, playlistListResult.message))
+                    EventBus.getDefault().post(
+                        Notification.NetworkErrorEvent(
+                            playlistListResult.code,
+                            playlistListResult.message
+                        )
+                    )
                 }
             }
         }
@@ -65,17 +70,23 @@ object MoviesManager {
     fun updateFavorites(movie: Movie, isFavorite: Boolean) {
         for (currentMovie in favoritePlaylist.movieList) {
             if (currentMovie.id == movie.id) {
-                if(!isFavorite){
+                if (!isFavorite) {
                     val removeIndex = favoritePlaylist.movieList.indexOf(currentMovie)
                     favoritePlaylist.movieList.remove(movie)
-                    EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList, removeIndex))
+                    EventBus.getDefault().post(
+                        Notification.FavoriteChangedEvent(
+                            favoritePlaylist.movieList,
+                            removeIndex
+                        )
+                    )
                 }
                 return
             }
         }
-        if(isFavorite){
+        if (isFavorite) {
             favoritePlaylist.movieList.add(0, movie)
-            EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+            EventBus.getDefault()
+                .post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
         }
     }
 
@@ -109,7 +120,12 @@ object MoviesManager {
                 }
                 is Result.Error -> {
                     playlistList.clear()
-                    EventBus.getDefault().post(Notification.NetworkErrorEvent(movieListResult.code, movieListResult.message))
+                    EventBus.getDefault().post(
+                        Notification.NetworkErrorEvent(
+                            movieListResult.code,
+                            movieListResult.message
+                        )
+                    )
                 }
             }
         }

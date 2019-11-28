@@ -27,6 +27,7 @@ class MovieDetailsFragment : BaseFragment() {
         fun newInstance(): MovieDetailsFragment {
             return MovieDetailsFragment()
         }
+
         private val TAG = MovieDetailsActivity::class.java.simpleName
     }
 
@@ -104,9 +105,10 @@ class MovieDetailsFragment : BaseFragment() {
         mainView.description = movie.description
         mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating", 0f)
     }
-    
-    private fun setUpTransitionListener(){
-        activity?.window?.sharedElementEnterTransition?.addListener(object : Transition.TransitionListener{
+
+    private fun setUpTransitionListener() {
+        activity?.window?.sharedElementEnterTransition?.addListener(object :
+            Transition.TransitionListener {
             override fun onTransitionResume(p0: Transition?) {
             }
 
@@ -119,6 +121,7 @@ class MovieDetailsFragment : BaseFragment() {
             override fun onTransitionEnd(p0: Transition?) {
                 mainView.removeRoundedCornersWithAnimator()
             }
+
             override fun onTransitionStart(p0: Transition?) {
                 mainView.addRoundedCornersWithAnimator()
             }

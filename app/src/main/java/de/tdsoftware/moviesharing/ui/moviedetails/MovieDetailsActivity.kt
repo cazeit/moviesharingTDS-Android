@@ -58,7 +58,10 @@ class MovieDetailsActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        MoviesManager.updateFavorites(movie, sharedPreferences.getBoolean(movie.id + "_favorite", false))
+        MoviesManager.updateFavorites(
+            movie,
+            sharedPreferences.getBoolean(movie.id + "_favorite", false)
+        )
     }
 
     /**

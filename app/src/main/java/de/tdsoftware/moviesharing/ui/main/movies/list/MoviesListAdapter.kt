@@ -20,8 +20,10 @@ class MoviesListAdapter(movieList: ArrayList<Movie>) : MoviesBaseAdapter(movieLi
         val rootView =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.recycler_item_movies_list, parent, false)
-        val imageView = rootView.findViewById<ImageView>(R.id.recycler_item_movies_list_thumbnail_image_view)
-        val textView = rootView.findViewById<TextView>(R.id.recycler_item_movies_list_title_text_view)
+        val imageView =
+            rootView.findViewById<ImageView>(R.id.recycler_item_movies_list_thumbnail_image_view)
+        val textView =
+            rootView.findViewById<TextView>(R.id.recycler_item_movies_list_title_text_view)
         val cardView = rootView.findViewById<CardView>(R.id.recycler_item_movies_list_card_view)
         return ViewHolder(
             rootView,

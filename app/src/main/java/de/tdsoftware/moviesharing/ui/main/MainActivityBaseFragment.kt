@@ -69,7 +69,11 @@ abstract class MainActivityBaseFragment : BaseFragment() {
                 Log.v(logTag, "Movie selected with title: " + movie.title)
 
                 val intent = Intent(context, MovieDetailsActivity::class.java)
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivityBaseFragment.requireActivity(), Pair(view, CARD_BANNER), Pair(view, CARD_COVER))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this@MainActivityBaseFragment.requireActivity(),
+                    Pair(view, CARD_BANNER),
+                    Pair(view, CARD_COVER)
+                )
                 intent.putExtra("movie", movie)
                 startActivity(intent, options.toBundle())
             }

@@ -55,7 +55,8 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
         holder.movieTitle = movieList[position].title
 
         val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imagePath).transform(transformation).placeholder(R.drawable.sample_movie_image)
+        Picasso.get().load(movieList[position].imagePath).transform(transformation)
+            .placeholder(R.drawable.sample_movie_image)
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {
