@@ -1,7 +1,6 @@
 package de.tdsoftware.moviesharing.ui.main.favorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +23,6 @@ class FavoritesFragment : MainActivityBaseFragment() {
         fun newInstance(): FavoritesFragment {
             return FavoritesFragment()
         }
-
-        private val TAG = FavoritesFragment::class.java.simpleName
     }
 
     // endregion
@@ -50,17 +47,17 @@ class FavoritesFragment : MainActivityBaseFragment() {
         super.onNotification(notification)
         when (notification) {
             is Notification.FavoriteChangedEvent -> {
-                Log.v(TAG, "Event fired in FavoriteFragment")
 
                 // update full-list
                 fullList = notification.favoriteList
 
-                // filter the list
+                // update filtered-list
                 filteredList = filter(mainView.searchViewQuery)
-                // set the playlist-list in the adapter by using the filteredList
-                favoritePlaylistRecyclerAdapter.playlistList =
-                    createFilteredPlaylistList(filteredList)
-                favoritePlaylistRecyclerAdapter.notifyMovieChanged(notification.removeIndex)
+                // change the movieList of the movie-adapter over playlist-adapter-method
+                favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)
+
+                // notify adapter that data has changed @removedIndex
+                favoritePlaylistRecyclerAdapter.notifyMovieChanged(notification.removedIndex)
                 // check if empty-state-text needs to be displayed
                 if (!checkFullListEmptyState()) {
                     checkFilteredListEmptyState()
@@ -160,7 +157,6 @@ class FavoritesFragment : MainActivityBaseFragment() {
      * check if there are filtered results
      */
     private fun checkFilteredListEmptyState() {
-        Log.v(TAG, "There are " + filteredList.size + " favorites that match the query!")
         if (filteredList.isEmpty()) {
             mainView.hintText = resources.getString(R.string.empty_search_text_hint)
             mainView.changeEmptyStateTextVisibility(true)
@@ -182,6 +178,5 @@ class FavoritesFragment : MainActivityBaseFragment() {
             false
         }
     }
-
     // endregion
 }
