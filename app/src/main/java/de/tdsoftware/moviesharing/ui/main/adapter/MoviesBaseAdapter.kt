@@ -61,7 +61,6 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
 
         holder.movieThumbnailImageView.setOnClickListener {
             holder.movieThumbnailImageView.isEnabled = false
-            println("RecyclerAdapter-Position = " + position)
             listener?.onRecyclerItemClick(movieList[position], holder.movieThumbnailCardView)
             holder.movieThumbnailImageView.isEnabled = true
         }
@@ -69,7 +68,6 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        println("view gone!")
         holder.movieThumbnailImageView.setOnClickListener(null)
     }
 
