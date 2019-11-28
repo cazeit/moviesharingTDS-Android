@@ -62,19 +62,21 @@ object MoviesManager {
         }
     }
 
-    fun updateFavorites(movie: Movie) {
+    fun updateFavorites(movie: Movie, isFavorite: Boolean) {
         for (currentMovie in favoritePlaylist.movieList) {
             if (currentMovie.id == movie.id) {
-                favoritePlaylist.movieList.remove(currentMovie)
-                EventBus.getDefault().post(Notification.PlaylistChangedEvent(playlistList))
-                EventBus.getDefault()
-                    .post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+                if(!isFavorite){
+                    val removeIndex = favoritePlaylist.movieList.indexOf(currentMovie)
+                    favoritePlaylist.movieList.remove(movie)
+                    EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList, removeIndex))
+                }
                 return
             }
         }
-        favoritePlaylist.movieList.add(movie)
-        EventBus.getDefault().post(Notification.PlaylistChangedEvent(playlistList))
-        EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+        if(isFavorite){
+            favoritePlaylist.movieList.add(0, movie)
+            EventBus.getDefault().post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+        }
     }
 
     // endregion
@@ -106,6 +108,7 @@ object MoviesManager {
                     }
                 }
                 is Result.Error -> {
+                    playlistList.clear()
                     EventBus.getDefault().post(Notification.NetworkErrorEvent(movieListResult.code, movieListResult.message))
                 }
             }

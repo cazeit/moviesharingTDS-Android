@@ -58,7 +58,8 @@ class FavoritesFragment : MainActivityBaseFragment() {
                 // filter the list
                 filteredList = filter(mainView.searchViewQuery)
                 // set the playlist-list in the adapter by using the filteredList
-                playlistListInAdapter = createFilteredPlaylistList(filteredList)
+                favoritePlaylistRecyclerAdapter.playlistList = createFilteredPlaylistList(filteredList)
+                favoritePlaylistRecyclerAdapter.notifyMovieChanged(notification.removeIndex)
                 // check if empty-state-text needs to be displayed
                 if (!checkFullListEmptyState()) {
                     checkFilteredListEmptyState()

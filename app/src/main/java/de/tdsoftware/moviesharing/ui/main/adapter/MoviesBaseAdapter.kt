@@ -13,7 +13,7 @@ import jp.wasabeef.picasso.transformations.CropTransformation
 /**
  * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
  */
-abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
+abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
     RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
 
     // Region public types
@@ -60,9 +60,16 @@ abstract class MoviesBaseAdapter(private var movieList: ArrayList<Movie>) :
 
         holder.movieThumbnailImageView.setOnClickListener {
             holder.movieThumbnailImageView.isEnabled = false
+            println("RecyclerAdapter-Position = " + position)
             listener?.onRecyclerItemClick(movieList[position], holder.movieThumbnailCardView)
             holder.movieThumbnailImageView.isEnabled = true
         }
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        println("view gone!")
+        holder.movieThumbnailImageView.setOnClickListener(null)
     }
 
     // endregion

@@ -56,6 +56,11 @@ class MovieDetailsActivity : BaseActivity() {
         setUpActionBar()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        MoviesManager.updateFavorites(movie, sharedPreferences.getBoolean(movie.id + "_favorite", false))
+    }
+
     /**
      * check if movie is favorite or not and display the icon in the corresponding color
      */
@@ -77,7 +82,7 @@ class MovieDetailsActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                finishAfterTransition()
             }
             R.id.favorite_item -> {
                 if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
@@ -95,10 +100,9 @@ class MovieDetailsActivity : BaseActivity() {
                         )
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
-                MoviesManager.updateFavorites(movie)
             }
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
     // endregion

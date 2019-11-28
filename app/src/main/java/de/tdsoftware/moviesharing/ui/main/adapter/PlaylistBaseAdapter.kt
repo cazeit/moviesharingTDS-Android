@@ -40,9 +40,9 @@ abstract class PlaylistBaseAdapter :
                 playlistTitleTextView.text = value
             }
 
-        var moviesRecyclerAdapter: MoviesBaseAdapter?
+        var moviesRecyclerAdapter: MoviesBaseAdapter
             get() {
-                return movieRecyclerView.adapter as MoviesBaseAdapter?
+                return movieRecyclerView.adapter as MoviesBaseAdapter
             }
             set(value) {
                 movieRecyclerView.adapter = value
@@ -63,11 +63,10 @@ abstract class PlaylistBaseAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.moviesRecyclerAdapter?.listener = object : MoviesBaseAdapter.ItemClickListener {
+        holder.moviesRecyclerAdapter.listener = object : MoviesBaseAdapter.ItemClickListener {
             override fun onRecyclerItemClick(movie: Movie, view: View) {
                 clickListener?.onMovieSelected(movie, view)
             }
-
         }
     }
 
