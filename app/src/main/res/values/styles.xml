@@ -9,6 +9,7 @@
         <item name="actionBarTheme">@style/ActionBarTheme</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/backgroundDefault</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
     </style>
 
 

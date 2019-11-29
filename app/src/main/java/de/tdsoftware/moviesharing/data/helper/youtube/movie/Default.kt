@@ -1,9 +1,9 @@
-package de.tdsoftware.moviesharing.data.helper.movie
+package de.tdsoftware.moviesharing.data.helper.youtube.movie
 
 
 import com.squareup.moshi.Json
 
-data class Medium(
+data class Default(
     @Json(name = "height")
     val height: Int,
     @Json(name = "url")

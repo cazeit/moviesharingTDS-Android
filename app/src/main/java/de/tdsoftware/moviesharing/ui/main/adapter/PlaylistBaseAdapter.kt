@@ -10,7 +10,7 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.data.models.Movie
 
 /**
- * BaseAdapter for RecyclerView, where each one item represents one playlist
+ * BaseAdapter for RecyclerView, where each item represents one playlist
  */
 abstract class PlaylistBaseAdapter :
     RecyclerView.Adapter<PlaylistBaseAdapter.ViewHolder>() {
@@ -18,7 +18,7 @@ abstract class PlaylistBaseAdapter :
     // region public types
 
     /**
-     * Listener defined to handle onClick inside (@see VideoBaseAdapter)
+     * Listener defined to handle onClick inside (@see MoviesBaseAdapter)
      */
     interface Listener {
         fun onMovieSelected(movie: Movie, view: View)
@@ -53,7 +53,7 @@ abstract class PlaylistBaseAdapter :
 
     // region properties
 
-    var clickListener: Listener? = null
+    var onMovieClickedListener: Listener? = null
 
     var playlistList: ArrayList<Playlist> = ArrayList()
 
@@ -63,9 +63,9 @@ abstract class PlaylistBaseAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
-        holder.moviesRecyclerAdapter.listener = object : MoviesBaseAdapter.ItemClickListener {
+        holder.moviesRecyclerAdapter.clickListener = object : MoviesBaseAdapter.ItemClickListener {
             override fun onRecyclerItemClick(movie: Movie, view: View) {
-                clickListener?.onMovieSelected(movie, view)
+                onMovieClickedListener?.onMovieSelected(movie, view)
             }
         }
     }

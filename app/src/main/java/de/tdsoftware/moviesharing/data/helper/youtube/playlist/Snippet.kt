@@ -1,4 +1,4 @@
-package de.tdsoftware.moviesharing.data.helper.playlist
+package de.tdsoftware.moviesharing.data.helper.youtube.playlist
 
 
 import com.squareup.moshi.Json

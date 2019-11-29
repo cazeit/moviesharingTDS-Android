@@ -50,7 +50,7 @@ abstract class MainActivityBaseFragment : BaseFragment() {
     // region lifecycle callbacks
 
     /**
-     * create a playlist-adapter (empty list) and initialize the clickListener (@see PlaylistBaseAdapter)
+     * create a playlist-adapter (empty list) and initialize the onMovieClickedListener (@see PlaylistBaseAdapter)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ abstract class MainActivityBaseFragment : BaseFragment() {
 
     private fun initializeRecyclerItemOnClickListener() {
 
-        playlistAdapter.clickListener = object : PlaylistBaseAdapter.Listener {
+        playlistAdapter.onMovieClickedListener = object : PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie, view: View) {
                 Log.v(logTag, "Movie selected with title: " + movie.title)
 

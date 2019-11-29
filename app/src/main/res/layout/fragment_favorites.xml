@@ -39,6 +39,7 @@
         android:id="@+id/fragment_favorites_recycler_view_favorite_playlist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_favorites_search_view" />
 

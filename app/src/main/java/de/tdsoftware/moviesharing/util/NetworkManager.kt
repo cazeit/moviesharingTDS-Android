@@ -1,16 +1,25 @@
 package de.tdsoftware.moviesharing.util
 
-import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
-import de.tdsoftware.moviesharing.data.helper.playlist.PlaylistResponse
+import de.tdsoftware.moviesharing.data.helper.ApiResponse
+import de.tdsoftware.moviesharing.data.helper.MoviesApiResponse
+import de.tdsoftware.moviesharing.data.helper.PlaylistsApiResponse
+import de.tdsoftware.moviesharing.data.helper.vimeo.movie.VimeoMoviesResponse
+import de.tdsoftware.moviesharing.data.helper.vimeo.playlist.VimeoPlaylistsResponse
+import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
+import de.tdsoftware.moviesharing.data.helper.youtube.playlist.YoutubePlaylistsResponse
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.util.requests.MoviesRequest
-import de.tdsoftware.moviesharing.util.requests.PlaylistRequest
+import de.tdsoftware.moviesharing.util.requests.youtube.YoutubeMoviesRequest
+import de.tdsoftware.moviesharing.util.requests.youtube.YoutubePlaylistsRequest
 import de.tdsoftware.moviesharing.util.requests.Request
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoMoviesRequest
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoPlaylistsRequest
 
 /**
  * Singleton, that handles all networking
  */
+// TODO: change all returnList- names...
+// TODO: remove all prints!
 object NetworkManager {
 
     // region properties
@@ -21,15 +30,25 @@ object NetworkManager {
 
     private var isRequesting: Boolean = false
 
+    private lateinit var sourceApi: ApiName
+
+    enum class ApiName {
+        VIMEO, YOUTUBE
+    }
     // endregion
 
     // region public API
+    // TODO: set this according to button pressed onStartUp..
+    fun changeSourceApi(newSourceApi: ApiName) {
+        sourceApi = newSourceApi
+    }
+
     /**
-     * fetch a list of all playlists from user that is defined in PlaylistRequest (via channelId)
+     * fetch a list of all playlists from user that is defined in YoutubePlaylistsRequest (via channelId)
      */
     fun fetchPlaylistList(callback: (Result<ArrayList<Playlist>>) -> Unit) {
         val playlistList = ArrayList<Playlist>()
-        fetchPlaylistsByToken(callback = callback, playlistList = playlistList)
+        fetchPlaylistsByNextPage(callback = callback, playlistList = playlistList)
     }
 
     /**
@@ -40,7 +59,7 @@ object NetworkManager {
         callback: (Result<ArrayList<Movie>>) -> Unit
     ) {
         val movieList = ArrayList<Movie>()
-        fetchMoviesForPlaylistByToken(
+        fetchMoviesForPlaylistByNextPage(
             playlist = playlist,
             movieList = movieList,
             callback = callback
@@ -88,19 +107,19 @@ object NetworkManager {
         isRequesting = false
     }
 
-    private fun fetchPlaylistsByToken(
-        pageToken: String = "",
+    private fun fetchPlaylistsByNextPage(
+        nextPage: String = "",
         playlistList: ArrayList<Playlist>,
         callback: (Result<ArrayList<Playlist>>) -> Unit
     ) {
-        registerRequest(PlaylistRequest(pageToken) { playlistResponseResult ->
+        val playlistResponseCallback: (Result<ApiResponse>) -> Unit = { playlistResponseResult ->
             when (playlistResponseResult) {
                 is Result.Success -> {
-                    val playlistResponse = playlistResponseResult.data as PlaylistResponse
+                    val playlistResponse = playlistResponseResult.data as PlaylistsApiResponse
                     playlistList.addAll(mapToPlaylistList(playlistResponse))
-                    if (playlistResponse.nextPageToken != null) {
-                        fetchPlaylistsByToken(
-                            playlistResponse.nextPageToken,
+                    if (playlistResponse.nextPage != null) {
+                        fetchPlaylistsByNextPage(
+                            playlistResponse.nextPage,
                             playlistList,
                             callback
                         )
@@ -114,24 +133,38 @@ object NetworkManager {
                     unregisterAllRequests()
                 }
             }
-        }, pageToken != "")
+        }
+        when (sourceApi) {
+            ApiName.YOUTUBE -> {
+                registerRequest(
+                    YoutubePlaylistsRequest(callback = playlistResponseCallback),
+                    nextPage != ""
+                )
+            }
+            ApiName.VIMEO -> {
+                registerRequest(
+                    VimeoPlaylistsRequest(callback = playlistResponseCallback),
+                    nextPage != ""
+                )
+            }
+        }
     }
 
-    private fun fetchMoviesForPlaylistByToken(
+    private fun fetchMoviesForPlaylistByNextPage(
         playlist: Playlist,
-        pageToken: String = "",
+        nextPage: String = "",
         movieList: ArrayList<Movie>,
         callback: (Result<ArrayList<Movie>>) -> Unit
     ) {
-        registerRequest(MoviesRequest(playlist.id, pageToken) { movieResponseResult ->
+        val movieCallback: (Result<ApiResponse>) -> Unit = { movieResponseResult ->
             when (movieResponseResult) {
                 is Result.Success -> {
-                    val movieResponse = movieResponseResult.data as MovieResponse
-                    movieList.addAll(mapToMovies(movieResponseResult.data))
-                    if (movieResponse.nextPageToken != null) {
-                        fetchMoviesForPlaylistByToken(
+                    val movieResponse = movieResponseResult.data as MoviesApiResponse
+                    movieList.addAll(mapToMovies(movieResponse))
+                    if (movieResponse.nextPage != null) {
+                        fetchMoviesForPlaylistByNextPage(
                             playlist,
-                            movieResponse.nextPageToken,
+                            movieResponse.nextPage,
                             movieList,
                             callback
                         )
@@ -145,20 +178,73 @@ object NetworkManager {
                     unregisterAllRequests()
                 }
             }
-        }, pageToken != "")
+        }
+        when (sourceApi) {
+            ApiName.YOUTUBE -> {
+                registerRequest(
+                    YoutubeMoviesRequest(playlist.id, nextPage, movieCallback),
+                    nextPage != ""
+                )
+            }
+            ApiName.VIMEO -> {
+                registerRequest(
+                    VimeoMoviesRequest(playlist.id, nextPage, movieCallback),
+                    nextPage != ""
+                )
+            }
+        }
     }
 
-    private fun mapToPlaylistList(playlistResponse: PlaylistResponse): ArrayList<Playlist> {
+    private fun mapToPlaylistList(playlistsApiResponse: PlaylistsApiResponse): ArrayList<Playlist> {
         val returnList = ArrayList<Playlist>()
-        for (responseItem in playlistResponse.items) {
-            returnList.add(Playlist(responseItem.id, responseItem.snippet.title, ArrayList()))
+        when (playlistsApiResponse) {
+            is YoutubePlaylistsResponse -> {
+                returnList.addAll(mapToPlaylistListFromYoutube(playlistsApiResponse))
+            }
+            is VimeoPlaylistsResponse -> {
+                returnList.addAll(mapToPlaylistListFromVimeo(playlistsApiResponse))
+            }
         }
         return returnList
     }
 
-    private fun mapToMovies(movieResponse: MovieResponse): ArrayList<Movie> {
+    private fun mapToPlaylistListFromYoutube(youtubePlaylistsResponse: YoutubePlaylistsResponse): ArrayList<Playlist> {
+        val returnList = ArrayList<Playlist>()
+        for (responseItem in youtubePlaylistsResponse.items) {
+            returnList.add(
+                Playlist(
+                    responseItem.id,
+                    responseItem.snippet.title,
+                    ArrayList()
+                )
+            )
+        }
+        return returnList
+    }
+
+    private fun mapToPlaylistListFromVimeo(vimeoPlaylistsResponse: VimeoPlaylistsResponse): ArrayList<Playlist> {
+        val returnList = ArrayList<Playlist>()
+        // TODO: map from json objects
+        return returnList
+    }
+
+
+    private fun mapToMovies(moviesApiResponse: MoviesApiResponse): ArrayList<Movie> {
         val returnList = ArrayList<Movie>()
-        for (responseItem in movieResponse.items) {
+        when (moviesApiResponse) {
+            is YoutubeMovieResponse -> {
+                returnList.addAll(mapToMoviesFromYoutube(moviesApiResponse))
+            }
+            is VimeoMoviesResponse -> {
+                returnList.addAll(mapToMoviesFromVimeo(moviesApiResponse))
+            }
+        }
+        return returnList
+    }
+
+    private fun mapToMoviesFromYoutube(youtubeMoviesResponse: YoutubeMovieResponse): ArrayList<Movie> {
+        val returnList = ArrayList<Movie>()
+        for (responseItem in youtubeMoviesResponse.items) {
             val secondaryText =
                 "added on: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
                         responseItem.snippet.publishedAt.substring(5, 7) + "." +
@@ -174,6 +260,12 @@ object NetworkManager {
                 )
             )
         }
+        return returnList
+    }
+
+    private fun mapToMoviesFromVimeo(vimeoMoviesResponse: VimeoMoviesResponse): ArrayList<Movie> {
+        val returnList = ArrayList<Movie>()
+        // TODO: mapping from json-template
         return returnList
     }
 

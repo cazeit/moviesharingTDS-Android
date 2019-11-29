@@ -11,7 +11,7 @@ import de.tdsoftware.moviesharing.data.models.Movie
 import jp.wasabeef.picasso.transformations.CropTransformation
 
 /**
- * BaseAdapter for the RecyclerView inside one item of the Playlist-RecyclerView
+ * BaseAdapter for the RecyclerView inside one Playlist-RecyclerView-Item
  */
 abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
     RecyclerView.Adapter<MoviesBaseAdapter.ViewHolder>() {
@@ -41,7 +41,7 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
 
     // region properties
 
-    var listener: ItemClickListener? = null
+    var clickListener: ItemClickListener? = null
 
     // endregion
 
@@ -55,20 +55,15 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
         holder.movieTitle = movieList[position].title
 
         val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imagePath).transform(transformation)
+        Picasso.get().load(movieList[position].imageUrl).transform(transformation)
             .placeholder(R.drawable.sample_movie_image)
             .into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {
             holder.movieThumbnailImageView.isEnabled = false
-            listener?.onRecyclerItemClick(movieList[position], holder.movieThumbnailCardView)
+            clickListener?.onRecyclerItemClick(movieList[position], holder.movieThumbnailCardView)
             holder.movieThumbnailImageView.isEnabled = true
         }
-    }
-
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holder.movieThumbnailImageView.setOnClickListener(null)
     }
 
     // endregion

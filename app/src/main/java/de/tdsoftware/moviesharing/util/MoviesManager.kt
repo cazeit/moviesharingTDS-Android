@@ -1,14 +1,14 @@
 package de.tdsoftware.moviesharing.util
 
 import android.content.SharedPreferences
-import android.util.Log
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.data.models.Playlist
 import org.greenrobot.eventbus.EventBus
 
 /**
- * Singleton that handles everything about Movies & Playlists -> API for Movies
+ * Singleton, that represents API for app when it comes to movies
  */
+// TODO: optional check no playlists or no movies state!!
 object MoviesManager {
 
     // region properties
@@ -29,7 +29,6 @@ object MoviesManager {
         }
 
     private lateinit var sharedPreferences: SharedPreferences
-    private val TAG = MoviesManager::class.java.simpleName
 
     // endregion
 
@@ -49,6 +48,7 @@ object MoviesManager {
     }
 
     fun fetchPlaylistListWithMovies() {
+        playlistList.clear()
         NetworkManager.fetchPlaylistList { playlistListResult ->
             when (playlistListResult) {
                 is Result.Success -> {
@@ -104,10 +104,6 @@ object MoviesManager {
         NetworkManager.fetchMoviesFromPlaylist(playlist) { movieListResult ->
             when (movieListResult) {
                 is Result.Success -> {
-                    Log.v(
-                        TAG,
-                        "Result for playlist with name: " + playlist.title + ". There are " + movieListResult.data.size + " videos in this playlist."
-                    )
                     playlist.movieList.addAll(movieListResult.data)
                     if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
@@ -119,7 +115,6 @@ object MoviesManager {
                     }
                 }
                 is Result.Error -> {
-                    playlistList.clear()
                     EventBus.getDefault().post(
                         Notification.NetworkErrorEvent(
                             movieListResult.code,
@@ -135,6 +130,7 @@ object MoviesManager {
      * Method that iterates all playlists and finds favorite videos based on shared-preferences and stores them in favoritePlaylist
      */
     private fun initializeFavorites() {
+        favoritePlaylist.movieList.clear()
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {
                 if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
@@ -143,5 +139,6 @@ object MoviesManager {
             }
         }
     }
+
     // endregion
 }

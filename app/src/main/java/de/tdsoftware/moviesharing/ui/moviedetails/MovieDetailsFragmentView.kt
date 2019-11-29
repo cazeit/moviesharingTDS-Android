@@ -1,6 +1,5 @@
 package de.tdsoftware.moviesharing.ui.moviedetails
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
@@ -77,6 +76,8 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     private lateinit var ratingBar: RatingBar
 
+    private var exiting = false
+
     // endregion
 
     // region public API
@@ -93,14 +94,15 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
         coverImageView.isEnabled = true
     }
 
-    fun removeRoundedCornersWithAnimator(){
-        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", 0f)
-        animator.start()
+    fun finalizeTransition(){
+        if(!exiting) {
+            bannerImageCardView.radius = 0f
+        }
+        exiting = true
     }
 
-    fun addRoundedCornersWithAnimator(){
-        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", resources.getDimension(R.dimen.corner_radius_normal))
-        animator.start()
+    fun prepareTransition(){
+        bannerImageCardView.radius = resources.getDimension(R.dimen.corner_radius_normal)
     }
 
     // endregion

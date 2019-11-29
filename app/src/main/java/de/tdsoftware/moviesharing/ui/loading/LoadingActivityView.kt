@@ -35,7 +35,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun showRetryButton(isButtonVisible: Boolean) {
+    fun changeRetryButtonVisibility(isButtonVisible: Boolean) {
         if (isButtonVisible) {
             progressBar.visibility = View.GONE
             progressBarText.visibility = View.GONE
@@ -74,7 +74,7 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     private fun setupControls() {
         retryButton.setOnClickListener {
             retryButton.isEnabled = false
-            showRetryButton(false)
+            changeRetryButtonVisibility(false)
 
             viewListener?.onRetryButtonClicked()
             retryButton.isEnabled = true
