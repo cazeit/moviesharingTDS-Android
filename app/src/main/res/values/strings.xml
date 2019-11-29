@@ -6,4 +6,6 @@
     <string name="empty_list_text_hint">You have no favorites yet!</string>
     <string name="empty_search_text_hint">No matching movies found!</string>
     <string name="retry_fetching_button">Retry</string>
+    <string name="api_youtube_name">Youtube</string>
+    <string name="vimeo_api_name">Vimeo</string>
 </resources>

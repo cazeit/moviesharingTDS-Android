@@ -16,6 +16,8 @@ import de.tdsoftware.moviesharing.util.Notification
  * LoadingActivity is the starting-activity of the application, basically making sure that data
  * is being obtained and if so redirects to MainActivity / displays error via SnackBar
  */
+
+// TODO: implement choose API button and set layout to gone, after that normal exisiting flow ( but set API-enum in NetworkManager)
 class LoadingActivity : BaseActivity() {
 
     // region properties
