@@ -9,8 +9,6 @@ import org.greenrobot.eventbus.EventBus
  * Singleton, that represents API for app when it comes to movies
  */
 
-// TODO: add videos to vimeo albums (in Vimeo)
-// TODO: favorite and rating save pushing to vimeo (opt.)
 object MoviesManager {
 
     // region properties

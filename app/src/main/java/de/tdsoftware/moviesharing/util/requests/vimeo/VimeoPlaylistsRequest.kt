@@ -6,14 +6,18 @@ import de.tdsoftware.moviesharing.util.Result
 import okhttp3.HttpUrl
 import okhttp3.Response
 
-class VimeoPlaylistsRequest(private var pageString: String = "?page=1", private val callback: (Result<ApiResponse>) -> Unit) : VimeoRequest(callback) {
+class VimeoPlaylistsRequest(
+    private var pageString: String = "?page=1",
+    private val callback: (Result<ApiResponse>) -> Unit
+) : VimeoRequest(callback) {
 
     override fun buildRequestUrl(): HttpUrl {
-        if(pageString.isEmpty()) {
+        if (pageString.isEmpty()) {
             pageString = "?page=1"
         }
         val page = pageString.substringAfterLast("?page=").substringBefore("&")
         return HttpUrl.Builder().scheme("https").host("api.vimeo.com").addPathSegments("me/albums")
+            .addQueryParameter("per_page", "50")
             .addQueryParameter("page", page)
             .build()
     }

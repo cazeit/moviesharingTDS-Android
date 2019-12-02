@@ -31,7 +31,8 @@ class YoutubeMoviesRequest(
             .addPathSegments("youtube/v3/playlistItems")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
             .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
-            .addQueryParameter("key",
+            .addQueryParameter(
+                "key",
                 API_KEY
             ).build()
     }

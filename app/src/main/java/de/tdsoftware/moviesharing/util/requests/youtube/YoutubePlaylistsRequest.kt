@@ -34,7 +34,8 @@ class YoutubePlaylistsRequest(
                 CHANNEL_ID
             )
             .addQueryParameter("maxResults", "50")
-            .addQueryParameter("key",
+            .addQueryParameter(
+                "key",
                 API_KEY
             ).build()
     }
