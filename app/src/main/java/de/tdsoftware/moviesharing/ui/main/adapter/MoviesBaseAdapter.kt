@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
-import jp.wasabeef.picasso.transformations.CropTransformation
 
 /**
  * BaseAdapter for the RecyclerView inside one Playlist-RecyclerView-Item
@@ -54,8 +53,7 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle = movieList[position].title
 
-        val transformation = CropTransformation(160, 240)
-        Picasso.get().load(movieList[position].imageUrl).transform(transformation)
+        Picasso.get().load(movieList[position].imageUrl)
             .placeholder(R.drawable.sample_movie_image)
             .into(holder.movieThumbnailImageView)
 

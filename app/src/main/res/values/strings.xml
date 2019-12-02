@@ -8,4 +8,5 @@
     <string name="retry_fetching_button">Retry</string>
     <string name="api_youtube_name">Youtube</string>
     <string name="vimeo_api_name">Vimeo</string>
+    <string name="playlist_empty_hint">This playlist seems to be empty!</string>
 </resources>

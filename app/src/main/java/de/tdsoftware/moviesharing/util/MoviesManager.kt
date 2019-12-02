@@ -8,7 +8,10 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Singleton, that represents API for app when it comes to movies
  */
-// TODO: optional check no playlists or no movies state!!
+
+// TODO: add videos to vimeo albums (in Vimeo)
+// TODO: favorite and rating save pushing to vimeo (opt.)
+// TODO: youtube image crop
 object MoviesManager {
 
     // region properties
@@ -74,7 +77,7 @@ object MoviesManager {
                     val removeIndex = favoritePlaylist.movieList.indexOf(currentMovie)
                     favoritePlaylist.movieList.remove(movie)
                     EventBus.getDefault().post(
-                        Notification.FavoriteChangedEvent(
+                        Notification.FavoritesRemovedEvent(
                             favoritePlaylist.movieList,
                             removeIndex
                         )
@@ -86,7 +89,7 @@ object MoviesManager {
         if (isFavorite) {
             favoritePlaylist.movieList.add(0, movie)
             EventBus.getDefault()
-                .post(Notification.FavoriteChangedEvent(favoritePlaylist.movieList))
+                .post(Notification.FavoritesChangedEvent(favoritePlaylist.movieList))
         }
     }
 
@@ -108,7 +111,7 @@ object MoviesManager {
                     if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
                         EventBus.getDefault().post(
-                            Notification.PlaylistChangedEvent(
+                            Notification.PlaylistsChangedEvent(
                                 playlistList
                             )
                         )

@@ -29,6 +29,9 @@ abstract class PlaylistBaseAdapter :
         val playlistTitleTextView: TextView =
             itemView.findViewById(R.id.recycler_item_playlist_title)
 
+        val playlistHintTextView: TextView =
+            itemView.findViewById(R.id.recycler_item_playlist_playlist_hint)
+
         val movieRecyclerView: RecyclerView =
             itemView.findViewById(R.id.recycler_item_playlist_recycler_view_movies)
 
@@ -63,6 +66,9 @@ abstract class PlaylistBaseAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle = playlistList[position].title
+        if (holder.moviesRecyclerAdapter.movieList.isEmpty()) {
+            holder.playlistHintTextView.visibility = View.VISIBLE
+        }
         holder.moviesRecyclerAdapter.clickListener = object : MoviesBaseAdapter.ItemClickListener {
             override fun onRecyclerItemClick(movie: Movie, view: View) {
                 onMovieClickedListener?.onMovieSelected(movie, view)

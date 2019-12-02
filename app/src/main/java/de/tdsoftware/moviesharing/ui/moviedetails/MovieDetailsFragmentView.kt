@@ -10,7 +10,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
-import jp.wasabeef.picasso.transformations.CropTransformation
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -83,10 +82,9 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     // region public API
 
     fun loadImages(url: String?) {
-        val transformation = CropTransformation(160, 240)
-        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image)
+        Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
             .into(bannerImageView)
-        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image)
+        Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
             .into(coverImageView)
     }
 

@@ -17,7 +17,6 @@ import de.tdsoftware.moviesharing.util.Notification
  * is being obtained and if so redirects to MainActivity / displays error via SnackBar
  */
 
-// TODO: implement choose API button and set layout to gone, after that normal exisiting flow ( but set API-enum in NetworkManager)
 class LoadingActivity : BaseActivity() {
 
     // region properties
@@ -39,7 +38,7 @@ class LoadingActivity : BaseActivity() {
             is Notification.NetworkErrorEvent -> {
                 mainView.changeRetryButtonVisibility(true)
             }
-            is Notification.PlaylistChangedEvent -> {
+            is Notification.PlaylistsChangedEvent -> {
                 val intent = Intent(this@LoadingActivity, MainActivity::class.java)
                 startActivity(intent)
                 // fade transition
@@ -62,8 +61,6 @@ class LoadingActivity : BaseActivity() {
 
         // set sharedPrefs in MoviesManager
         setUpManagers()
-
-        MoviesManager.fetchPlaylistListWithMovies()
 
         actionBar?.setBackgroundDrawable(
             ColorDrawable(
@@ -94,6 +91,18 @@ class LoadingActivity : BaseActivity() {
 
     private fun setUpMainView() {
         mainView.viewListener = object : LoadingActivityView.Listener {
+            override fun onYoutubeApiButtonClicked() {
+                NetworkManager.changeSourceApi(NetworkManager.ApiName.YOUTUBE)
+
+                MoviesManager.fetchPlaylistListWithMovies()
+            }
+
+            override fun onVimeoApiButtonClicked() {
+                NetworkManager.changeSourceApi(NetworkManager.ApiName.VIMEO)
+
+                MoviesManager.fetchPlaylistListWithMovies()
+            }
+
             override fun onRetryButtonClicked() {
                 MoviesManager.fetchPlaylistListWithMovies()
             }

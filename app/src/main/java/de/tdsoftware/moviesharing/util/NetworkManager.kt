@@ -18,8 +18,6 @@ import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoPlaylistsRequest
 /**
  * Singleton, that handles all networking
  */
-// TODO: change all returnList- names...
-// TODO: remove all prints!
 object NetworkManager {
 
     // region properties
@@ -38,7 +36,6 @@ object NetworkManager {
     // endregion
 
     // region public API
-    // TODO: set this according to button pressed onStartUp..
     fun changeSourceApi(newSourceApi: ApiName) {
         sourceApi = newSourceApi
     }
@@ -137,13 +134,19 @@ object NetworkManager {
         when (sourceApi) {
             ApiName.YOUTUBE -> {
                 registerRequest(
-                    YoutubePlaylistsRequest(callback = playlistResponseCallback),
+                    YoutubePlaylistsRequest(
+                        callback = playlistResponseCallback,
+                        pageToken = nextPage
+                    ),
                     nextPage != ""
                 )
             }
             ApiName.VIMEO -> {
                 registerRequest(
-                    VimeoPlaylistsRequest(callback = playlistResponseCallback),
+                    VimeoPlaylistsRequest(
+                        callback = playlistResponseCallback,
+                        pageString = nextPage
+                    ),
                     nextPage != ""
                 )
             }
@@ -224,7 +227,14 @@ object NetworkManager {
 
     private fun mapToPlaylistListFromVimeo(vimeoPlaylistsResponse: VimeoPlaylistsResponse): ArrayList<Playlist> {
         val returnList = ArrayList<Playlist>()
-        // TODO: map from json objects
+        for (responseItem in vimeoPlaylistsResponse.data) {
+            val playlistId = responseItem.uri.substringAfterLast("/")
+            returnList.add(
+                Playlist(
+                    playlistId, responseItem.name, ArrayList()
+                )
+            )
+        }
         return returnList
     }
 
@@ -249,14 +259,14 @@ object NetworkManager {
                 "added on: " + responseItem.snippet.publishedAt.substring(8, 10) + "." +
                         responseItem.snippet.publishedAt.substring(5, 7) + "." +
                         responseItem.snippet.publishedAt.substring(0, 4)
-            val imageString = responseItem.snippet.thumbnails?.high?.url
+            val imageLink = responseItem.snippet.thumbnails?.high?.url
             returnList.add(
                 Movie(
                     responseItem.snippet.resourceId.videoId,
                     responseItem.snippet.title,
                     responseItem.snippet.description,
                     secondaryText,
-                    imageString
+                    imageLink
                 )
             )
         }
@@ -265,7 +275,39 @@ object NetworkManager {
 
     private fun mapToMoviesFromVimeo(vimeoMoviesResponse: VimeoMoviesResponse): ArrayList<Movie> {
         val returnList = ArrayList<Movie>()
-        // TODO: mapping from json-template
+        for (responseItem in vimeoMoviesResponse.data) {
+            var secondaryText = ""
+            var imageLink = ""
+            var maxHeight = 0
+            var count = 0
+            if (responseItem.categories.isEmpty()) {
+                secondaryText = "No categories found."
+            } else {
+                for (category in responseItem.categories) {
+                    secondaryText += category.name
+                    count++
+                    if (count >= 3) {
+                        break
+                    }
+                    secondaryText += ", "
+                }
+            }
+            for (picture in responseItem.pictures.sizes) {
+                if (picture.height > maxHeight) {
+                    imageLink = picture.link
+                    maxHeight = picture.height
+                }
+            }
+            returnList.add(
+                Movie(
+                    responseItem.uri.substringAfterLast("/"),
+                    responseItem.name,
+                    responseItem.description,
+                    secondaryText,
+                    imageLink
+                )
+            )
+        }
         return returnList
     }
 

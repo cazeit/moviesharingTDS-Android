@@ -46,20 +46,26 @@ class FavoritesFragment : MainActivityBaseFragment() {
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
         when (notification) {
-            is Notification.FavoriteChangedEvent -> {
-
+            is Notification.FavoritesChangedEvent -> {
                 // update full-list
                 fullList = notification.favoriteList
-
                 // update filtered-list
                 filteredList = filter(mainView.searchViewQuery)
                 // change the movieList of the movie-adapter over playlist-adapter-method
                 favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)
-
-                // notify adapter that data has changed @removedIndex
-                favoritePlaylistRecyclerAdapter.notifyMovieChanged(notification.removedIndex)
+                //notify adapter that data has changed @removedIndex/ data was added (-1)
+                favoritePlaylistRecyclerAdapter.notifyMovieAdded()
                 // check if empty-state-text needs to be displayed
                 if (!checkFullListEmptyState()) {
+                    checkFilteredListEmptyState()
+                }
+            }
+            is Notification.FavoritesRemovedEvent -> {
+                fullList = notification.favoriteList
+                filteredList = filter(mainView.searchViewQuery)
+                favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)
+                favoritePlaylistRecyclerAdapter.notifyMovieRemoved(notification.removedIndex)
+                if(!checkFullListEmptyState()) {
                     checkFilteredListEmptyState()
                 }
             }
