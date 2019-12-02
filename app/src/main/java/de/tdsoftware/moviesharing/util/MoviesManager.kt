@@ -11,7 +11,6 @@ import org.greenrobot.eventbus.EventBus
 
 // TODO: add videos to vimeo albums (in Vimeo)
 // TODO: favorite and rating save pushing to vimeo (opt.)
-// TODO: youtube image crop
 object MoviesManager {
 
     // region properties

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.util.NetworkManager
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 /**
  * BaseAdapter for the RecyclerView inside one Playlist-RecyclerView-Item
@@ -53,9 +55,13 @@ abstract class MoviesBaseAdapter(var movieList: ArrayList<Movie>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle = movieList[position].title
 
-        Picasso.get().load(movieList[position].imageUrl)
+        val picasso = Picasso.get().load(movieList[position].imageUrl)
             .placeholder(R.drawable.sample_movie_image)
-            .into(holder.movieThumbnailImageView)
+        if(NetworkManager.sourceApi == NetworkManager.ApiName.YOUTUBE) {
+            val transformation = CropTransformation(160,240)
+            picasso.transform(transformation)
+        }
+        picasso.into(holder.movieThumbnailImageView)
 
         holder.movieThumbnailImageView.setOnClickListener {
             holder.movieThumbnailImageView.isEnabled = false

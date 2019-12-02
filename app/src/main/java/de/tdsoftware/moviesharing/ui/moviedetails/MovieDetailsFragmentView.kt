@@ -9,7 +9,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.util.NetworkManager
+import jp.wasabeef.picasso.transformations.CropTransformation
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -82,10 +85,13 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     // region public API
 
     fun loadImages(url: String?) {
-        Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
-            .into(bannerImageView)
-        Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
-            .into(coverImageView)
+        val picasso = Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
+        if(NetworkManager.sourceApi == NetworkManager.ApiName.YOUTUBE) {
+            val transformation = CropTransformation(160,240)
+            picasso.transform(transformation)
+        }
+        picasso.into(bannerImageView)
+        picasso.into(coverImageView)
     }
 
     fun enableButtons() {

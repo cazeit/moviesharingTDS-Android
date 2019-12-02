@@ -28,7 +28,7 @@ object NetworkManager {
 
     private var isRequesting: Boolean = false
 
-    private lateinit var sourceApi: ApiName
+    lateinit var sourceApi: ApiName
 
     enum class ApiName {
         VIMEO, YOUTUBE
