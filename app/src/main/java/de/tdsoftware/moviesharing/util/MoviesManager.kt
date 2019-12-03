@@ -74,7 +74,7 @@ object MoviesManager {
                     val removeIndex = favoritePlaylist.movieList.indexOf(currentMovie)
                     favoritePlaylist.movieList.remove(movie)
                     EventBus.getDefault().post(
-                        Notification.FavoritesRemovedEvent(
+                        Notification.FavoritesRemovedFromListEvent(
                             favoritePlaylist.movieList,
                             removeIndex
                         )
@@ -86,7 +86,25 @@ object MoviesManager {
         if (isFavorite) {
             favoritePlaylist.movieList.add(0, movie)
             EventBus.getDefault()
-                .post(Notification.FavoritesChangedEvent(favoritePlaylist.movieList))
+                .post(Notification.FavoriteListChangedEvent(favoritePlaylist.movieList))
+        }
+    }
+
+    fun changeFavoriteStatus(movie: Movie, isFavoriteNow: Boolean) {
+        NetworkManager.changeFavoriteStatus(movie, isFavoriteNow) { favoriteUpdateResult ->
+            when (favoriteUpdateResult) {
+                is Result.Success -> {
+                    // TODO: what can we do here? What's the best approach to choose...
+                }
+                is Result.Error -> {
+                    EventBus.getDefault().post(
+                        Notification.NetworkErrorEvent(
+                            favoriteUpdateResult.code,
+                            favoriteUpdateResult.message
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -108,7 +126,7 @@ object MoviesManager {
                     if (playlist.id == playlistList.last().id) {
                         initializeFavorites()
                         EventBus.getDefault().post(
-                            Notification.PlaylistsChangedEvent(
+                            Notification.PlaylistListChangedEvent(
                                 playlistList
                             )
                         )
@@ -131,10 +149,32 @@ object MoviesManager {
      */
     private fun initializeFavorites() {
         favoritePlaylist.movieList.clear()
+        when (NetworkManager.sourceApi) {
+            NetworkManager.ApiName.YOUTUBE -> {
+                initializeYoutubeFavorites()
+            }
+            NetworkManager.ApiName.VIMEO -> {
+                initializeVimeoFavorites()
+            }
+        }
+    }
+
+    private fun initializeYoutubeFavorites() {
         for (playlist in playlistList) {
             for (movie in playlist.movieList) {
                 if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
                     favoritePlaylist.movieList.add(movie)
+                }
+            }
+        }
+    }
+
+    private fun initializeVimeoFavorites() {
+        for (playlist in playlistList) {
+            for (movie in playlist.movieList) {
+                if (movie.isFavorite) {
+                    favoritePlaylist.movieList.add(movie)
+                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
                 }
             }
         }

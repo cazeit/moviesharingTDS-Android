@@ -3,6 +3,7 @@ package de.tdsoftware.moviesharing.util
 import de.tdsoftware.moviesharing.data.helper.ApiResponse
 import de.tdsoftware.moviesharing.data.helper.MoviesApiResponse
 import de.tdsoftware.moviesharing.data.helper.PlaylistsApiResponse
+import de.tdsoftware.moviesharing.data.helper.vimeo.favorite.VimeoFavoriteResponse
 import de.tdsoftware.moviesharing.data.helper.vimeo.movie.VimeoMoviesResponse
 import de.tdsoftware.moviesharing.data.helper.vimeo.playlist.VimeoPlaylistsResponse
 import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
@@ -12,8 +13,10 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubeMoviesRequest
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubePlaylistsRequest
 import de.tdsoftware.moviesharing.util.requests.Request
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoLikeRequest
 import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoMoviesRequest
 import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoPlaylistsRequest
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoUnlikeRequest
 
 /**
  * Singleton, that handles all networking
@@ -63,8 +66,30 @@ object NetworkManager {
         )
     }
 
-    fun changeFavoriteStatus(movie: Movie, isFavorite: Boolean, callback: (Result<Boolean>) -> Unit) {
-        
+    fun changeFavoriteStatus(
+        movie: Movie,
+        isFavorite: Boolean,
+        callback: (Result<Boolean>) -> Unit
+    ) {
+        if (sourceApi == ApiName.VIMEO) {
+            val favoriteCallback: (Result<ApiResponse>) -> Unit = { likeResponseResult ->
+                when (likeResponseResult) {
+                    is Result.Success -> {
+                        val favoriteResponse = likeResponseResult.data as VimeoFavoriteResponse
+                        callback(Result.Success(favoriteResponse.isFavorite))
+                    }
+                    is Result.Error -> {
+                        callback(likeResponseResult)
+                    }
+                }
+                unregisterRequest(requestQueue.first())
+            }
+            if (isFavorite) {
+                registerRequest(VimeoLikeRequest(movie.id, favoriteCallback), false)
+            } else {
+                registerRequest(VimeoUnlikeRequest(movie.id, favoriteCallback), false)
+            }
+        }
     }
 
     // endregion
@@ -256,7 +281,6 @@ object NetworkManager {
         return returnList
     }
 
-    // TODO: youtube is using sharedprefs i guess..
     private fun mapToMoviesFromYoutube(youtubeMoviesResponse: YoutubeMovieResponse): ArrayList<Movie> {
         val returnList = ArrayList<Movie>()
         for (responseItem in youtubeMoviesResponse.items) {
@@ -303,7 +327,6 @@ object NetworkManager {
                     maxHeight = picture.height
                 }
             }
-            println(responseItem.uri.substringAfterLast("/"))
             returnList.add(
                 Movie(
                     responseItem.uri.substringAfterLast("/"),

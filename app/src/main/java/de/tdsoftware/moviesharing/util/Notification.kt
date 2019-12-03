@@ -8,9 +8,9 @@ import de.tdsoftware.moviesharing.data.models.Playlist
  */
 sealed class Notification {
     class NetworkErrorEvent(val code: Int, val message: String) : Notification()
-    class PlaylistsChangedEvent(val playlistList: ArrayList<Playlist>) : Notification()
-    class FavoritesRemovedEvent(val favoriteList: ArrayList<Movie>, val removedIndex: Int = -1) :
+    class PlaylistListChangedEvent(val playlistList: ArrayList<Playlist>) : Notification()
+    class FavoritesRemovedFromListEvent(val favoriteList: ArrayList<Movie>, val removedIndex: Int = -1) :
         Notification()
 
-    class FavoritesChangedEvent(val favoriteList: ArrayList<Movie>) : Notification()
+    class FavoriteListChangedEvent(val favoriteList: ArrayList<Movie>) : Notification()
 }

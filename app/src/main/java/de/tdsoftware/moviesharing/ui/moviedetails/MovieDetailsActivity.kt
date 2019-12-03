@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
@@ -13,6 +12,7 @@ import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.data.models.Movie
 import de.tdsoftware.moviesharing.util.MoviesManager
+import de.tdsoftware.moviesharing.util.Notification
 
 /**
  * Activity that has one fragment in it (MovieDetailsFragment), basically just inflates it and handles
@@ -25,13 +25,20 @@ class MovieDetailsActivity : BaseActivity() {
     private val movieDetailsFragment by lazy {
         MovieDetailsFragment.newInstance()
     }
+    private lateinit var menu: Menu
     private lateinit var mainView: MovieDetailsActivityView
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
 
-    private val logTag = MovieDetailsActivity::class.java.simpleName
-
     // endregion
+    override fun onNotification(notification: Notification) {
+        super.onNotification(notification)
+        when (notification) {
+            is Notification.NetworkErrorEvent -> {
+                changeMovieFavoriteState()
+            }
+        }
+    }
 
     // region lifecycle callbacks
 
@@ -69,6 +76,7 @@ class MovieDetailsActivity : BaseActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
+        this.menu = menu
         if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
             menu.findItem(R.id.favorite_item).icon.colorFilter =
                 PorterDuffColorFilter(
@@ -79,6 +87,8 @@ class MovieDetailsActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+
+    //
     /**
      * handle back-press in actionbar and favoriteIconOnClick -> write down to sharedPreferences
      */
@@ -88,21 +98,7 @@ class MovieDetailsActivity : BaseActivity() {
                 finishAfterTransition()
             }
             R.id.favorite_item -> {
-                if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
-                    Log.v(logTag, "Movie is no longer a favorite")
-
-                    item.icon.colorFilter = null
-                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
-                } else {
-                    Log.v(logTag, "Movie is now a favorite")
-
-                    item.icon.colorFilter =
-                        PorterDuffColorFilter(
-                            ContextCompat.getColor(this, R.color.colorPrimary),
-                            PorterDuff.Mode.SRC_IN
-                        )
-                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
-                }
+                changeMovieFavoriteState()
             }
         }
         return true
@@ -111,6 +107,37 @@ class MovieDetailsActivity : BaseActivity() {
     // endregion
 
     // region private API
+
+    private fun changeMovieFavoriteState() {
+        val item = menu.findItem(R.id.favorite_item)
+        if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
+            addMovieToFavorites(item)
+        } else {
+            removeMovieFromFavorites(item)
+        }
+    }
+
+    // TODO: this might cause problems as when there are many requests and activity
+    //  is ended before all of them finish, it won't have effect on the sharedPrefs (current fix is not optimal)
+    //  -> KNOWN BUG when pressing and changing fast = possible inpersistance of server + local data
+    //  would work out when there are no API errors, but there are (API-limitation, bad cellular...)
+    private fun addMovieToFavorites(item: MenuItem) {
+        MoviesManager.changeFavoriteStatus(movie, false)
+
+        item.icon.colorFilter = null
+        sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
+    }
+
+    private fun removeMovieFromFavorites(item: MenuItem) {
+        MoviesManager.changeFavoriteStatus(movie, true)
+
+        item.icon.colorFilter =
+            PorterDuffColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimary),
+                PorterDuff.Mode.SRC_IN
+            )
+        sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
+    }
 
     private fun setUpMainView() {
 
