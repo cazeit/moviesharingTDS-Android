@@ -19,7 +19,7 @@ abstract class BaseFragment : Fragment() {
     open fun onNotification(notification: Notification) {
         when (notification) {
             is Notification.NetworkErrorEvent -> {
-                view?.let {view ->
+                view?.let { view ->
                     Snackbar.make(
                         view,
                         "Error Nr. " + notification.code + ": " + notification.message,

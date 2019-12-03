@@ -1,11 +1,13 @@
-package de.tdsoftware.moviesharing.data.helper.movie
+package de.tdsoftware.moviesharing.data.helper.youtube.movie
+
 
 import com.squareup.moshi.Json
 
-data class MaxRes(
+data class Medium(
     @Json(name = "height")
     val height: Int,
     @Json(name = "url")
     val url: String,
     @Json(name = "width")
-    val width: Int)
+    val width: Int
+)

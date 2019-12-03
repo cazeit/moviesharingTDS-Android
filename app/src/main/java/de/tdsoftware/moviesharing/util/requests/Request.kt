@@ -2,7 +2,7 @@ package de.tdsoftware.moviesharing.util.requests
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
+import de.tdsoftware.moviesharing.data.helper.ApiResponse
 import de.tdsoftware.moviesharing.util.Result
 import kotlinx.coroutines.*
 import okhttp3.*
@@ -11,15 +11,12 @@ import java.lang.Exception
 /**
  * parent-class for all requests
  */
-abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Unit) : CoroutineScope {
+abstract class Request(private val callback: (Result<ApiResponse>) -> Unit) : CoroutineScope {
 
     // region public Types
     companion object {
         // deserialization instance
         val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
-        // API-Key for YouTube-API
-        const val API_KEY = "AIzaSyC-rueCbrPcU1ZZAnoozj1FC1dVQLsiVmU"
     }
 
     // endregion
@@ -39,6 +36,11 @@ abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Uni
     abstract fun buildRequestUrl(): HttpUrl
 
     /**
+     * Method that builds together needed Headers
+     */
+    abstract fun buildRequestHeaders(): Headers
+
+    /**
      * Method that deserializes the successful response
      */
     abstract fun deserializeResponse(response: Response)
@@ -48,7 +50,7 @@ abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Uni
      */
     fun fetch(){
         launch {
-            checkResult(fetchFromApi(buildRequestUrl()))
+            checkResult(fetchFromApi(buildRequestUrl(), buildRequestHeaders()))
         }
     }
 
@@ -85,12 +87,12 @@ abstract class Request(private val callback: (Result<YouTubeApiResponse>) -> Uni
     }
 
     /**
-     * Method that sends a GET-Request by using a HttpUrl & OkHttp3
+     * Method that sends a GET-Request by using OkHttp3
      */
-    private fun fetchFromApi(url: HttpUrl): Result<Response> {
+    private fun fetchFromApi(url: HttpUrl, headers: Headers): Result<Response> {
         return try {
             val httpClient = OkHttpClient.Builder().build()
-            val request = okhttp3.Request.Builder().url(url).build()
+            val request = okhttp3.Request.Builder().headers(headers).url(url).build()
             val result = httpClient.newCall(request).execute()
             Result.Success(result)
         } catch (exception: Exception) {

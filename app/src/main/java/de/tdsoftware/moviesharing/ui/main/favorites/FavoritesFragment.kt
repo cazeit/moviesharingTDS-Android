@@ -46,20 +46,26 @@ class FavoritesFragment : MainActivityBaseFragment() {
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
         when (notification) {
-            is Notification.FavoriteChangedEvent -> {
-
+            is Notification.FavoritesChangedEvent -> {
                 // update full-list
                 fullList = notification.favoriteList
-
                 // update filtered-list
                 filteredList = filter(mainView.searchViewQuery)
                 // change the movieList of the movie-adapter over playlist-adapter-method
                 favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)
-
-                // notify adapter that data has changed @removedIndex
-                favoritePlaylistRecyclerAdapter.notifyMovieChanged(notification.removedIndex)
+                //notify adapter that data has changed @removedIndex/ data was added (-1)
+                favoritePlaylistRecyclerAdapter.notifyMovieAdded()
                 // check if empty-state-text needs to be displayed
                 if (!checkFullListEmptyState()) {
+                    checkFilteredListEmptyState()
+                }
+            }
+            is Notification.FavoritesRemovedEvent -> {
+                fullList = notification.favoriteList
+                filteredList = filter(mainView.searchViewQuery)
+                favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)
+                favoritePlaylistRecyclerAdapter.notifyMovieRemoved(notification.removedIndex)
+                if(!checkFullListEmptyState()) {
                     checkFilteredListEmptyState()
                 }
             }
@@ -89,7 +95,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * here we initialize the fullList(list of all favorites) and initialize the playlistList inside the adapter (list of 1 playlist with favorites)
+     * get the full list of favorites from MoviesManager and set-up the recyclerView
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,7 +107,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * This makes the SearchView unfocused when entering the fragment, when coming back from MovieDetailsActivity
+     * request focus on main-view, so SearchView-focus is cleared
      */
     override fun onResume() {
         super.onResume()
@@ -136,7 +142,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * filter method that iterates through full list and returns all movies
+     * filter method that iterates through full list and returns all movies that match the query in a list
      * (filtering by query and title of movie)
      */
     private fun filter(query: String): ArrayList<Movie> {
@@ -154,7 +160,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * check if there are filtered results
+     * check if there are filtered results and if not show emptyState in UI
      */
     private fun checkFilteredListEmptyState() {
         if (filteredList.isEmpty()) {
@@ -166,7 +172,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     }
 
     /**
-     * check if there are favorites at all
+     * check if there are favorites at all and if not show emptyState in UI
      */
     private fun checkFullListEmptyState(): Boolean {
         return if (fullList.isEmpty()) {

@@ -18,7 +18,7 @@
                 android:id="@+id/fragment_movie_details_banner_image_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/corner_radius_normal"
+                android:elevation="@dimen/elevation_normal"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent">
                 <ImageView
@@ -59,6 +59,7 @@
                 android:textColor="@color/textLight"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
+                android:elevation="@dimen/elevation_large"
                 app:layout_constraintBottom_toBottomOf="@id/fragment_movie_details_banner_image_card_view"
                 app:layout_constraintLeft_toRightOf="@id/fragment_movie_details_cover_card_view"
                 app:layout_constraintRight_toRightOf="parent" />

@@ -16,14 +16,22 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     interface Listener {
         fun onRetryButtonClicked()
+        fun onYoutubeApiButtonClicked()
+        fun onVimeoApiButtonClicked()
     }
 
     // endregion
 
     // region Properties
 
+    private lateinit var hasSourceLayout: ConstraintLayout
+
     private lateinit var progressBarText: TextView
+
     private lateinit var retryButton: Button
+    private lateinit var vimeoApiButton: Button
+    private lateinit var youtubeApiButton: Button
+
     private lateinit var progressBar: ProgressBar
     var viewListener: Listener? = null
 
@@ -35,16 +43,8 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
 
     // region public API
 
-    fun showRetryButton(isButtonVisible: Boolean) {
-        if (isButtonVisible) {
-            progressBar.visibility = View.GONE
-            progressBarText.visibility = View.GONE
-            retryButton.visibility = View.VISIBLE
-        } else {
-            progressBar.visibility = View.VISIBLE
-            progressBarText.visibility = View.VISIBLE
-            retryButton.visibility = View.GONE
-        }
+    fun changeRetryButtonVisibility(isButtonVisible: Boolean) {
+        changeButtonVisibility(isButtonVisible, retryButton)
     }
 
     // endregion
@@ -66,18 +66,57 @@ class LoadingActivityView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun bindViews() {
+        hasSourceLayout = findViewById(R.id.activity_loading_has_source_layout)
+
         progressBarText = findViewById(R.id.activity_loading_progress_bar_text)
-        retryButton = findViewById(R.id.activity_loading_retry_button)
         progressBar = findViewById(R.id.activity_loading_progress_bar)
+
+        retryButton = findViewById(R.id.activity_loading_retry_button)
+        vimeoApiButton = findViewById(R.id.activity_loading_vimeo_button)
+        youtubeApiButton = findViewById(R.id.activity_loading_youtube_button)
     }
 
     private fun setupControls() {
         retryButton.setOnClickListener {
             retryButton.isEnabled = false
-            showRetryButton(false)
+            changeRetryButtonVisibility(false)
 
             viewListener?.onRetryButtonClicked()
             retryButton.isEnabled = true
+        }
+
+        youtubeApiButton.setOnClickListener {
+            youtubeApiButton.isEnabled = false
+            hasSourceLayout.visibility = View.VISIBLE
+            changeButtonVisibility(false, youtubeApiButton, vimeoApiButton)
+
+            viewListener?.onYoutubeApiButtonClicked()
+            youtubeApiButton.isEnabled = true
+        }
+
+        vimeoApiButton.setOnClickListener {
+            vimeoApiButton.isEnabled = false
+            hasSourceLayout.visibility = View.VISIBLE
+            changeButtonVisibility(false, youtubeApiButton, vimeoApiButton)
+
+            viewListener?.onVimeoApiButtonClicked()
+            vimeoApiButton.isEnabled = true
+        }
+    }
+
+    private fun changeButtonVisibility(isButtonVisible: Boolean, vararg buttonSet: Button) {
+        if (isButtonVisible) {
+            progressBar.visibility = View.GONE
+            progressBarText.visibility = View.GONE
+            for(button in buttonSet) {
+                button.visibility = View.VISIBLE
+            }
+        } else {
+            progressBar.visibility = View.VISIBLE
+            progressBarText.visibility = View.VISIBLE
+            for(button in buttonSet) {
+                button.visibility = View.GONE
+            }
         }
     }
 

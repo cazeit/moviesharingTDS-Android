@@ -1,23 +1,23 @@
-package de.tdsoftware.moviesharing.util.requests
+package de.tdsoftware.moviesharing.util.requests.youtube
 
-import de.tdsoftware.moviesharing.data.helper.YouTubeApiResponse
-import de.tdsoftware.moviesharing.data.helper.movie.MovieResponse
+import de.tdsoftware.moviesharing.data.helper.ApiResponse
+import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
 import de.tdsoftware.moviesharing.util.Result
 import okhttp3.HttpUrl
 import okhttp3.Response
 
-class MoviesRequest(
+class YoutubeMoviesRequest(
     private val playlistId: String,
-    private val pageToken: String,
-    private val callback: (Result<YouTubeApiResponse>) -> Unit
-) : Request(callback) {
+    private val pageToken: String = "",
+    private val callback: (Result<ApiResponse>) -> Unit
+) : YoutubeRequest(callback) {
 
     // region Request-implementations
 
     override fun deserializeResponse(response: Response) {
         val movieString = response.body()?.string()
         movieString?.let {
-            val jsonAdapter = moshi.adapter(MovieResponse::class.java)
+            val jsonAdapter = moshi.adapter(YoutubeMovieResponse::class.java)
             val movieResponse = jsonAdapter.fromJson(movieString)
             if (movieResponse != null) {
                 callback(Result.Success(movieResponse))
@@ -31,7 +31,10 @@ class MoviesRequest(
             .addPathSegments("youtube/v3/playlistItems")
             .addQueryParameter("pageToken", pageToken).addQueryParameter("part", "snippet")
             .addQueryParameter("playlistId", playlistId).addQueryParameter("maxResults", "50")
-            .addQueryParameter("key", API_KEY).build()
+            .addQueryParameter(
+                "key",
+                API_KEY
+            ).build()
     }
 
     // endregion

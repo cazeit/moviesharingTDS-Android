@@ -1,6 +1,5 @@
 package de.tdsoftware.moviesharing.ui.moviedetails
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
@@ -10,7 +9,9 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import de.tdsoftware.moviesharing.R
+import de.tdsoftware.moviesharing.util.NetworkManager
 import jp.wasabeef.picasso.transformations.CropTransformation
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
@@ -77,30 +78,35 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
 
     private lateinit var ratingBar: RatingBar
 
+    private var exiting = false
+
     // endregion
 
     // region public API
 
     fun loadImages(url: String?) {
-        val transformation = CropTransformation(160, 240)
-        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image)
-            .into(bannerImageView)
-        Picasso.get().load(url).transform(transformation).placeholder(R.drawable.sample_movie_image)
-            .into(coverImageView)
+        val picasso = Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
+        if(NetworkManager.sourceApi == NetworkManager.ApiName.YOUTUBE) {
+            val transformation = CropTransformation(160,240)
+            picasso.transform(transformation)
+        }
+        picasso.into(bannerImageView)
+        picasso.into(coverImageView)
     }
 
     fun enableButtons() {
         coverImageView.isEnabled = true
     }
 
-    fun removeRoundedCornersWithAnimator(){
-        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", 0f)
-        animator.start()
+    fun finalizeTransition(){
+        if(!exiting) {
+            bannerImageCardView.radius = 0f
+        }
+        exiting = true
     }
 
-    fun addRoundedCornersWithAnimator(){
-        val animator = ObjectAnimator.ofFloat(bannerImageCardView, "radius", resources.getDimension(R.dimen.corner_radius_normal))
-        animator.start()
+    fun prepareTransition(){
+        bannerImageCardView.radius = resources.getDimension(R.dimen.corner_radius_normal)
     }
 
     // endregion

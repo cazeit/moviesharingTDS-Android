@@ -101,7 +101,7 @@ class MovieDetailsFragment : BaseFragment() {
         }
         mainView.title = movie.title
         mainView.secondaryText = movie.secondaryText
-        mainView.loadImages(movie.imagePath)
+        mainView.loadImages(movie.imageUrl)
         mainView.description = movie.description
         mainView.ratingBarValue = sharedPreferences.getFloat(movie.id + "_rating", 0f)
     }
@@ -119,11 +119,11 @@ class MovieDetailsFragment : BaseFragment() {
             }
 
             override fun onTransitionEnd(p0: Transition?) {
-                mainView.removeRoundedCornersWithAnimator()
+                mainView.finalizeTransition()
             }
 
             override fun onTransitionStart(p0: Transition?) {
-                mainView.addRoundedCornersWithAnimator()
+                mainView.prepareTransition()
             }
         })
     }
