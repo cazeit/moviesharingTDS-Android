@@ -63,6 +63,10 @@ object NetworkManager {
         )
     }
 
+    fun changeFavoriteStatus(movie: Movie, isFavorite: Boolean, callback: (Result<Boolean>) -> Unit) {
+        
+    }
+
     // endregion
 
     // region private API
@@ -252,6 +256,7 @@ object NetworkManager {
         return returnList
     }
 
+    // TODO: youtube is using sharedprefs i guess..
     private fun mapToMoviesFromYoutube(youtubeMoviesResponse: YoutubeMovieResponse): ArrayList<Movie> {
         val returnList = ArrayList<Movie>()
         for (responseItem in youtubeMoviesResponse.items) {
@@ -298,13 +303,15 @@ object NetworkManager {
                     maxHeight = picture.height
                 }
             }
+            println(responseItem.uri.substringAfterLast("/"))
             returnList.add(
                 Movie(
                     responseItem.uri.substringAfterLast("/"),
                     responseItem.name,
                     responseItem.description,
                     secondaryText,
-                    imageLink
+                    imageLink,
+                    responseItem.metadata.interactions.like.added
                 )
             )
         }

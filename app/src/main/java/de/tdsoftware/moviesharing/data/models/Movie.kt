@@ -12,5 +12,6 @@ data class Movie(
     val title: String,
     val description: String,
     val secondaryText: String,
-    var imageUrl: String?
+    var imageUrl: String?,
+    var isFavorite: Boolean = false
 ) : Serializable

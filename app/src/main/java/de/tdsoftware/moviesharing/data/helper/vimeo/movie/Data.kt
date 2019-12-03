@@ -11,7 +11,7 @@ data class Data(
     @Json(name = "link")
     val link: String,
     @Json(name = "metadata")
-    val metadata: Metadata?,
+    val metadata: Metadata,
     @Json(name = "name")
     val name: String,
     @Json(name = "pictures")
