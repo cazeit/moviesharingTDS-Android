@@ -13,4 +13,5 @@ sealed class Notification {
         Notification()
 
     class FavoriteListChangedEvent(val favoriteList: ArrayList<Movie>) : Notification()
+    class MovieLikeStatusChangedEvent(val isFavorite: Boolean): Notification()
 }

@@ -2,7 +2,6 @@ package de.tdsoftware.moviesharing.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import de.tdsoftware.moviesharing.util.Notification
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -17,17 +16,7 @@ abstract class BaseFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
-        when (notification) {
-            is Notification.NetworkErrorEvent -> {
-                view?.let { view ->
-                    Snackbar.make(
-                        view,
-                        "Error Nr. " + notification.code + ": " + notification.message,
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-        }
+        // design decision -> let all fragments subscribe -> open for common subscribe-use-case
     }
 
     // endregion

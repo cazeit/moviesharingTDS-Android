@@ -94,7 +94,8 @@ object MoviesManager {
         NetworkManager.changeFavoriteStatus(movie, isFavoriteNow) { favoriteUpdateResult ->
             when (favoriteUpdateResult) {
                 is Result.Success -> {
-                    // TODO: what can we do here? What's the best approach to choose...
+                    EventBus.getDefault()
+                        .post(Notification.MovieLikeStatusChangedEvent(favoriteUpdateResult.data))
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(

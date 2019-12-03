@@ -37,6 +37,9 @@ class MovieDetailsActivity : BaseActivity() {
             is Notification.NetworkErrorEvent -> {
                 changeMovieFavoriteState()
             }
+            is Notification.MovieLikeStatusChangedEvent -> {
+                sharedPreferences.edit().putBoolean(movie.id + "_favorite", notification.isFavorite).apply()
+            }
         }
     }
 
@@ -117,15 +120,10 @@ class MovieDetailsActivity : BaseActivity() {
         }
     }
 
-    // TODO: this might cause problems as when there are many requests and activity
-    //  is ended before all of them finish, it won't have effect on the sharedPrefs (current fix is not optimal)
-    //  -> KNOWN BUG when pressing and changing fast = possible inpersistance of server + local data
-    //  would work out when there are no API errors, but there are (API-limitation, bad cellular...)
     private fun addMovieToFavorites(item: MenuItem) {
         MoviesManager.changeFavoriteStatus(movie, false)
 
         item.icon.colorFilter = null
-        sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
     }
 
     private fun removeMovieFromFavorites(item: MenuItem) {
@@ -136,7 +134,6 @@ class MovieDetailsActivity : BaseActivity() {
                 ContextCompat.getColor(this, R.color.colorPrimary),
                 PorterDuff.Mode.SRC_IN
             )
-        sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
     }
 
     private fun setUpMainView() {
