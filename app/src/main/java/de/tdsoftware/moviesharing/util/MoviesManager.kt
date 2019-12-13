@@ -91,9 +91,10 @@ object MoviesManager {
     }
 
     fun changeFavoriteStatus(movie: Movie, isFavoriteNow: Boolean) {
-        NetworkManager.changeFavoriteStatus(movie, isFavoriteNow) { favoriteUpdateResult ->
+        NetworkManager.changeVimeoFavoriteStatus(movie, isFavoriteNow) { favoriteUpdateResult ->
             when (favoriteUpdateResult) {
                 is Result.Success -> {
+                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", favoriteUpdateResult.data).apply()
                     EventBus.getDefault()
                         .post(Notification.MovieLikeStatusChangedEvent(favoriteUpdateResult.data))
                 }

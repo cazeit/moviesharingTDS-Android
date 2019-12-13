@@ -66,28 +66,33 @@ object NetworkManager {
         )
     }
 
-    fun changeFavoriteStatus(
+    fun changeVimeoFavoriteStatus(
         movie: Movie,
         isFavorite: Boolean,
         callback: (Result<Boolean>) -> Unit
     ) {
-        if (sourceApi == ApiName.VIMEO) {
-            val favoriteCallback: (Result<ApiResponse>) -> Unit = { likeResponseResult ->
-                when (likeResponseResult) {
-                    is Result.Success -> {
-                        val favoriteResponse = likeResponseResult.data as VimeoFavoriteResponse
-                        callback(Result.Success(favoriteResponse.isFavorite))
+        when(sourceApi) {
+            ApiName.VIMEO -> {
+                val favoriteCallback: (Result<ApiResponse>) -> Unit = { likeResponseResult ->
+                    when (likeResponseResult) {
+                        is Result.Success -> {
+                            val favoriteResponse = likeResponseResult.data as VimeoFavoriteResponse
+                            callback(Result.Success(favoriteResponse.isFavorite))
+                        }
+                        is Result.Error -> {
+                            callback(likeResponseResult)
+                        }
                     }
-                    is Result.Error -> {
-                        callback(likeResponseResult)
-                    }
+                    unregisterRequest(requestQueue.first())
                 }
-                unregisterRequest(requestQueue.first())
+                if (isFavorite) {
+                    registerRequest(VimeoLikeRequest(movie.id, favoriteCallback), false)
+                } else {
+                    registerRequest(VimeoUnlikeRequest(movie.id, favoriteCallback), false)
+                }
             }
-            if (isFavorite) {
-                registerRequest(VimeoLikeRequest(movie.id, favoriteCallback), false)
-            } else {
-                registerRequest(VimeoUnlikeRequest(movie.id, favoriteCallback), false)
+            ApiName.YOUTUBE -> {
+                callback(Result.Success(isFavorite))
             }
         }
     }
