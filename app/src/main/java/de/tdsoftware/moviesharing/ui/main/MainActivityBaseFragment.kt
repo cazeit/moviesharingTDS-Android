@@ -55,6 +55,13 @@ abstract class MainActivityBaseFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         playlistAdapter = createPlayListAdapter()
+    }
+
+    /**
+     * this could produce bugs (to be tested) and slows down how fast we can click again... but it fixed the sharedTransition-bug.
+     */
+    override fun onResume() {
+        super.onResume()
         initializeRecyclerItemOnClickListener()
     }
 
@@ -67,7 +74,7 @@ abstract class MainActivityBaseFragment : BaseFragment() {
         playlistAdapter.onMovieClickedListener = object : PlaylistBaseAdapter.Listener {
             override fun onMovieSelected(movie: Movie, view: View) {
                 Log.v(logTag, "Movie selected with title: " + movie.title)
-
+                playlistAdapter.onMovieClickedListener = null
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this@MainActivityBaseFragment.requireActivity(),
