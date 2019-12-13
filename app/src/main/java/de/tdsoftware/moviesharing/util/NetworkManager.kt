@@ -3,6 +3,7 @@ package de.tdsoftware.moviesharing.util
 import de.tdsoftware.moviesharing.data.helper.ApiResponse
 import de.tdsoftware.moviesharing.data.helper.MoviesApiResponse
 import de.tdsoftware.moviesharing.data.helper.PlaylistsApiResponse
+import de.tdsoftware.moviesharing.data.helper.vimeo.favorite.VimeoFavoriteResponse
 import de.tdsoftware.moviesharing.data.helper.vimeo.movie.VimeoMoviesResponse
 import de.tdsoftware.moviesharing.data.helper.vimeo.playlist.VimeoPlaylistsResponse
 import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
@@ -12,8 +13,10 @@ import de.tdsoftware.moviesharing.data.models.Playlist
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubeMoviesRequest
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubePlaylistsRequest
 import de.tdsoftware.moviesharing.util.requests.Request
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoLikeRequest
 import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoMoviesRequest
 import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoPlaylistsRequest
+import de.tdsoftware.moviesharing.util.requests.vimeo.VimeoUnlikeRequest
 
 /**
  * Singleton, that handles all networking
@@ -61,6 +64,37 @@ object NetworkManager {
             movieList = movieList,
             callback = callback
         )
+    }
+
+    fun changeVimeoFavoriteStatus(
+        movie: Movie,
+        isFavorite: Boolean,
+        callback: (Result<Boolean>) -> Unit
+    ) {
+        when(sourceApi) {
+            ApiName.VIMEO -> {
+                val favoriteCallback: (Result<ApiResponse>) -> Unit = { likeResponseResult ->
+                    when (likeResponseResult) {
+                        is Result.Success -> {
+                            val favoriteResponse = likeResponseResult.data as VimeoFavoriteResponse
+                            callback(Result.Success(favoriteResponse.isFavorite))
+                        }
+                        is Result.Error -> {
+                            callback(likeResponseResult)
+                        }
+                    }
+                    unregisterRequest(requestQueue.first())
+                }
+                if (isFavorite) {
+                    registerRequest(VimeoLikeRequest(movie.id, favoriteCallback), false)
+                } else {
+                    registerRequest(VimeoUnlikeRequest(movie.id, favoriteCallback), false)
+                }
+            }
+            ApiName.YOUTUBE -> {
+                callback(Result.Success(isFavorite))
+            }
+        }
     }
 
     // endregion
@@ -304,7 +338,8 @@ object NetworkManager {
                     responseItem.name,
                     responseItem.description,
                     secondaryText,
-                    imageLink
+                    imageLink,
+                    responseItem.metadata.interactions.like.added
                 )
             )
         }

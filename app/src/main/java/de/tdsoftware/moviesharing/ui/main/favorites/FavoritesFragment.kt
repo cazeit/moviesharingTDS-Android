@@ -46,7 +46,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
         when (notification) {
-            is Notification.FavoritesChangedEvent -> {
+            is Notification.FavoriteListChangedEvent -> {
                 // update full-list
                 fullList = notification.favoriteList
                 // update filtered-list
@@ -60,7 +60,7 @@ class FavoritesFragment : MainActivityBaseFragment() {
                     checkFilteredListEmptyState()
                 }
             }
-            is Notification.FavoritesRemovedEvent -> {
+            is Notification.FavoritesRemovedFromListEvent -> {
                 fullList = notification.favoriteList
                 filteredList = filter(mainView.searchViewQuery)
                 favoritePlaylistRecyclerAdapter.changeFavoriteMovieList(filteredList)

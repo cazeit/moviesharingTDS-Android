@@ -89,12 +89,12 @@ abstract class Request(private val callback: (Result<ApiResponse>) -> Unit) : Co
     /**
      * Method that sends a GET-Request by using OkHttp3
      */
-    private fun fetchFromApi(url: HttpUrl, headers: Headers): Result<Response> {
+    protected open fun fetchFromApi(url: HttpUrl, headers: Headers): Result<Response> {
         return try {
             val httpClient = OkHttpClient.Builder().build()
             val request = okhttp3.Request.Builder().headers(headers).url(url).build()
-            val result = httpClient.newCall(request).execute()
-            Result.Success(result)
+            val response = httpClient.newCall(request).execute()
+            Result.Success(response)
         } catch (exception: Exception) {
             Result.Error(
                 100,

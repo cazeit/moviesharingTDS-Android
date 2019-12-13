@@ -17,7 +17,7 @@ abstract class MoviesBaseFragment : MainActivityBaseFragment() {
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
         when (notification) {
-            is Notification.PlaylistsChangedEvent -> {
+            is Notification.PlaylistListChangedEvent -> {
                 playlistListInAdapter = notification.playlistList
             }
         }

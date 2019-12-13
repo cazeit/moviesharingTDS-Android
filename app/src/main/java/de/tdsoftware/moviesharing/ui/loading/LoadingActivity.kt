@@ -38,7 +38,7 @@ class LoadingActivity : BaseActivity() {
             is Notification.NetworkErrorEvent -> {
                 mainView.changeRetryButtonVisibility(true)
             }
-            is Notification.PlaylistsChangedEvent -> {
+            is Notification.PlaylistListChangedEvent -> {
                 val intent = Intent(this@LoadingActivity, MainActivity::class.java)
                 startActivity(intent)
                 // fade transition

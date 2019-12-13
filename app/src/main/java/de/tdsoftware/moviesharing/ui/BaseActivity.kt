@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseActivity : AppCompatActivity() {
 
     // region EventBus
-
+    
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onNotification(notification: Notification) {
         when (notification) {
