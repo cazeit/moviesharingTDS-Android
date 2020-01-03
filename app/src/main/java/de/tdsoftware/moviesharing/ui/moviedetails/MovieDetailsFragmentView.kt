@@ -8,11 +8,12 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
 import de.tdsoftware.moviesharing.R
 import de.tdsoftware.moviesharing.util.NetworkManager
 import jp.wasabeef.picasso.transformations.CropTransformation
+import java.lang.Exception
 
 class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -85,7 +86,7 @@ class MovieDetailsFragmentView(context: Context, attrs: AttributeSet?) :
     // region public API
 
     fun loadImages(url: String?) {
-        val picasso = Picasso.get().load(url).placeholder(R.drawable.sample_movie_image)
+        val picasso = Picasso.get().load(url)
         if(NetworkManager.sourceApi == NetworkManager.ApiName.YOUTUBE) {
             val transformation = CropTransformation(160,240)
             picasso.transform(transformation)

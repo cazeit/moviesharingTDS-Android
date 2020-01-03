@@ -10,8 +10,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.ui.BaseFragment
 
 /**

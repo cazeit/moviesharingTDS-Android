@@ -1,15 +1,15 @@
 package de.tdsoftware.moviesharing.util
 
-import de.tdsoftware.moviesharing.data.helper.ApiResponse
-import de.tdsoftware.moviesharing.data.helper.MoviesApiResponse
-import de.tdsoftware.moviesharing.data.helper.PlaylistsApiResponse
-import de.tdsoftware.moviesharing.data.helper.vimeo.favorite.VimeoFavoriteResponse
-import de.tdsoftware.moviesharing.data.helper.vimeo.movie.VimeoMoviesResponse
-import de.tdsoftware.moviesharing.data.helper.vimeo.playlist.VimeoPlaylistsResponse
-import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
-import de.tdsoftware.moviesharing.data.helper.youtube.playlist.YoutubePlaylistsResponse
-import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.serialization.ApiResponse
+import de.tdsoftware.moviesharing.data.serialization.MoviesApiResponse
+import de.tdsoftware.moviesharing.data.serialization.PlaylistsApiResponse
+import de.tdsoftware.moviesharing.data.serialization.vimeo.favorite.VimeoFavoriteResponse
+import de.tdsoftware.moviesharing.data.serialization.vimeo.movie.VimeoMoviesResponse
+import de.tdsoftware.moviesharing.data.serialization.vimeo.playlist.VimeoPlaylistsResponse
+import de.tdsoftware.moviesharing.data.serialization.youtube.movie.YoutubeMovieResponse
+import de.tdsoftware.moviesharing.data.serialization.youtube.playlist.YoutubePlaylistsResponse
+import de.tdsoftware.moviesharing.data.model.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubeMoviesRequest
 import de.tdsoftware.moviesharing.util.requests.youtube.YoutubePlaylistsRequest
 import de.tdsoftware.moviesharing.util.requests.Request
@@ -80,6 +80,7 @@ object NetworkManager {
                             callback(Result.Success(favoriteResponse.isFavorite))
                         }
                         is Result.Error -> {
+                            println("There was an error setting favorite state - launching callback")
                             callback(likeResponseResult)
                         }
                     }

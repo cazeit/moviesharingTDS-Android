@@ -1,7 +1,7 @@
 package de.tdsoftware.moviesharing.util.requests.vimeo
 
-import de.tdsoftware.moviesharing.data.helper.ApiResponse
-import de.tdsoftware.moviesharing.data.helper.vimeo.movie.VimeoMoviesResponse
+import de.tdsoftware.moviesharing.data.serialization.ApiResponse
+import de.tdsoftware.moviesharing.data.serialization.vimeo.movie.VimeoMoviesResponse
 import de.tdsoftware.moviesharing.util.Result
 import okhttp3.HttpUrl
 import okhttp3.Response

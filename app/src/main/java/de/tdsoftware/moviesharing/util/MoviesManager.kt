@@ -1,8 +1,8 @@
 package de.tdsoftware.moviesharing.util
 
 import android.content.SharedPreferences
-import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.model.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -96,7 +96,7 @@ object MoviesManager {
                 is Result.Success -> {
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", favoriteUpdateResult.data).apply()
                     EventBus.getDefault()
-                        .post(Notification.MovieLikeStatusChangedEvent(favoriteUpdateResult.data))
+                        .post(Notification.MovieFavoriteStatusChangedEvent(favoriteUpdateResult.data))
                 }
                 is Result.Error -> {
                     EventBus.getDefault().post(
@@ -177,6 +177,8 @@ object MoviesManager {
                 if (movie.isFavorite) {
                     favoritePlaylist.movieList.add(movie)
                     sharedPreferences.edit().putBoolean(movie.id + "_favorite", true).apply()
+                } else if(sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
+                    sharedPreferences.edit().putBoolean(movie.id + "_favorite", false).apply()
                 }
             }
         }

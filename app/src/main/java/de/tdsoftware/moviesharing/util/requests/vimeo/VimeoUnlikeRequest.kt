@@ -1,7 +1,7 @@
 package de.tdsoftware.moviesharing.util.requests.vimeo
 
-import de.tdsoftware.moviesharing.data.helper.ApiResponse
-import de.tdsoftware.moviesharing.data.helper.vimeo.favorite.VimeoFavoriteResponse
+import de.tdsoftware.moviesharing.data.serialization.ApiResponse
+import de.tdsoftware.moviesharing.data.serialization.vimeo.favorite.VimeoFavoriteResponse
 import de.tdsoftware.moviesharing.util.Result
 import okhttp3.*
 import java.lang.Exception

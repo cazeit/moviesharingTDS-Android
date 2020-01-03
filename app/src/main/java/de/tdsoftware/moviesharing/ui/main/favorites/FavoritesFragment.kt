@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.ui.main.MainActivityBaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.util.MoviesManager
