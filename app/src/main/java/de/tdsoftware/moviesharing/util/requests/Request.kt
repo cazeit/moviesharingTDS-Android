@@ -2,7 +2,7 @@ package de.tdsoftware.moviesharing.util.requests
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import de.tdsoftware.moviesharing.data.helper.ApiResponse
+import de.tdsoftware.moviesharing.data.serialization.ApiResponse
 import de.tdsoftware.moviesharing.util.Result
 import kotlinx.coroutines.*
 import okhttp3.*

@@ -7,10 +7,11 @@ import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import de.tdsoftware.moviesharing.ui.BaseActivity
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.util.MoviesManager
 import de.tdsoftware.moviesharing.util.Notification
 
@@ -25,19 +26,21 @@ class MovieDetailsActivity : BaseActivity() {
     private val movieDetailsFragment by lazy {
         MovieDetailsFragment.newInstance()
     }
-    private lateinit var menu: Menu
     private lateinit var mainView: MovieDetailsActivityView
     private lateinit var movie: Movie
     private lateinit var sharedPreferences: SharedPreferences
+
+    private lateinit var menu: Menu
+    private lateinit var favoriteMenuItem: MenuItem
 
     // endregion
     override fun onNotification(notification: Notification) {
         super.onNotification(notification)
         when (notification) {
             is Notification.NetworkErrorEvent -> {
-                changeMovieFavoriteState()
+                changeFavoriteMenuItemColor()
             }
-            is Notification.MovieLikeStatusChangedEvent -> {
+            is Notification.MovieFavoriteStatusChangedEvent -> {
                 sharedPreferences.edit().putBoolean(movie.id + "_favorite", notification.isFavorite).apply()
             }
         }
@@ -61,8 +64,6 @@ class MovieDetailsActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.activity_movie_details_container, movieDetailsFragment).commit()
 
-        setUpMainView()
-
         setUpActionBar()
     }
 
@@ -80,13 +81,15 @@ class MovieDetailsActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favorite_menu, menu)
         this.menu = menu
+        favoriteMenuItem = menu.findItem(R.id.favorite_item)
         if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
-            menu.findItem(R.id.favorite_item).icon.colorFilter =
+            favoriteMenuItem.icon.colorFilter =
                 PorterDuffColorFilter(
                     ContextCompat.getColor(this, R.color.colorPrimary),
                     PorterDuff.Mode.SRC_IN
                 )
         }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -112,32 +115,35 @@ class MovieDetailsActivity : BaseActivity() {
     // region private API
 
     private fun changeMovieFavoriteState() {
-        val item = menu.findItem(R.id.favorite_item)
         if (sharedPreferences.getBoolean(movie.id + "_favorite", false)) {
-            addMovieToFavorites(item)
+            removeMovieFromFavorites()
         } else {
-            removeMovieFromFavorites(item)
+            addMovieToFavorites()
         }
     }
 
-    private fun addMovieToFavorites(item: MenuItem) {
+    private fun removeMovieFromFavorites() {
         MoviesManager.changeFavoriteStatus(movie, false)
 
-        item.icon.colorFilter = null
+        changeFavoriteMenuItemColor()
     }
 
-    private fun removeMovieFromFavorites(item: MenuItem) {
+    private fun addMovieToFavorites() {
         MoviesManager.changeFavoriteStatus(movie, true)
 
-        item.icon.colorFilter =
-            PorterDuffColorFilter(
-                ContextCompat.getColor(this, R.color.colorPrimary),
-                PorterDuff.Mode.SRC_IN
-            )
+        changeFavoriteMenuItemColor()
     }
 
-    private fun setUpMainView() {
-
+    private fun changeFavoriteMenuItemColor(){
+        if(favoriteMenuItem.icon.colorFilter == null) {
+            favoriteMenuItem.icon.colorFilter =
+                PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
+        } else {
+            favoriteMenuItem.icon.colorFilter = null
+        }
     }
 
     /**

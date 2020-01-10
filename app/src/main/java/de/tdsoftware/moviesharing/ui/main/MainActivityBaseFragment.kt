@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.ui.BaseFragment
 import de.tdsoftware.moviesharing.ui.main.adapter.PlaylistBaseAdapter
 import de.tdsoftware.moviesharing.ui.moviedetails.MovieDetailsActivity
@@ -26,7 +26,8 @@ abstract class MainActivityBaseFragment : BaseFragment() {
     protected lateinit var playlistAdapter: PlaylistBaseAdapter
 
     /**
-     * List inside RecyclerAdapter above, by setting, the RecyclerView updates
+     * List from playlists that are being displayed via adapter above, setting the list will
+     * update the RecyclerView
      */
     protected var playlistListInAdapter: ArrayList<Playlist>
         set(value) {

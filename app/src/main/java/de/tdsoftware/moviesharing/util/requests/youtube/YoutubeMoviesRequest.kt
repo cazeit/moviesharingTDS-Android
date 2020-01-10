@@ -1,7 +1,7 @@
 package de.tdsoftware.moviesharing.util.requests.youtube
 
-import de.tdsoftware.moviesharing.data.helper.ApiResponse
-import de.tdsoftware.moviesharing.data.helper.youtube.movie.YoutubeMovieResponse
+import de.tdsoftware.moviesharing.data.serialization.ApiResponse
+import de.tdsoftware.moviesharing.data.serialization.youtube.movie.YoutubeMovieResponse
 import de.tdsoftware.moviesharing.util.Result
 import okhttp3.HttpUrl
 import okhttp3.Response

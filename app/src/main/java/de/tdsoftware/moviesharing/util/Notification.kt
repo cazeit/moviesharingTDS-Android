@@ -1,7 +1,7 @@
 package de.tdsoftware.moviesharing.util
 
-import de.tdsoftware.moviesharing.data.models.Movie
-import de.tdsoftware.moviesharing.data.models.Playlist
+import de.tdsoftware.moviesharing.data.model.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
 
 /**
  * Notification represents the data-type that is sent through EventBus.
@@ -13,5 +13,5 @@ sealed class Notification {
         Notification()
 
     class FavoriteListChangedEvent(val favoriteList: ArrayList<Movie>) : Notification()
-    class MovieLikeStatusChangedEvent(val isFavorite: Boolean): Notification()
+    class MovieFavoriteStatusChangedEvent(val isFavorite: Boolean): Notification()
 }

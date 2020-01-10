@@ -1,7 +1,7 @@
 package de.tdsoftware.moviesharing.ui.main.favorites
 
 import android.view.View
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
 import de.tdsoftware.moviesharing.ui.main.movies.list.PlaylistListAdapter
 

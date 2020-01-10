@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Playlist
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Playlist
+import de.tdsoftware.moviesharing.data.model.Movie
 
 /**
  * BaseAdapter for RecyclerView, where each item represents one playlist

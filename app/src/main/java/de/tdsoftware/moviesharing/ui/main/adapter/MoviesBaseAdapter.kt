@@ -7,7 +7,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.util.NetworkManager
 import jp.wasabeef.picasso.transformations.CropTransformation
 

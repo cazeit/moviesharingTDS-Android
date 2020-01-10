@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import de.tdsoftware.moviesharing.R
-import de.tdsoftware.moviesharing.data.models.Movie
+import de.tdsoftware.moviesharing.data.model.Movie
 import de.tdsoftware.moviesharing.ui.main.adapter.MoviesBaseAdapter
 
 /**
